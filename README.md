@@ -1,6 +1,6 @@
 # Genome JS
 
-A browser-based genomics viewer. Everything runs locally in your browser; no files are uploaded anywhere.
+A browser-based genomics viewer. Everything runs locally in your browser; no files are uploaded anywhere, and the page loads no fonts, scripts or analytics from other sites, so it works offline.
 
 **Views:** linear and circular maps, whole-genome alignment blocks from Mauve (block map, identity profile, base-level view, pairwise identity), alignment pileup with coverage and consensus, variant tables, sequence comparison (dot plot, identity rings), assembly contigs, sample QC with Pass/Review/Repeat flags, notes and exports.
 
@@ -39,3 +39,11 @@ Every later push to `main` redeploys the site.
 - Variant calling uses depth and fraction thresholds, not a statistical caller.
 - BAM files are loaded whole in memory, so subset very large files first.
 - Mauve: export from Mauve with File > Export Alignment to get `.xmfa`. `.backbone` files hold coordinates only. `.mauve` project files are not read. Identity is computed from the aligned columns in the XMFA.
+- Reference names must match exactly. The only relaxation is an accession-style name (for example `NC_045512.1` vs `NC_045512.2`), which is matched when unambiguous and reported. SAM/BAM `@SQ` lengths must equal the loaded sequence length, otherwise the reads are rejected.
+- Input caps: up to 1,500,000 mapped reads per SAM/BAM and about 1.6 GB of decompressed BAM. If a file is cut short, damaged, or over the cap, the sample is marked **PARTIAL**, is never suggested as Pass, and the QC table, consensus header and exports say so. FASTQ statistics use the first 500,000 reads, and quick mapping the first 100,000 (a prefix, not a random sample).
+- Consensus sequences are in reference coordinates and omit insertions (the QC table counts insertion sites that are not represented). Variant calls cover SNPs and deletions only.
+- SNP distances count only sites where both consensus bases are A/C/G/T. The matrix shows the comparable fraction, and a long-format CSV lists it per pair.
+- Protein effects honour GenBank `codon_start` and GFF phase, and translation tables 1, 11 and 4. Other tables are flagged and use the standard code.
+- CSV exports quote commas, quotes and line breaks, and prefix text starting with `=`, `+`, `-` or `@` with an apostrophe so spreadsheets do not run it as a formula.
+- Notes are kept in memory only. Tick "Keep notes in this browser" to store them locally, and use "Clear notes and saved data" to remove them. Removing an imported notes file removes its text from the notes.
+- Analysis runs on the main thread, so very large files can make the page unresponsive for a while.
