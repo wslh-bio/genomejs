@@ -14,6 +14,8 @@ Click **Load demo data** to try it with synthetic sequences.
 
 **Zoom to a region:** in Alignment and Genome alignment, drag across the view to zoom to that span (in Genome alignment the other genomes follow the matching sequence). Right-drag (or Shift+drag) pans, the wheel zooms, double-click zooms in.
 
+**Genome alignment export:** Save map PNG/SVG exports the block map. Select a block and use Save block PNG/SVG to export its base-level alignment as shown (zoom and pan first to choose the window). Exports have a transparent background.
+
 ## Run locally
 
 Open `index.html` in a browser. No build step.

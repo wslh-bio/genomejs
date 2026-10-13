@@ -142,7 +142,7 @@ textarea.notes{width:100%;min-height:260px;background:var(--panel);border:1px so
       <label><input type="checkbox" id="mv-prof" checked> Identity profile</label>
       <button class="btn" id="mv-zi" aria-label="Zoom in">+</button><button class="btn" id="mv-zo" aria-label="Zoom out">−</button><button class="btn" id="mv-fit">Whole genomes</button>
       <span class="sp"></span>
-      <button class="btn" id="mv-png">Save PNG</button><button class="btn" id="mv-svg">Save SVG</button><button class="btn" id="mv-csv">Export blocks (CSV)</button>
+      <button class="btn" id="mv-png">Save map PNG</button><button class="btn" id="mv-svg">Save map SVG</button><button class="btn" id="mv-bpng" disabled title="Select a block first">Save block PNG</button><button class="btn" id="mv-bsvg" disabled title="Select a block first">Save block SVG</button><button class="btn" id="mv-csv">Export blocks (CSV)</button>
     </div>
     <div class="scroll" id="mv-body">
       <div class="cv" id="cv-mv" style="flex:none;height:300px;border:1px solid var(--line);border-radius:6px"></div>
@@ -877,12 +877,13 @@ class SvgCtx{
 }
 async function saveBlob(name,blob){try{const d=(typeof claude!=='undefined'&&claude&&claude.use)?await claude.use('downloads'):null;if(d){await d.save({filename:name,data:blob});toast('Saved '+name);return;}}catch(e){if(e&&e.code==='declined')return;}
  const a=el('a',{href:URL.createObjectURL(blob),download:name});document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);toast('Saved '+name);}
-function exportTarget(){if(S.tab==='map'&&cvMap&&curRef()){const lin=S.mapMode!=='circular';return{cv:cvMap,draw:drawMap,name:(curRef().name)+(lin?'_map':'_circular_map'),h:lin?Math.max(cvMap._h,Math.ceil((cvMap._content||0))):cvMap._h};}
+function exportTarget(which){if(S.tab==='mauve'&&which==='det'){const m=curMv(),b=m&&m.blocks.find(x=>x.id===MV.sel);if(!b||!b.seqs||!cvMvd||!cvMvd._w)return null;return{cv:cvMvd,draw:drawMauveDet,name:m.name.replace(/\.[^.]*$/,'')+'_block'+b.id,h:Math.min(cvMvd._h,52+b.present.length*18+26)};}
+ if(S.tab==='map'&&cvMap&&curRef()){const lin=S.mapMode!=='circular';return{cv:cvMap,draw:drawMap,name:(curRef().name)+(lin?'_map':'_circular_map'),h:lin?Math.max(cvMap._h,Math.ceil((cvMap._content||0))):cvMap._h};}
  if(S.tab==='aln'&&cvAln&&curSample()){const s=curSample();return{cv:cvAln,draw:drawAln,name:s.name+'_alignment',h:Math.min(4000,Math.max(cvAln._h,Math.ceil((cvAln._readTop||0)+s.rows*(cvAln._rowH||10)+50)))};}
  if(S.tab==='mauve'&&cvMv&&curMv()){const m=curMv();return{cv:cvMv,draw:drawMauve,name:m.name.replace(/\.[^.]*$/,'')+'_genome_alignment',h:cvMv._h};}
  return null;}
 const LIGHT_PAL={ink:'#17222C',panel:'#FFFFFF',line:'#D3DAE1',muted:'#5A6775',A:'#2E9E5B',C:'#2F6FDE',G:'#E3A413',T:'#D6453D',N:'#8D98A3',readF:'#BFD0DF',readR:'#D7C9E3',bad:'#B42318',accent:'#1E5A8C',grid:'#E4E9EE',warn:'#B45309'};
-async function exportImage(kind){const t=exportTarget();if(!t){toast('Open the Maps or Alignment tab with data loaded to export its view.');return;}
+async function exportImage(kind,which){const t=exportTarget(which);if(!t){toast(which==='det'?'Select a block with aligned bases (from an .xmfa file) first.':'Open the Maps, Alignment or Genome alignment tab with data loaded to export its view.');return;}
  loadPal();const dark=Object.assign({},PAL);PAL=Object.assign({},LIGHT_PAL,{panel:'rgba(255,255,255,0)'});PAL['-']=PAL.ink;S.exporting=true;const W=t.cv._w,H=t.h,sM=MAP.scroll,sA=AL.scroll;MAP.scroll=0;AL.scroll=0;const name=t.name.replace(/[^\w.-]+/g,'_');
  try{
   if(kind==='svg'){const svg=new SvgCtx(W,H,null);const fake={_w:W,_h:H,_d:1,getContext:()=>svg};t.draw(fake);
@@ -1026,7 +1027,7 @@ function mvTip(b,m){const rows=b.present.map(g=>{const r=b.g[g];return`<tr><td>$
 function mvSelect(b,jumpBp){const m=curMv();MV.sel=b?b.id:null;MV.dc=0;
  if(b&&jumpBp){const c=mvColAtBp(b,jumpBp.g,jumpBp.bp);const cv=cvMvd;const pw=cv&&cv._pw?cv._pw:600;MV.dc=Math.max(0,c-pw/MV.cw/2);}
  mvInfo();drawAll();}
-function mvInfo(){const m=curMv(),box=$('#mv-info');if(!m){box.textContent='';return;}const b=m.blocks.find(x=>x.id===MV.sel);
+function mvInfo(){const m=curMv(),box=$('#mv-info');if(!m){box.textContent='';return;}const b=m.blocks.find(x=>x.id===MV.sel);const ok=!!(b&&b.seqs);['#mv-bpng','#mv-bsvg'].forEach(i=>{const e=$(i);if(e){e.disabled=!ok;e.title=ok?'Export the base-level view of the selected block as shown':(b?'This block has no bases (backbone file)':'Select a block first');}});
  box.innerHTML=b?mvTip(b,m).replace(/<table>.*<\/table>/,''):'Drag to zoom to a region (other genomes follow the matching sequence), right-drag or shift+drag to pan, scroll to zoom, click a block to see its aligned bases below.';}
 function mvZoomBox(x0,x1,g,cv){const m=curMv();if(!m)return;const sc=cv._pw/MV.span,LW=cv._lw,n=m.genomes.length;
  const b0=(MV.ws[g]||0)+(x0-LW)/sc,b1=(MV.ws[g]||0)+(x1-LW)/sc,span=Math.max(30,b1-b0),old=MV.ws.slice();
@@ -1074,7 +1075,7 @@ function drawMauveDet(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h,
    if(cw>=7){ctx.fillStyle=mism?'#fff':PAL.ink;ctx.font=MONO;ctx.textAlign='center';ctx.fillText(ch,x+cw/2,y+RH/2-1);ctx.textAlign='left';ctx.font=SANS;}}}
  // row labels
  rows.forEach((g,r)=>{const y=ry+r*RH,gi=m.genomes[g],k=mvNtBefore(b,g,c0);ctx.fillStyle=PAL.ink;ctx.font=SANS;ctx.textAlign='left';let nm=(gi.label||gi.name)+(b.g[g].st<0?' (−)':'');const mxc=Math.floor((LW-8)/6.6);if(nm.length>mxc)nm=nm.slice(0,Math.max(3,mxc-1))+'…';ctx.fillText(nm,6,y+RH/2-1);});
- ctx.fillStyle=PAL.muted;ctx.font='10px "IBM Plex Sans",system-ui,sans-serif';ctx.fillText(`${Math.round(vis).toLocaleString()} of ${L.toLocaleString()} columns shown · scroll to zoom, drag to pan · differences from the majority base are filled`,LW,ry+nr*RH+10);ctx.font=SANS;}
+ ctx.fillStyle=PAL.muted;ctx.font='10px "IBM Plex Sans",system-ui,sans-serif';ctx.fillText(S.exporting?`Alignment columns ${(c0+1).toLocaleString()}–${Math.min(L,c1-1).toLocaleString()} of ${L.toLocaleString()} · bases that differ from the majority are filled`:`${Math.round(vis).toLocaleString()} of ${L.toLocaleString()} columns shown · scroll to zoom, drag to pan · differences from the majority base are filled`,LW,ry+nr*RH+10);ctx.font=SANS;}
 function mvDetTip(cv,e){const m=curMv(),b=m&&m.blocks.find(x=>x.id===MV.sel);if(!b||!b.seqs)return hideTip();const r=cv.getBoundingClientRect(),x=e.clientX-r.left;if(x<cv._lw)return hideTip();
  const c=Math.floor(MV.dc+(x-cv._lw)/MV.cw);if(c<0||c>=b.aln)return hideTip();
  const rows=b.present.map(g=>{const ch=b.seqs[g][c],k=mvNtBefore(b,g,c);return`<tr><td>${esc(m.genomes[g].label||m.genomes[g].name)}</td><td><b>${ch}</b></td><td>${ch==='-'?'gap':mvCoord(b,g,k).toLocaleString()}</td></tr>`;}).join('');
@@ -1200,6 +1201,7 @@ function init(){loadPal();
  $('#mv-sel').onchange=e=>{MV.id=+e.target.value;MV.key=null;renderMauve();drawAll();};$('#mv-ref').onchange=e=>{MV.ref=+e.target.value;drawAll();};
  $('#mv-min').onchange=e=>{MV.minLen=Math.max(0,+e.target.value||0);renderMauve();drawAll();};$('#mv-prof').onchange=e=>{MV.prof=e.target.checked;drawAll();};
  $('#mv-zi').onclick=()=>{mvZoom(0.5);drawAll();};$('#mv-zo').onclick=()=>{mvZoom(2);drawAll();};$('#mv-fit').onclick=()=>{mvFit();drawAll();};
+ $('#mv-bpng').onclick=()=>exportImage('png','det');$('#mv-bsvg').onclick=()=>exportImage('svg','det');
  $('#mv-csv').onclick=()=>{const m=curMv();if(m)openExport('Alignment blocks','mauve_blocks.csv',mvCsv(m));};
  cvMv=makeCanvas($('#cv-mv'),drawMauve);attachMvNav(cvMv);attachCursor(cvMv,drawMvCursor);cvMvd=makeCanvas($('#cv-mvd'),drawMauveDet);attachMvdNav(cvMvd);attachCursor(cvMvd,drawMvdCursor);
  // compare
