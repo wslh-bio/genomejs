@@ -164,7 +164,7 @@ textarea.notes{width:100%;min-height:260px;background:var(--panel);border:1px so
       <button class="btn" id="a-png">Save PNG</button><button class="btn" id="a-svg">Save SVG</button><span class="muted" style="font-size:12.5px">Wheel: zoom · Shift+scroll or vertical drag: reads · Click: pileup details</span>
     </div>
     <div class="cv" id="cv-aln"></div>
-    <div class="info" id="a-info">Select a sample to inspect mapped reads, coverage, disagreements and consensus calls.</div>
+    <div class="info" id="a-info">Select a sample to inspect mapped reads, coverage, disagreements and consensus calls. Drag across the view to zoom to a region, shift+drag to pan, scroll to zoom.</div>
   </section>
 
   <section class="view" id="v-var"><div class="scroll" id="var-body"></div></section>
@@ -571,11 +571,12 @@ function attachNav(cv,onChange,o={}){let drag=null;const circ=()=>!!(o.circ&&o.c
   const r=cv.getBoundingClientRect(),f=Math.exp(dy*0.0022);
   if(circ()){circZoomAt(1/f,e.clientX-r.left,e.clientY-r.top,cv._w,cv._h);onChange();hideTip();return;}
   zoomBy(f,(e.clientX-r.left)/r.width);onChange();hideTip();},{passive:false});
- cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY,s:S.view.s,e:S.view.e,sc:o.sget?o.sget():0,ox:CIRC.ox,oy:CIRC.oy,moved:false};cv.classList.add('dragging');});
+ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY,s:S.view.s,e:S.view.e,sc:o.sget?o.sget():0,ox:CIRC.ox,oy:CIRC.oy,moved:false,box:!!o.box&&!e.shiftKey&&!circ(),x0:e.clientX-cv.getBoundingClientRect().left};cv.classList.add('dragging');});
  cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;if(!drag.moved)return;hideTip();
+  if(drag.box){const r=cv.getBoundingClientRect(),x=Math.max(0,Math.min(cv._w,e.clientX-r.left)),a=Math.min(drag.x0,x),b=Math.max(drag.x0,x),M=mapper(cv._w,S.view);cv._sel={x0:a,x1:b};cv._selLabel=fmtBp(Math.max(1,Math.round(M.p(b)-M.p(a))))+' bp · release to zoom';return;}
   if(circ()){if(CIRC.k>1){CIRC.ox=drag.ox+dx;CIRC.oy=drag.oy+dy;onChange();}return;}
   const bp=(drag.e-drag.s)/cv._w;setView(drag.s-dx*bp,drag.e-dx*bp);if(o.sset)o.sset(drag.sc-dy);onChange();});
- cv.addEventListener('pointerup',e=>{cv.classList.remove('dragging');const moved=drag&&drag.moved;drag=null;if(!moved&&o.click){const r=cv.getBoundingClientRect();o.click(e.clientX-r.left,e.clientY-r.top,e);}});
+ cv.addEventListener('pointerup',e=>{cv.classList.remove('dragging');const moved=drag&&drag.moved;if(drag&&drag.box&&cv._sel){const sel=cv._sel,M=mapper(cv._w,S.view);cv._sel=null;cv._selLabel=null;drag=null;if(sel.x1-sel.x0>=4){setView(M.p(sel.x0),M.p(sel.x1));}onChange();return;}drag=null;if(!moved&&o.click){const r=cv.getBoundingClientRect();o.click(e.clientX-r.left,e.clientY-r.top,e);}});
  cv.addEventListener('dblclick',e=>{const r=cv.getBoundingClientRect();if(circ()){circZoomAt(2.2,e.clientX-r.left,e.clientY-r.top,cv._w,cv._h);onChange();return;}zoomBy(0.4,(e.clientX-r.left)/r.width);onChange();});
  cv.addEventListener('pointerleave',hideTip);}
 function showTip(html,e){const t=$('#tip');t.innerHTML=html;t.style.display='block';const w=t.offsetWidth,h=t.offsetHeight;t.style.left=Math.min(innerWidth-w-8,e.clientX+14)+'px';t.style.top=Math.min(innerHeight-h-8,e.clientY+16)+'px';}
@@ -1025,15 +1026,24 @@ function mvSelect(b,jumpBp){const m=curMv();MV.sel=b?b.id:null;MV.dc=0;
  if(b&&jumpBp){const c=mvColAtBp(b,jumpBp.g,jumpBp.bp);const cv=cvMvd;const pw=cv&&cv._pw?cv._pw:600;MV.dc=Math.max(0,c-pw/MV.cw/2);}
  mvInfo();drawAll();}
 function mvInfo(){const m=curMv(),box=$('#mv-info');if(!m){box.textContent='';return;}const b=m.blocks.find(x=>x.id===MV.sel);
- box.innerHTML=b?mvTip(b,m).replace(/<table>.*<\/table>/,''):'Scroll wheel to zoom, drag to pan, click a block to see its aligned bases below.';}
+ box.innerHTML=b?mvTip(b,m).replace(/<table>.*<\/table>/,''):'Drag to zoom to a region (other genomes follow the matching sequence), shift+drag to pan, scroll to zoom, click a block to see its aligned bases below.';}
+function mvZoomBox(x0,x1,g,cv){const m=curMv();if(!m)return;const sc=cv._pw/MV.span,LW=cv._lw,n=m.genomes.length;
+ const b0=(MV.ws[g]||0)+(x0-LW)/sc,b1=(MV.ws[g]||0)+(x1-LW)/sc,span=Math.max(30,b1-b0),old=MV.ws.slice();
+ const p0=mvMapPos(m,g,Math.max(0,Math.min(m.genomes[g].len-1,Math.floor(b0)))),p1=mvMapPos(m,g,Math.max(0,Math.min(m.genomes[g].len-1,Math.floor(b1))));
+ MV.span=span;
+ for(let h=0;h<n;h++){if(h===g){MV.ws[h]=b0;continue;}const a=p0.res[h],b=p1.res[h];
+  if(a!=null&&b!=null)MV.ws[h]=(a+b)/2-span/2;else if(a!=null)MV.ws[h]=a;else if(b!=null)MV.ws[h]=b-span;else MV.ws[h]=old[h]+(x0-LW)/sc;}
+ mvClamp(m);}
 function attachMvNav(cv){let drag=null;
  const frac=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left-(cv._lw||0))/Math.max(1,cv._pw||1),e.clientX-r.left,e.clientY-r.top];};
  cv.addEventListener('wheel',e=>{e.preventDefault();let dy=e.deltaY;if(e.deltaMode===1)dy*=33;else if(e.deltaMode===2)dy*=400;dy=Math.max(-300,Math.min(300,dy));
   const[fx]=frac(e);mvZoom(Math.exp(dy*0.0022),Math.max(0,Math.min(1,fx)));hideTip();drawAll();},{passive:false});
- cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);drag={x:e.clientX,ws:MV.ws.slice(),moved:false};cv.classList.add('dragging');});
- cv.addEventListener('pointermove',e=>{if(drag){const dx=e.clientX-drag.x;if(Math.abs(dx)>3)drag.moved=true;if(drag.moved){hideTip();const m=curMv();MV.ws=drag.ws.slice();mvPan(-dx*MV.span/Math.max(1,cv._pw));drawAll();}return;}
+ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);const r=cv.getBoundingClientRect(),m=curMv();drag={x:e.clientX,ws:MV.ws.slice(),moved:false,box:!e.shiftKey,x0:e.clientX-r.left,g:m?Math.max(0,Math.min(m.genomes.length-1,Math.floor((e.clientY-r.top-MV_TOP)/MV_RH))):0};cv.classList.add('dragging');});
+ cv.addEventListener('pointermove',e=>{if(drag){const dx=e.clientX-drag.x;if(Math.abs(dx)>3)drag.moved=true;if(drag.moved){hideTip();
+   if(drag.box){const r=cv.getBoundingClientRect(),lw=cv._lw||0,x=Math.max(lw,Math.min(cv._w-12,e.clientX-r.left)),a=Math.min(Math.max(lw,drag.x0),x),b=Math.max(Math.max(lw,drag.x0),x);cv._sel={x0:a,x1:b};cv._selLabel=fmtBp(Math.max(1,Math.round((b-a)*MV.span/cv._pw)))+' bp · release to zoom';return;}
+   const m=curMv();MV.ws=drag.ws.slice();mvPan(-dx*MV.span/Math.max(1,cv._pw));drawAll();}return;}
   const[,x,y]=frac(e);const h=hitAt(cv,x,y),m=curMv();if(h&&m)showTip(mvTip(h.b,m),e);else hideTip();});
- cv.addEventListener('pointerup',e=>{cv.classList.remove('dragging');const mv=drag&&drag.moved;drag=null;if(mv)return;const[,x,y]=frac(e);const h=hitAt(cv,x,y);
+ cv.addEventListener('pointerup',e=>{cv.classList.remove('dragging');const mv=drag&&drag.moved;if(drag&&drag.box&&cv._sel){const sel=cv._sel,g=drag.g;cv._sel=null;cv._selLabel=null;drag=null;if(sel.x1-sel.x0>=4)mvZoomBox(sel.x0,sel.x1,g,cv);drawAll();return;}drag=null;if(mv)return;const[,x,y]=frac(e);const h=hitAt(cv,x,y);
   if(h){const r=h.b.g[h.g],bp=(MV.ws[h.g]||0)+(x-cv._lw)/cv._pw*MV.span;mvSelect(h.b,{g:h.g,bp:Math.max(r.s,Math.min(r.e-1,Math.round(bp)))});}});
  cv.addEventListener('dblclick',e=>{const[fx]=frac(e);mvZoom(0.4,Math.max(0,Math.min(1,fx)));drawAll();});
  cv.addEventListener('pointerleave',hideTip);}
@@ -1103,7 +1113,9 @@ function renderMauve(){PAL.ink||loadPal();const has=S.mauves.length>0;const main
 /* ====================== hover cursors (overlay layer, never part of exports) ====================== */
 function curCtx(cv){let o=cv._ov;if(!o){o=document.createElement('canvas');o.style.cssText='position:absolute;left:0;top:0;pointer-events:none';cv.parentNode.append(o);cv._ov=o;}
  const d=cv._d||1,w=Math.round(cv._w*d),h=Math.round(cv._h*d);if(o.width!==w||o.height!==h){o.width=w;o.height=h;o.style.width=cv._w+'px';o.style.height=cv._h+'px';}
- const c=o.getContext('2d');c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,cv._w,cv._h);c.textBaseline='middle';c.textAlign='left';c.lineWidth=1;return c;}
+ const c=o.getContext('2d');c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,cv._w,cv._h);c.textBaseline='middle';c.textAlign='left';c.lineWidth=1;
+ if(cv._sel){PAL.ink||loadPal();const a=cv._sel.x0,b=cv._sel.x1;c.fillStyle=PAL.accent;c.globalAlpha=0.16;c.fillRect(a,0,b-a,cv._h);c.globalAlpha=0.9;c.strokeStyle=PAL.accent;c.strokeRect(a+.5,.5,Math.max(0,b-a-1),cv._h-1);c.globalAlpha=1;if(cv._selLabel)curChip(c,cv._selLabel,(a+b)/2,14,cv._w,false);c.lineWidth=1;}
+ return c;}
 function curChip(c,t,x,y,W,right){c.font='11px "IBM Plex Sans",system-ui,sans-serif';const w=c.measureText(t).width+10;let x0=right?x+6:x-6-w;if(x0+w>W-2)x0=x-6-w;if(x0<2)x0=Math.min(x+6,W-w-2);
  c.fillStyle=PAL.ink;c.globalAlpha=0.92;c.fillRect(x0,y-8,w,16);c.globalAlpha=1;c.fillStyle=PAL.panel&&!/rgba\(.*,\s*0\)/.test(PAL.panel)?PAL.panel:'#fff';c.fillText(t,x0+5,y+.5);}
 function attachCursor(cv,draw){cv._curDraw=draw;
@@ -1181,7 +1193,7 @@ function init(){loadPal();
  $('#a-gob').onclick=()=>{go('#a-go');drawAll();};$('#a-go').onkeydown=e=>{if(e.key==='Enter')$('#a-gob').click();};
  $('#a-zi').onclick=()=>{zoomBy(0.5);drawAll();};$('#a-zo').onclick=()=>{zoomBy(2);drawAll();};$('#a-fit').onclick=()=>{resetView();drawAll();};
  $('#a-nv').onclick=()=>nextEvent('var');$('#a-nl').onclick=()=>nextEvent('low');
- cvAln=makeCanvas($('#cv-aln'),drawAln);attachNav(cvAln,drawAll,{sget:()=>AL.scroll,sset:v=>{AL.scroll=v;},vscroll:d=>{AL.scroll+=d;drawAll();},click:(x,y,e)=>alnPointer(cvAln,e,true)});cvAln.addEventListener('pointermove',e=>{if(!e.buttons)alnPointer(cvAln,e,false);});attachCursor(cvAln,drawAlnCursor);
+ cvAln=makeCanvas($('#cv-aln'),drawAln);attachNav(cvAln,drawAll,{box:true,sget:()=>AL.scroll,sset:v=>{AL.scroll=v;},vscroll:d=>{AL.scroll+=d;drawAll();},click:(x,y,e)=>alnPointer(cvAln,e,true)});cvAln.addEventListener('pointermove',e=>{if(!e.buttons)alnPointer(cvAln,e,false);});attachCursor(cvAln,drawAlnCursor);
  // mauve
  $('#mv-sel').onchange=e=>{MV.id=+e.target.value;MV.key=null;renderMauve();drawAll();};$('#mv-ref').onchange=e=>{MV.ref=+e.target.value;drawAll();};
  $('#mv-min').onchange=e=>{MV.minLen=Math.max(0,+e.target.value||0);renderMauve();drawAll();};$('#mv-prof').onchange=e=>{MV.prof=e.target.checked;drawAll();};

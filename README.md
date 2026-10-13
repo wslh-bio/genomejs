@@ -12,6 +12,8 @@ Click **Load demo data** to try it with synthetic sequences.
 
 **Cursor:** in the Maps (linear), Alignment and Genome alignment views, a vertical cursor follows the mouse and shows the position. In Genome alignment it also marks the matching position in every other genome, through the block's alignment.
 
+**Zoom to a region:** in Alignment and Genome alignment, drag across the view to zoom to that span (in Genome alignment the other genomes follow the matching sequence). Shift+drag pans, the wheel zooms, double-click zooms in.
+
 ## Run locally
 
 Open `index.html` in a browser. No build step.
