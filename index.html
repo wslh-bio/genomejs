@@ -1100,9 +1100,48 @@ function renderMauve(){PAL.ink||loadPal();const has=S.mauves.length>0;const main
  const lcols=[{h:'Block',v:b=>b.id},{h:'Length (bp)',v:b=>b.len,r:b=>b.len.toLocaleString()},{h:'Genomes',v:b=>b.present.length},{h:'Identity',v:b=>mvIdent(b)??-1,r:b=>{const x=mvIdent(b);return x==null?'—':(x*100).toFixed(1)+'%';}},
   ...names.map((nm,g)=>({h:nm,v:b=>b.g[g]?b.g[g].s:-1,r:b=>b.g[g]?`${(b.g[g].s+1).toLocaleString()}–${b.g[g].e.toLocaleString()} ${b.g[g].st>0?'+':'−'}`:'—'}))];
  box.append(el('div',{class:'panel'},el('h2',{},'Blocks'),el('div',{class:'muted',style:'font-size:13px;margin-bottom:8px'},'Click a row to zoom to that block. A block is a region shared by two or more genomes without rearrangement inside it.'),tbl(lcols,blocks,{onRow:b=>{MV.sel=b.id;MV.dc=0;mvZoomBlock(b);mvInfo();drawAll();},limit:1000,empty:'No blocks at this size filter'})));}
+/* ====================== hover cursors (overlay layer, never part of exports) ====================== */
+function curCtx(cv){let o=cv._ov;if(!o){o=document.createElement('canvas');o.style.cssText='position:absolute;left:0;top:0;pointer-events:none';cv.parentNode.append(o);cv._ov=o;}
+ const d=cv._d||1,w=Math.round(cv._w*d),h=Math.round(cv._h*d);if(o.width!==w||o.height!==h){o.width=w;o.height=h;o.style.width=cv._w+'px';o.style.height=cv._h+'px';}
+ const c=o.getContext('2d');c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,cv._w,cv._h);c.textBaseline='middle';c.textAlign='left';c.lineWidth=1;return c;}
+function curChip(c,t,x,y,W,right){c.font='11px "IBM Plex Sans",system-ui,sans-serif';const w=c.measureText(t).width+10;let x0=right?x+6:x-6-w;if(x0+w>W-2)x0=x-6-w;if(x0<2)x0=Math.min(x+6,W-w-2);
+ c.fillStyle=PAL.ink;c.globalAlpha=0.92;c.fillRect(x0,y-8,w,16);c.globalAlpha=1;c.fillStyle=PAL.panel&&!/rgba\(.*,\s*0\)/.test(PAL.panel)?PAL.panel:'#fff';c.fillText(t,x0+5,y+.5);}
+function attachCursor(cv,draw){cv._curDraw=draw;
+ const upd=e=>{const r=cv.getBoundingClientRect();cv._cur={x:e.clientX-r.left,y:e.clientY-r.top,on:true};draw(cv);};
+ cv.addEventListener('pointermove',upd);cv.addEventListener('wheel',upd,{passive:true});
+ cv.addEventListener('pointerleave',()=>{if(cv._cur)cv._cur.on=false;draw(cv);});}
+function refreshCursors(){[cvMap,cvAln,cvMv,cvMvd].forEach(c=>{if(c&&c._curDraw&&c._w)c._curDraw(c);});}
+function drawLinCursor(cv,ref,info){const c=curCtx(cv),st=cv._cur;if(!st||!st.on||!ref)return;PAL.ink||loadPal();
+ const M=mapper(cv._w,S.view),p=Math.floor(M.p(st.x));if(p<0||p>=ref.len)return;const ppb=M.ppb,x0=M.x(p),xc=ppb>=4?x0+ppb/2:st.x;
+ if(ppb>=4){c.fillStyle=PAL.warn;c.globalAlpha=0.16;c.fillRect(x0,0,ppb,cv._h);c.globalAlpha=1;}
+ c.strokeStyle=PAL.warn;c.beginPath();c.moveTo(Math.round(xc)+.5,0);c.lineTo(Math.round(xc)+.5,cv._h);c.stroke();
+ curChip(c,`${(p+1).toLocaleString()} · ${ref.seq[p]}${info?info(p):''}`,xc,cv._h-12,cv._w,true);}
+function drawAlnCursor(cv){const s=curSample();if(!s){curCtx(cv);return;}drawLinCursor(cv,S.refs[s.refIdx],p=>s.depth&&p<s.depth.length?` · depth ${s.depth[p]}`:'');}
+function drawMapCursor(cv){if(S.mapMode==='circular'||!curRef()){curCtx(cv);return;}drawLinCursor(cv,curRef());}
+/* where a position in genome g sits in every other genome, through the block's alignment */
+function mvMapPos(m,g,bp){const res=new Array(m.genomes.length).fill(null);const b=mvBlocks(m).find(b=>b.g[g]&&bp>=b.g[g].s&&bp<b.g[g].e);if(!b)return{res,b:null};
+ res[g]=bp;const rg=b.g[g];
+ for(const h of b.present){if(h===g)continue;const rh=b.g[h],len=rh.e-rh.s;let k;
+  if(b.seqs){k=mvNtBefore(b,h,mvColAtBp(b,g,bp));}else{const f=rg.st>0?(bp-rg.s)/(rg.e-rg.s):(rg.e-1-bp)/(rg.e-rg.s);k=Math.floor(f*len);}
+  k=Math.max(0,Math.min(len-1,k));res[h]=rh.st>0?rh.s+k:rh.e-1-k;}
+ return{res,b};}
+function drawMvCursor(cv){const c=curCtx(cv),st=cv._cur,m=curMv();if(!st||!st.on||!m||!cv._pw)return;PAL.ink||loadPal();
+ const n=m.genomes.length,LW=cv._lw,sc=cv._pw/MV.span;if(st.x<LW)return;
+ const g=Math.max(0,Math.min(n-1,Math.floor((st.y-MV_TOP)/MV_RH)));const bp=Math.floor((MV.ws[g]||0)+(st.x-LW)/sc);if(bp<0||bp>=m.genomes[g].len)return;
+ const{res,b}=mvMapPos(m,g,bp),X=(h,p)=>LW+(p+0.5-(MV.ws[h]||0))*sc,Y=h=>MV_TOP+h*MV_RH;
+ c.strokeStyle=PAL.warn;c.fillStyle=PAL.warn;
+ if(!b){const x=Math.round(st.x)+.5;c.beginPath();c.moveTo(x,Y(g)+MV_AX-MV_BH-4);c.lineTo(x,Y(g)+MV_AX+MV_BH+4);c.stroke();curChip(c,(bp+1).toLocaleString()+' · not in a block',st.x,Y(g)+7,cv._w,true);return;}
+ const pts=[];for(let h=0;h<n;h++)if(res[h]!=null)pts.push([h,X(h,res[h])]);
+ c.globalAlpha=0.9;c.beginPath();pts.forEach(([h,x],i)=>{const y=Y(h)+MV_AX;if(i)c.lineTo(x,y);else c.moveTo(x,y);});c.stroke();
+ for(const[h,x]of pts){const y=Y(h);c.beginPath();c.moveTo(Math.round(x)+.5,y+MV_AX-MV_BH-4);c.lineTo(Math.round(x)+.5,y+MV_AX+MV_BH+4);c.stroke();c.beginPath();c.arc(x,y+MV_AX,3,0,Math.PI*2);c.fill();}
+ c.globalAlpha=1;for(const[h,x]of pts)curChip(c,(res[h]+1).toLocaleString(),x,Y(h)+7,cv._w,true);}
+function drawMvdCursor(cv){const c=curCtx(cv),st=cv._cur,m=curMv();if(!st||!st.on||!m||!cv._pw)return;const b=m.blocks.find(x=>x.id===MV.sel);if(!b||!b.seqs)return;
+ if(st.x<cv._lw||st.x>cv._w-12)return;const col=Math.floor(MV.dc+(st.x-cv._lw)/MV.cw);if(col<0||col>=b.aln)return;PAL.ink||loadPal();
+ const x0=cv._lw+(col-MV.dc)*MV.cw,xc=MV.cw>=4?x0+MV.cw/2:st.x;if(MV.cw>=4){c.fillStyle=PAL.warn;c.globalAlpha=0.16;c.fillRect(x0,0,MV.cw,cv._h);c.globalAlpha=1;}
+ c.strokeStyle=PAL.warn;c.beginPath();c.moveTo(Math.round(xc)+.5,0);c.lineTo(Math.round(xc)+.5,cv._h);c.stroke();curChip(c,'column '+(col+1).toLocaleString(),xc,cv._h-10,cv._w,true);}
 
 let cvMap,cvAln,cvDot,cvProf;
-function drawAll(){if(S.tab==='map'&&cvMap)cvMap._fit&&drawMap(cvMap);if(S.tab==='aln'&&cvAln)drawAln(cvAln);if(S.tab==='cmp'){cvDot&&drawDot(cvDot);cvProf&&drawProf(cvProf);}if(S.tab==='mauve'){cvMv&&cvMv._fit&&drawMauve(cvMv);cvMvd&&cvMvd._fit&&drawMauveDet(cvMvd);}}
+function drawAll(){if(S.tab==='map'&&cvMap)cvMap._fit&&drawMap(cvMap);if(S.tab==='aln'&&cvAln)drawAln(cvAln);if(S.tab==='cmp'){cvDot&&drawDot(cvDot);cvProf&&drawProf(cvProf);}if(S.tab==='mauve'){cvMv&&cvMv._fit&&drawMauve(cvMv);cvMvd&&cvMvd._fit&&drawMauveDet(cvMvd);}refreshCursors();}
 function switchTab(t){S.tab=t;TABS.forEach(([k])=>{$('#v-'+k).classList.toggle('on',k===t);const b=$('#tab-'+k);b.setAttribute('aria-selected',k===t);});
  if(t==='ann')renderAnn();if(t==='mauve')renderMauve();if(t==='var')renderVar();if(t==='cmp')renderCmp();if(t==='asm')renderAsm();if(t==='qc')renderQC();if(t==='notes')renderNotes();if(t==='map')renderMapBar();if(t==='aln')renderAlnBar();
  requestAnimationFrame(()=>{[cvMap,cvAln,cvDot,cvProf,cvMv,cvMvd].forEach(c=>c&&c._fit&&c._fit());drawAll();});$('#side').classList.remove('open');}
@@ -1136,19 +1175,19 @@ function init(){loadPal();
  ['m','a','mv'].forEach(p=>{$('#'+p+'-png').onclick=()=>exportImage('png');$('#'+p+'-svg').onclick=()=>exportImage('svg');});
  $('#m-amr').onchange=e=>{S.amr=e.target.checked;drawAll();};
  $('#m-bed').onclick=()=>curRef()?openExport('BED · '+curRef().name,'features.bed',bedText(curRef())):toast('No reference loaded.');$('#m-gff').onclick=()=>curRef()?openExport('GFF3 · '+curRef().name,'features.gff3',gffText(curRef())):toast('No reference loaded.');
- cvMap=makeCanvas($('#cv-map'),drawMap);attachNav(cvMap,drawAll,{circ:()=>S.mapMode==='circular',sget:()=>MAP.scroll,sset:v=>{MAP.scroll=v;},vscroll:d=>{MAP.scroll+=d;drawAll();},click:(x,y,e)=>mapHover(cvMap,e,true)});cvMap.addEventListener('pointermove',e=>{if(!e.buttons)mapHover(cvMap,e,false);});
+ cvMap=makeCanvas($('#cv-map'),drawMap);attachNav(cvMap,drawAll,{circ:()=>S.mapMode==='circular',sget:()=>MAP.scroll,sset:v=>{MAP.scroll=v;},vscroll:d=>{MAP.scroll+=d;drawAll();},click:(x,y,e)=>mapHover(cvMap,e,true)});cvMap.addEventListener('pointermove',e=>{if(!e.buttons)mapHover(cvMap,e,false);});attachCursor(cvMap,drawMapCursor);
  // aln bar
  $('#a-smp').onchange=e=>{AL.sample=+e.target.value;const s=curSample();if(s&&s.refIdx!==S.active){S.active=s.refIdx;resetView();renderSide();}drawAll();};
  $('#a-gob').onclick=()=>{go('#a-go');drawAll();};$('#a-go').onkeydown=e=>{if(e.key==='Enter')$('#a-gob').click();};
  $('#a-zi').onclick=()=>{zoomBy(0.5);drawAll();};$('#a-zo').onclick=()=>{zoomBy(2);drawAll();};$('#a-fit').onclick=()=>{resetView();drawAll();};
  $('#a-nv').onclick=()=>nextEvent('var');$('#a-nl').onclick=()=>nextEvent('low');
- cvAln=makeCanvas($('#cv-aln'),drawAln);attachNav(cvAln,drawAll,{sget:()=>AL.scroll,sset:v=>{AL.scroll=v;},vscroll:d=>{AL.scroll+=d;drawAll();},click:(x,y,e)=>alnPointer(cvAln,e,true)});cvAln.addEventListener('pointermove',e=>{if(!e.buttons)alnPointer(cvAln,e,false);});
+ cvAln=makeCanvas($('#cv-aln'),drawAln);attachNav(cvAln,drawAll,{sget:()=>AL.scroll,sset:v=>{AL.scroll=v;},vscroll:d=>{AL.scroll+=d;drawAll();},click:(x,y,e)=>alnPointer(cvAln,e,true)});cvAln.addEventListener('pointermove',e=>{if(!e.buttons)alnPointer(cvAln,e,false);});attachCursor(cvAln,drawAlnCursor);
  // mauve
  $('#mv-sel').onchange=e=>{MV.id=+e.target.value;MV.key=null;renderMauve();drawAll();};$('#mv-ref').onchange=e=>{MV.ref=+e.target.value;drawAll();};
  $('#mv-min').onchange=e=>{MV.minLen=Math.max(0,+e.target.value||0);renderMauve();drawAll();};$('#mv-prof').onchange=e=>{MV.prof=e.target.checked;drawAll();};
  $('#mv-zi').onclick=()=>{mvZoom(0.5);drawAll();};$('#mv-zo').onclick=()=>{mvZoom(2);drawAll();};$('#mv-fit').onclick=()=>{mvFit();drawAll();};
  $('#mv-csv').onclick=()=>{const m=curMv();if(m)openExport('Alignment blocks','mauve_blocks.csv',mvCsv(m));};
- cvMv=makeCanvas($('#cv-mv'),drawMauve);attachMvNav(cvMv);cvMvd=makeCanvas($('#cv-mvd'),drawMauveDet);attachMvdNav(cvMvd);
+ cvMv=makeCanvas($('#cv-mv'),drawMauve);attachMvNav(cvMv);attachCursor(cvMv,drawMvCursor);cvMvd=makeCanvas($('#cv-mvd'),drawMauveDet);attachMvdNav(cvMvd);attachCursor(cvMvd,drawMvdCursor);
  // compare
  $('#c-q').onchange=e=>{CMP.q=+e.target.value;renderCmp();};
  $('#c-circ').onclick=()=>{if(CMP.q==null)return;S.cmpShow.add(CMP.q);S.mapMode='circular';syncSeg();switchTab('map');};

@@ -10,6 +10,8 @@ A browser-based genomics viewer. Everything runs locally in your browser; no fil
 
 Click **Load demo data** to try it with synthetic sequences.
 
+**Cursor:** in the Maps (linear), Alignment and Genome alignment views, a vertical cursor follows the mouse and shows the position. In Genome alignment it also marks the matching position in every other genome, through the block's alignment.
+
 ## Run locally
 
 Open `index.html` in a browser. No build step.
