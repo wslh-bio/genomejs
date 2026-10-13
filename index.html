@@ -132,6 +132,27 @@ textarea.notes{width:100%;min-height:260px;background:var(--panel);border:1px so
 
   <section class="view" id="v-ann"><div class="scroll" id="ann-body"></div></section>
 
+  <section class="view" id="v-mauve">
+    <div id="mv-empty" class="empty"></div>
+    <div id="mv-main" style="display:none;flex:1;min-height:0;flex-direction:column">
+    <div class="bar">
+      <label>Alignment <select id="mv-sel"></select></label>
+      <label>Colour blocks by order in <select id="mv-ref"></select></label>
+      <label>Hide blocks under <input id="mv-min" type="number" min="0" step="100" value="0" style="width:84px"> bp</label>
+      <label><input type="checkbox" id="mv-prof" checked> Identity profile</label>
+      <button class="btn" id="mv-zi" aria-label="Zoom in">+</button><button class="btn" id="mv-zo" aria-label="Zoom out">−</button><button class="btn" id="mv-fit">Whole genomes</button>
+      <span class="sp"></span>
+      <button class="btn" id="mv-png">Save PNG</button><button class="btn" id="mv-svg">Save SVG</button><button class="btn" id="mv-csv">Export blocks (CSV)</button>
+    </div>
+    <div class="scroll" id="mv-body">
+      <div class="cv" id="cv-mv" style="flex:none;height:300px;border:1px solid var(--line);border-radius:6px"></div>
+      <div class="info" id="mv-info"></div>
+      <div class="cv" id="cv-mvd" style="flex:none;height:190px;border:1px solid var(--line);border-radius:6px;margin-bottom:14px"></div>
+      <div id="mv-tables"></div>
+    </div>
+    </div>
+  </section>
+
   <section class="view" id="v-aln">
     <div class="bar">
       <label>Sample <select id="a-smp"></select></label>
@@ -194,7 +215,7 @@ const toast=(m,ms=3800)=>{const t=$('#toast');t.textContent=m;t.style.display='b
 const setStatus=m=>{const s=$('#status');if(s)s.textContent=m||'';};
 
 /* ====================== state ====================== */
-const S={refs:[],files:[],samples:[],fastqs:[],assemblies:[],active:0,view:{s:0,e:1},cmpShow:new Set(),notes:'',tab:'map',mapMode:'linear',
+const S={refs:[],files:[],samples:[],fastqs:[],assemblies:[],mauves:[],active:0,view:{s:0,e:1},cmpShow:new Set(),notes:'',tab:'map',mapMode:'linear',
  P:{minDepth:10,minAlt:3,minAF:0.2,consFrac:0.75,minBQ:10,minMQ:0,passCov:90,reviewCov:70,iupac:true},amr:true};
 const curRef=()=>S.refs[S.active];
 const allFeatures=ref=>{if(!ref)return[];if(!ref._all){ref._all=[];for(const t of Object.values(ref.tracks))if(t.kind!=='vcf')ref._all.push(...t.items);}return ref._all;};
@@ -350,17 +371,17 @@ function cmpCandidates(){const out=[];S.refs.forEach((r,i)=>{if(i!==S.active)out
 const gcOf=s=>{let g=0,n=0;for(let i=0;i<s.length;i++){const c=s[i];if(c==='G'||c==='C')g++;if(c!=='N')n++;}return n?g/n:0;};
 
 /* ====================== import ====================== */
-const EXT={fa:'fasta',fasta:'fasta',fna:'fasta',ffn:'fasta',fas:'fasta',gb:'gb',gbk:'gb',gbff:'gb',genbank:'gb',gff:'gff',gff3:'gff',gtf:'gff',bed:'bed',vcf:'vcf',fq:'fastq',fastq:'fastq',sam:'sam',bam:'bam',txt:'note',md:'note'};
+const EXT={fa:'fasta',fasta:'fasta',fna:'fasta',ffn:'fasta',fas:'fasta',gb:'gb',gbk:'gb',gbff:'gb',genbank:'gb',gff:'gff',gff3:'gff',gtf:'gff',bed:'bed',vcf:'vcf',fq:'fastq',fastq:'fastq',sam:'sam',bam:'bam',txt:'note',md:'note',xmfa:'xmfa',backbone:'backbone',mauve:'mauve'};
 async function classify(f){const ext=f.name.toLowerCase().replace(/\.gz$/,'').split('.').pop();if(EXT[ext])return EXT[ext];
- const head=await new Response(f.slice(0,4096)).text();if(head.startsWith('>'))return'fasta';if(/^LOCUS/.test(head))return'gb';if(/^##fileformat=VCF/.test(head))return'vcf';if(head.startsWith('@')&&/^@(HD|SQ|RG|PG)\t/.test(head))return'sam';if(head.startsWith('@'))return'fastq';return null;}
-const PRIO={fasta:0,gb:0,gff:1,bed:1,vcf:1,sam:2,bam:2,fastq:3,note:4};
+ const head=await new Response(f.slice(0,4096)).text();if(/^#FormatVersion\s+Mauve/.test(head))return'xmfa';if(/^seq\d+_leftend/.test(head))return'backbone';if(head.startsWith('>'))return'fasta';if(/^LOCUS/.test(head))return'gb';if(/^##fileformat=VCF/.test(head))return'vcf';if(head.startsWith('@')&&/^@(HD|SQ|RG|PG)\t/.test(head))return'sam';if(head.startsWith('@'))return'fastq';return null;}
+const PRIO={fasta:0,gb:0,gff:1,bed:1,vcf:1,xmfa:1,backbone:1,mauve:1,sam:2,bam:2,fastq:3,note:4};
 async function importFiles(list){const items=[];for(const f of list){const k=await classify(f);if(!k){toast('Skipped '+f.name+': format not recognised.');continue;}items.push({f,k});}
- items.sort((a,b)=>PRIO[a.k]-PRIO[b.k]);let added=0,smpBefore=S.samples.length,refBefore=S.refs.length;
+ items.sort((a,b)=>PRIO[a.k]-PRIO[b.k]);let added=0,mvBefore=S.mauves.length,smpBefore=S.samples.length,refBefore=S.refs.length;
  for(const{f,k}of items){const fid=uid();const entry={id:fid,name:f.name,kind:k,size:f.size,detail:''};
   try{setStatus('Reading '+f.name+'…');await tick();entry.detail=await importOne(f,k,fid)||'';S.files.push(entry);added++;}catch(e){console.error(e);toast(f.name+': '+(e.message||e),6000);}}
  setStatus('');if(!added)return;
  if(S.active>=S.refs.length)S.active=0;if(refBefore===0&&S.refs.length)resetView();
- if(S.samples.length>smpBefore){AL.sample=S.samples[smpBefore].id;S.active=S.samples[smpBefore].refIdx;resetView();S.tab='aln';}else if(items.some(x=>x.k==='fastq'))S.tab='qc';else if(S.tab==='notes')S.tab='map';
+ if(S.samples.length>smpBefore){AL.sample=S.samples[smpBefore].id;S.active=S.samples[smpBefore].refIdx;resetView();S.tab='aln';}else if(S.mauves.length>mvBefore)S.tab='mauve';else if(items.some(x=>x.k==='fastq'))S.tab='qc';else if(S.tab==='notes')S.tab='map';
  refreshAll();}
 function attachItems(items,name,kind,fid){const groups=new Map();let miss=0;for(const it of items){const r=findRef(it.seq);if(!r){miss++;continue;}if(!groups.has(r))groups.set(r,[]);groups.get(r).push(it);}
  for(const[r,its]of groups)addTrack(r,name,kind,its,fid);return{n:items.length-miss,miss};}
@@ -382,6 +403,10 @@ async function importOne(f,kind,fid){
    setStatus('Analysing '+smp.name+'…');await tick();analyze(smp,true);S.samples.push(smp);made++;}
   if(!made)throw new Error('Reads map to sequences that are not loaded ('+[...by.keys()].slice(0,3).join(', ')+'). Load the matching reference.');
   return made+' sample(s) · '+res.reads.length.toLocaleString()+' reads'+(res.skipped?' ('+res.skipped.toLocaleString()+' unmapped/secondary skipped)':'');}
+ if(kind==='mauve')throw new Error('Mauve project files (.mauve) cannot be read directly. In Mauve use File > Export Alignment to save an .xmfa file, and import that.');
+ if(kind==='xmfa'||kind==='backbone'){const t=await readText(f);const a=kind==='xmfa'?parseXmfa(t,f.name):parseBackbone(t);const stem=stemOf(f.name);
+  if(kind==='backbone'){const mate=S.mauves.find(x=>!x.noSeq&&x.stem===stem&&x.genomes.length===a.genomes.length);if(mate)a.genomes.forEach((g,i)=>{g.name=mate.genomes[i].name;g.file=mate.genomes[i].file;g.len=Math.max(g.len,mate.genomes[i].len);});}
+  S.mauves.push(Object.assign(a,{id:uid(),fid,name:f.name.replace(/\.gz$/i,''),stem}));return a.genomes.length+' genomes · '+a.blocks.length+' blocks'+(a.noSeq?' (coordinates only)':'');}
  if(kind==='fastq'){const{st,kept}=await parseFastq(f);S.fastqs.push({id:uid(),fid,name:f.name,st,reads:kept});return st.reads.toLocaleString()+' reads · mean Q'+st.meanQ.toFixed(1);}
  if(kind==='note'){const t=await readText(f);S.notes+=(S.notes?'\n\n':'')+'--- '+f.name+' ---\n'+t;saveNotes();return t.length+' characters added to notes';}}
 function removeFile(fid){S.refs.forEach(r=>{for(const k of Object.keys(r.tracks))if(r.tracks[k].fid===fid)delete r.tracks[k];r._all=null;});
@@ -389,7 +414,7 @@ function removeFile(fid){S.refs.forEach(r=>{for(const k of Object.keys(r.tracks)
  const doomed=new Set(S.samples.filter(s=>s.fid===fid||removedRefs.includes(S.refs[s.refIdx].id)).map(s=>s.id));
  const keepIds=S.samples.filter(s=>!doomed.has(s.id)).map(s=>[s,S.refs[s.refIdx].id]);
  S.refs=S.refs.filter(r=>r.fid!==fid);keepIds.forEach(([s,id])=>s.refIdx=S.refs.findIndex(r=>r.id===id));S.samples=keepIds.map(x=>x[0]);
- S.fastqs=S.fastqs.filter(x=>x.fid!==fid);S.assemblies=S.assemblies.filter(x=>x.fid!==fid);S.files=S.files.filter(x=>x.id!==fid);
+ S.fastqs=S.fastqs.filter(x=>x.fid!==fid);S.mauves=S.mauves.filter(x=>x.fid!==fid);S.assemblies=S.assemblies.filter(x=>x.fid!==fid);S.files=S.files.filter(x=>x.id!==fid);
  const ni=S.refs.findIndex(r=>r.id===activeId);S.active=ni>=0?ni:0;resetView();refreshAll();}
 
 /* ---- quick mapper for FASTQ: k-mer seeds, diagonal voting, banded affine-gap local alignment ---- */
@@ -512,8 +537,11 @@ async function loadDemo(){setStatus('Generating demo data…');await tick();cons
  // FASTQ from S1 reads
  let fq='';{const rr=rng(7);const body=s1.split('\n').filter(l=>l&&l[0]!=='@');let c=0;for(const l of body){if(rr()>0.35)continue;const f=l.split('\t');const rev=+f[1]&16;const sq=rev?rc(f[9]):f[9],ql=rev?f[10].split('').reverse().join(''):f[10];fq+=`@${f[0]}\n${sq}\n+\n${ql}\n`;if(++c>=3500)break;}}
  const mk=(t,n)=>new File([t],n);
- await importFiles([mk(toGenBank('pDEMO-1',p1,feats),'pDEMO-1.gbk'),mk('>pDEMO-2 structural variant of pDEMO-1\n'+wrap(p2)+'\n','pDEMO-2.fasta'),mk('>pDEMO-3 related plasmid\n'+wrap(p3)+'\n','pDEMO-3.fasta'),mk(asm,'S1_assembly.fasta'),mk(bed,'resistance_hits.bed'),mk(s1,'S1.sam'),mk(s2,'S2.sam'),mk(s3,'S3.sam'),mk(fq,'S1_reads.fastq')]);
- S.tab='aln';AL.sample=S.samples[0]?.id;refreshAll();toast('Demo loaded: one plasmid, two relatives, three samples, an assembly and a FASTQ. All sequence is synthetic.',6000);}
+ const xmfa=(()=>{const gs=[p1,p2,p3],nm=['pDEMO-1.gbk','pDEMO-2.fasta','pDEMO-3.fasta'];const B=[[[0,1500],[0,1500],[0,1500]],[[1500,2800],[1500,2800],[1500,2800]],[[2800,3000],[2800,3000],[2800,3000]],[[3000,3400],[3000,3400],null],[[4000,4200],[3400,3600],null],[[4200,4500],[3600,3900],[4200,4500]],[[4500,5300],[3900,4700,-1],[4500,5300]],[[5300,5800],[4700,5200],[5300,5800]],[[5800,6200],[6000,6400],[5800,6200]]];
+  let t='#FormatVersion Mauve1\n';nm.forEach((n,i)=>t+=`#Sequence${i+1}File\t${n}\n#Sequence${i+1}Format\t${i?'FastA':'GenBank'}\n`);
+  for(const b of B){b.forEach((x,g)=>{if(!x)return;let q=gs[g].slice(x[0],x[1]);const rv=x[2]===-1;if(rv)q=rc(q);t+=`> ${g+1}:${x[0]+1}-${x[1]} ${rv?'-':'+'} ${nm[g]}\n${wrap(q)}\n`;});t+='=\n';}return t;})();
+ await importFiles([mk(toGenBank('pDEMO-1',p1,feats),'pDEMO-1.gbk'),mk('>pDEMO-2 structural variant of pDEMO-1\n'+wrap(p2)+'\n','pDEMO-2.fasta'),mk('>pDEMO-3 related plasmid\n'+wrap(p3)+'\n','pDEMO-3.fasta'),mk(asm,'S1_assembly.fasta'),mk(bed,'resistance_hits.bed'),mk(s1,'S1.sam'),mk(s2,'S2.sam'),mk(s3,'S3.sam'),mk(fq,'S1_reads.fastq'),mk(xmfa,'pDEMO.xmfa')]);
+ S.tab='aln';AL.sample=S.samples[0]?.id;refreshAll();toast('Demo loaded: one plasmid, two relatives, three samples, an assembly, a FASTQ and a Mauve alignment. All sequence is synthetic.',6000);}
 
 /* ====================== canvas utilities ====================== */
 let PAL={};
@@ -849,6 +877,7 @@ async function saveBlob(name,blob){try{const d=(typeof claude!=='undefined'&&cla
  const a=el('a',{href:URL.createObjectURL(blob),download:name});document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);toast('Saved '+name);}
 function exportTarget(){if(S.tab==='map'&&cvMap&&curRef()){const lin=S.mapMode!=='circular';return{cv:cvMap,draw:drawMap,name:(curRef().name)+(lin?'_map':'_circular_map'),h:lin?Math.max(cvMap._h,Math.ceil((cvMap._content||0))):cvMap._h};}
  if(S.tab==='aln'&&cvAln&&curSample()){const s=curSample();return{cv:cvAln,draw:drawAln,name:s.name+'_alignment',h:Math.min(4000,Math.max(cvAln._h,Math.ceil((cvAln._readTop||0)+s.rows*(cvAln._rowH||10)+50)))};}
+ if(S.tab==='mauve'&&cvMv&&curMv()){const m=curMv();return{cv:cvMv,draw:drawMauve,name:m.name.replace(/\.[^.]*$/,'')+'_genome_alignment',h:cvMv._h};}
  return null;}
 const LIGHT_PAL={ink:'#17222C',panel:'#FFFFFF',line:'#D3DAE1',muted:'#5A6775',A:'#2E9E5B',C:'#2F6FDE',G:'#E3A413',T:'#D6453D',N:'#8D98A3',readF:'#BFD0DF',readR:'#D7C9E3',bad:'#B42318',accent:'#1E5A8C',grid:'#E4E9EE',warn:'#B45309'};
 async function exportImage(kind){const t=exportTarget();if(!t){toast('Open the Maps or Alignment tab with data loaded to export its view.');return;}
@@ -893,12 +922,190 @@ function renderAnn(){const b=$('#ann-body');b.innerHTML='';PAL.ink||loadPal();co
  b.append(el('div',{class:'panel'},el('h2',{},'Annotations'),tbl(cols,rows,{limit:2500,onRow:d=>focusFeature(d.f),empty:'No annotations match the filter.'}),el('div',{class:'muted',style:'margin-top:6px;font-size:12.5px'},'Click a row to zoom to it on the map.')));}
 
 /* ====================== wiring ====================== */
-const TABS=[['map','Maps'],['ann','Annotations'],['aln','Alignment'],['var','Variants'],['cmp','Compare'],['asm','Assembly'],['qc','Samples & QC'],['notes','Notes & export']];
+const TABS=[['map','Maps'],['ann','Annotations'],['aln','Alignment'],['mauve','Genome alignment'],['var','Variants'],['cmp','Compare'],['asm','Assembly'],['qc','Samples & QC'],['notes','Notes & export']];
+/* ====================== MAUVE alignments (XMFA / backbone) ====================== */
+const MV={key:null,ws:[],span:1,ref:0,minLen:0,prof:true,sel:null,dc:0,cw:10};
+function stemOf(p){return String(p||'').split(/[\\/]/).pop().replace(/\.gz$/i,'').replace(/\.[^.]*$/,'');}
+function parseXmfa(text,fname){const lines=text.split(/\r?\n/);const files=[];const blocks=[];let cur=null,row=null,maxEnd=[];
+ const flush=()=>{if(row){row.seq=row.parts.join('').toUpperCase();delete row.parts;if(cur)cur.rows.push(row);row=null;}};
+ for(const ln of lines){
+  if(!ln)continue;const c=ln[0];
+  if(c==='#'){let m=ln.match(/^#Sequence(\d+)File\s+(.*)$/);if(m)files[+m[1]-1]=m[2].trim();continue;}
+  if(c==='='){flush();if(cur&&cur.rows.length)blocks.push(cur);cur=null;continue;}
+  if(c==='>'){flush();const m=ln.match(/^>\s*(\d+)\s*:\s*(\d+)\s*-\s*(\d+)\s*([+-])/);if(!m){row=null;continue;}
+   if(!cur)cur={rows:[]};const g=+m[1]-1,s=+m[2],e=+m[3];if(s===0&&e===0){row=null;continue;}row={g,s:Math.min(s,e)-1,e:Math.max(s,e),st:m[4]==='-'?-1:1,parts:[]};continue;}
+  if(row)row.parts.push(ln.trim());}
+ flush();if(cur&&cur.rows.length)blocks.push(cur);
+ if(!blocks.length)throw new Error('No alignment blocks found. Is this an XMFA file exported from Mauve?');
+ let n=files.length;for(const b of blocks)for(const r of b.rows)n=Math.max(n,r.g+1);
+ const genomes=[];for(let g=0;g<n;g++)genomes.push({name:files[g]?stemOf(files[g]):'Genome '+(g+1),file:files[g]||'',len:0,ref:null});
+ const out=[];let id=0;
+ for(const b of blocks){const o={id:++id,g:new Array(n).fill(null),seqs:new Array(n).fill(null),present:[],aln:0,len:0};
+  for(const r of b.rows){if(r.g<0||r.g>=n||o.g[r.g])continue;o.g[r.g]={s:r.s,e:r.e,st:r.st};o.seqs[r.g]=r.seq;o.present.push(r.g);o.aln=Math.max(o.aln,r.seq.length);o.len=Math.max(o.len,r.e-r.s);genomes[r.g].len=Math.max(genomes[r.g].len,r.e);}
+  if(o.present.length)out.push(o);}
+ return{genomes,blocks:out,noSeq:false};}
+function parseBackbone(text){const lines=text.split(/\r?\n/).filter(l=>l.trim());if(lines.length<2)throw new Error('Empty backbone file.');
+ const hdr=lines[0].split(/\s+/);const n=Math.floor(hdr.length/2);if(n<1)throw new Error('Unrecognised backbone header.');
+ const genomes=[];for(let g=0;g<n;g++)genomes.push({name:'Genome '+(g+1),file:'',len:0,ref:null});
+ const out=[];let id=0;
+ for(let i=1;i<lines.length;i++){const f=lines[i].split(/\s+/).map(Number);if(f.length<2*n||f.some(isNaN))continue;
+  const o={id:0,g:new Array(n).fill(null),seqs:null,present:[],aln:0,len:0};
+  for(let g=0;g<n;g++){const l=f[2*g],r=f[2*g+1];if(!l&&!r)continue;const lo=Math.min(Math.abs(l),Math.abs(r)),hi=Math.max(Math.abs(l),Math.abs(r));if(!lo)continue;
+   o.g[g]={s:lo-1,e:hi,st:(l<0||r<0)?-1:1};o.present.push(g);o.len=Math.max(o.len,hi-lo+1);genomes[g].len=Math.max(genomes[g].len,hi);}
+  if(o.present.length>=2){o.id=++id;out.push(o);}}
+ if(!out.length)throw new Error('No shared intervals found in this backbone file.');
+ return{genomes,blocks:out,noSeq:true};}
+function mvLink(m){const mm=(g)=>{const st=stemOf(g.file||g.name).toLowerCase();return S.refs.find(r=>r.name===g.name)||S.refs.find(r=>r.name.toLowerCase()===st)||S.refs.find(r=>r.name.split('.')[0].toLowerCase()===st.split('.')[0])||S.refs.find(r=>st&&r.name.toLowerCase().includes(st))||null;};
+ m.genomes.forEach(g=>{const r=mm(g);g.ref=r;if(r){g.label=r.name;g.len=Math.max(g.len,r.len);}else g.label=g.name;});}
+function curMv(){const m=S.mauves.find(x=>x.id===MV.id)||S.mauves[0]||null;if(m&&MV.key!==m.id)mvReset(m);return m;}
+function mvReset(m){MV.key=m.id;MV.id=m.id;MV.sel=null;MV.dc=0;MV.ref=0;mvFit(m);}
+function mvFit(m){m=m||curMv();if(!m)return;const mx=Math.max(1,...m.genomes.map(g=>g.len));MV.span=mx*1.02;MV.ws=m.genomes.map(()=>0);}
+function mvClamp(m){const mx=Math.max(1,...m.genomes.map(g=>g.len));MV.span=Math.max(30,Math.min(MV.span,mx*1.02));m.genomes.forEach((g,i)=>{MV.ws[i]=Math.max(-MV.span/2,Math.min(MV.ws[i]||0,Math.max(0,g.len-MV.span/2)));});}
+function mvZoom(f,fx=0.5){const m=curMv();if(!m)return;const sp=MV.span,ns=Math.max(30,sp*f),k=ns/sp;m.genomes.forEach((g,i)=>{MV.ws[i]=(MV.ws[i]||0)+fx*sp*(1-k);});MV.span=ns;mvClamp(m);}
+function mvPan(dBp){const m=curMv();if(!m)return;m.genomes.forEach((g,i)=>MV.ws[i]=(MV.ws[i]||0)+dBp);mvClamp(m);}
+function mvBlocks(m){return m.blocks.filter(b=>b.len>=MV.minLen);}
+function mvZoomBlock(b){const m=curMv();if(!m)return;const pr=b.present[0];const frac=(b.g[pr].s+b.g[pr].e)/2/Math.max(1,m.genomes[pr].len);
+ MV.span=Math.max(60,b.len*1.25);m.genomes.forEach((g,i)=>{const c=b.g[i]?(b.g[i].s+b.g[i].e)/2:frac*g.len;MV.ws[i]=c-MV.span/2;});mvClamp(m);}
+function mvColors(m){const key=MV.ref;m._col=m._col||{};if(m._col[key])return m._col[key];
+ const pos=b=>{const g=b.g[key]?key:b.present[0];return[b.g[key]?0:1,b.g[g].s];};
+ const order=m.blocks.slice().sort((a,b)=>{const x=pos(a),y=pos(b);return x[0]-y[0]||x[1]-y[1];});const col=new Map();
+ order.forEach((b,i)=>col.set(b.id,`hsl(${Math.round((i*137.508)%360)},62%,50%)`));return m._col[key]=col;}
+/* identity profile: score per column = (count of most common base - 1)/(rows - 1); gaps and N count as mismatches */
+function mvProfile(b){if(b.prof||!b.seqs)return b.prof;const rows=b.present.map(g=>b.seqs[g]),n=rows.length,L=b.aln;
+ const nb=Math.max(1,Math.min(L,Math.max(200,Math.ceil(L/50)),20000));const prof=new Float32Array(nb),cnt=new Uint32Array(nb);let same=0;
+ for(let c=0;c<L;c++){let a=0,cc=0,g=0,t=0;for(let r=0;r<n;r++){const x=rows[r].charCodeAt(c)|32;if(x===97)a++;else if(x===99)cc++;else if(x===103)g++;else if(x===116||x===117)t++;}
+  const mx=Math.max(a,cc,g,t);if(mx===n)same++;const sc=n>1?Math.max(0,mx-1)/(n-1):1;const bi=Math.min(nb-1,Math.floor(c*nb/L));prof[bi]+=sc;cnt[bi]++;}
+ for(let i=0;i<nb;i++)prof[i]=cnt[i]?prof[i]/cnt[i]:0;b.same=L?same/L:0;return b.prof=prof;}
+function mvIdent(b){if(!b.seqs||b.present.length<2)return null;if(b.same==null)mvProfile(b);return b.same;}
+function mvNtCols(b,g){b.nc=b.nc||[];if(b.nc[g])return b.nc[g];const s=b.seqs[g],a=new Int32Array(s.length);let k=0;for(let c=0;c<s.length;c++)if(s[c]!=='-')a[k++]=c;return b.nc[g]=a.subarray(0,k);}
+function mvNtBefore(b,g,col){const a=mvNtCols(b,g);let lo=0,hi=a.length;while(lo<hi){const mid=(lo+hi)>>1;if(a[mid]<col)lo=mid+1;else hi=mid;}return lo;}
+function mvColAtBp(b,g,bp){const r=b.g[g];if(!r||!b.seqs)return 0;const k=r.st>0?bp-r.s:r.e-1-bp;const a=mvNtCols(b,g);return a.length?a[Math.max(0,Math.min(a.length-1,k))]:0;}
+const mvCoord=(b,g,k)=>{const r=b.g[g];return r.st>0?r.s+k+1:r.e-k;};
+const MV_RH=80,MV_AX=44,MV_BH=30,MV_TOP=20;
+function mvLW(W){return Math.max(70,Math.min(150,W*0.2));}
+function drawMauve(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h,m=curMv();cv._hits=[];
+ if(!m){msg(ctx,W,H,'Load a Mauve alignment (.xmfa or .backbone) to see it here');return;}
+ const n=m.genomes.length,LW=mvLW(W),pw=Math.max(50,W-LW-12),sc=pw/MV.span,col=mvColors(m),blocks=mvBlocks(m);cv._lw=LW;cv._pw=pw;
+ const X=(g,bp)=>LW+(bp-(MV.ws[g]||0))*sc,cl=x=>Math.max(LW,Math.min(W-12,x));
+ const edge=(b,g,bot)=>{const y0=MV_TOP+g*MV_RH,st=b.g[g].st;return bot?(st>0?y0+MV_AX:y0+MV_AX+MV_BH):(st>0?y0+MV_AX-MV_BH:y0+MV_AX);};
+ // connectors
+ for(let g=0;g<n-1;g++)for(const b of blocks){const a=b.g[g],c=b.g[g+1];if(!a||!c)continue;
+  const ax0=X(g,a.s),ax1=X(g,a.e),bx0=X(g+1,c.s),bx1=X(g+1,c.e);if(Math.max(ax1,bx1)<LW||Math.min(ax0,bx0)>W-12)continue;
+  const ya=edge(b,g,true),yb=edge(b,g+1,false),tw=a.st!==c.st;
+  ctx.fillStyle=col.get(b.id);ctx.globalAlpha=b.id===MV.sel?0.5:0.2;ctx.beginPath();ctx.moveTo(cl(ax0),ya);ctx.lineTo(cl(Math.max(ax1,ax0+0.5)),ya);
+  if(tw){ctx.lineTo(cl(bx0),yb);ctx.lineTo(cl(Math.max(bx1,bx0+0.5)),yb);}else{ctx.lineTo(cl(Math.max(bx1,bx0+0.5)),yb);ctx.lineTo(cl(bx0),yb);}ctx.closePath();ctx.fill();ctx.globalAlpha=1;}
+ // genome rows
+ const step=niceStep(MV.span/8);
+ for(let g=0;g<n;g++){const gi=m.genomes[g],y0=MV_TOP+g*MV_RH,ya=y0+MV_AX,xa=Math.max(LW,X(g,0)),xb=Math.min(W-12,X(g,gi.len));
+  ctx.font=SANS;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle=PAL.ink;let nm=gi.label||gi.name;const mxc=Math.floor((LW-12)/6.6);if(nm.length>mxc)nm=nm.slice(0,Math.max(3,mxc-1))+'…';
+  ctx.fillText(nm,6,ya-8);ctx.fillStyle=PAL.muted;ctx.fillText(fmtBp(gi.len)+' bp',6,ya+8);
+  const ws=MV.ws[g]||0;if(MV.span<gi.len*0.98){ctx.fillText(fmtBp(Math.max(0,Math.round(ws)))+'–'+fmtBp(Math.min(gi.len,Math.round(ws+MV.span))),6,ya+24);}
+  if(xb>xa){ctx.strokeStyle=PAL.muted;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(xa,ya+.5);ctx.lineTo(xb,ya+.5);ctx.stroke();
+   ctx.fillStyle=PAL.muted;ctx.font='10px "IBM Plex Sans",system-ui,sans-serif';ctx.textAlign='left';
+   for(let p=Math.ceil(Math.max(0,ws)/step)*step;p<=Math.min(gi.len,ws+MV.span);p+=step){const x=X(g,p);ctx.beginPath();ctx.moveTo(x+.5,ya-3);ctx.lineTo(x+.5,ya+3);ctx.stroke();if(x<W-50)ctx.fillText(fmtBp(p),x+3,y0+7);}
+   ctx.font=SANS;}}
+ // blocks
+ for(const b of blocks)for(const g of b.present){const r=b.g[g],x0=X(g,r.s),x1=X(g,r.e);if(x1<LW||x0>W-12)continue;
+  const y0=MV_TOP+g*MV_RH,fwd=r.st>0,by=fwd?y0+MV_AX-MV_BH:y0+MV_AX,w=Math.max(1,x1-x0),color=col.get(b.id);
+  const cx0=Math.max(LW,x0),cx1=Math.min(W-12,x1);
+  ctx.fillStyle=color;ctx.globalAlpha=(b.noSeq||!MV.prof)?0.85:0.3;ctx.fillRect(cx0,by,Math.max(1,cx1-cx0),MV_BH);ctx.globalAlpha=1;
+  if(MV.prof&&!b.noSeq&&w>=2){const pf=mvProfile(b),nb=pf.length,bw=w/nb,stp=Math.max(1,Math.ceil(1/bw));
+   const i0=Math.max(0,Math.floor((cx0-x0)/bw)-1),i1=Math.min(nb,Math.ceil((cx1-x0)/bw)+1);ctx.fillStyle=color;
+   for(let i=i0;i<i1;i+=stp){let sum=0,c=0;for(let j=i;j<Math.min(nb,i+stp);j++){sum+=pf[j];c++;}const v=sum/c,h=Math.max(1,v*MV_BH);
+    const k=fwd?i:nb-i-c;const bx=x0+k*bw,bwid=Math.max(bw*c,0.8);if(bx+bwid<LW||bx>W-12)continue;const px=Math.max(LW,bx),pe=Math.min(W-12,bx+bwid);
+    ctx.fillRect(px,fwd?by+MV_BH-h:by,Math.max(0.6,pe-px),h);}}
+  ctx.strokeStyle=b.id===MV.sel?PAL.ink:color;ctx.lineWidth=b.id===MV.sel?2:1;ctx.strokeRect(cx0+.5,by+.5,Math.max(1,cx1-cx0-1),MV_BH-1);ctx.lineWidth=1;
+  if(w>26){ctx.fillStyle=PAL.ink;ctx.font='10px "IBM Plex Sans",system-ui,sans-serif';ctx.textAlign='left';const lx=Math.max(LW,x0)+3;if(lx+16<cx1)ctx.fillText(String(b.id),lx,fwd?by+8:by+MV_BH-8);ctx.font=SANS;}
+  cv._hits.push({x:cx0,y:by,w:Math.max(2,cx1-cx0),h:MV_BH,b,g});}
+ if(!S.exporting){ctx.fillStyle=PAL.muted;ctx.font='11px "IBM Plex Sans",system-ui,sans-serif';ctx.textAlign='left';ctx.fillText('Blocks above a line are on the forward strand, below are reversed. Twisted ribbons mark inversions.',LW,H-7);}
+ ctx.font=SANS;ctx.textAlign='left';}
+function mvTip(b,m){const rows=b.present.map(g=>{const r=b.g[g];return`<tr><td>${esc(m.genomes[g].label||m.genomes[g].name)}</td><td>${(r.s+1).toLocaleString()}–${r.e.toLocaleString()}</td><td>${r.st>0?'+':'−'}</td></tr>`;}).join('');
+ const id=mvIdent(b);return`<b>Block ${b.id}</b> · ${b.len.toLocaleString()} bp · in ${b.present.length} of ${m.genomes.length} genomes${id!=null?` · ${(id*100).toFixed(1)}% identical columns`:''}<table>${rows}</table>`;}
+function mvSelect(b,jumpBp){const m=curMv();MV.sel=b?b.id:null;MV.dc=0;
+ if(b&&jumpBp){const c=mvColAtBp(b,jumpBp.g,jumpBp.bp);const cv=cvMvd;const pw=cv&&cv._pw?cv._pw:600;MV.dc=Math.max(0,c-pw/MV.cw/2);}
+ mvInfo();drawAll();}
+function mvInfo(){const m=curMv(),box=$('#mv-info');if(!m){box.textContent='';return;}const b=m.blocks.find(x=>x.id===MV.sel);
+ box.innerHTML=b?mvTip(b,m).replace(/<table>.*<\/table>/,''):'Scroll wheel to zoom, drag to pan, click a block to see its aligned bases below.';}
+function attachMvNav(cv){let drag=null;
+ const frac=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left-(cv._lw||0))/Math.max(1,cv._pw||1),e.clientX-r.left,e.clientY-r.top];};
+ cv.addEventListener('wheel',e=>{e.preventDefault();let dy=e.deltaY;if(e.deltaMode===1)dy*=33;else if(e.deltaMode===2)dy*=400;dy=Math.max(-300,Math.min(300,dy));
+  const[fx]=frac(e);mvZoom(Math.exp(dy*0.0022),Math.max(0,Math.min(1,fx)));hideTip();drawAll();},{passive:false});
+ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);drag={x:e.clientX,ws:MV.ws.slice(),moved:false};cv.classList.add('dragging');});
+ cv.addEventListener('pointermove',e=>{if(drag){const dx=e.clientX-drag.x;if(Math.abs(dx)>3)drag.moved=true;if(drag.moved){hideTip();const m=curMv();MV.ws=drag.ws.slice();mvPan(-dx*MV.span/Math.max(1,cv._pw));drawAll();}return;}
+  const[,x,y]=frac(e);const h=hitAt(cv,x,y),m=curMv();if(h&&m)showTip(mvTip(h.b,m),e);else hideTip();});
+ cv.addEventListener('pointerup',e=>{cv.classList.remove('dragging');const mv=drag&&drag.moved;drag=null;if(mv)return;const[,x,y]=frac(e);const h=hitAt(cv,x,y);
+  if(h){const r=h.b.g[h.g],bp=(MV.ws[h.g]||0)+(x-cv._lw)/cv._pw*MV.span;mvSelect(h.b,{g:h.g,bp:Math.max(r.s,Math.min(r.e-1,Math.round(bp)))});}});
+ cv.addEventListener('dblclick',e=>{const[fx]=frac(e);mvZoom(0.4,Math.max(0,Math.min(1,fx)));drawAll();});
+ cv.addEventListener('pointerleave',hideTip);}
+function drawMauveDet(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h,m=curMv();cv._hits=[];
+ if(!m){msg(ctx,W,H,'Base-level view appears here');return;}
+ const b=m.blocks.find(x=>x.id===MV.sel);
+ if(!b){msg(ctx,W,H,'Click a block above to see its aligned bases');return;}
+ if(b.noSeq||!b.seqs){msg(ctx,W,H,'Backbone files carry coordinates only. Load the matching .xmfa file to see aligned bases.');return;}
+ const LW=mvLW(W),pw=Math.max(50,W-LW-12),L=b.aln,rows=b.present;cv._lw=LW;cv._pw=pw;
+ MV.cw=Math.max(1,Math.min(18,MV.cw));const cw=MV.cw,vis=pw/cw;MV.dc=Math.max(0,Math.min(MV.dc,Math.max(0,L-vis)));
+ const c0=Math.floor(MV.dc),c1=Math.min(L,Math.ceil(MV.dc+vis)+1),RH=18,ry=52;
+ ctx.textBaseline='middle';ctx.font=SANS;ctx.fillStyle=PAL.ink;ctx.textAlign='left';
+ ctx.fillText('Block '+b.id,6,10);ctx.fillStyle=PAL.muted;ctx.fillText('conservation',6,34);
+ // column ruler
+ const st=niceStep(vis/8);ctx.strokeStyle=PAL.line;ctx.fillStyle=PAL.muted;ctx.font='10px "IBM Plex Sans",system-ui,sans-serif';
+ for(let c=Math.ceil(c0/st)*st;c<c1;c+=st){const x=LW+(c-MV.dc)*cw;if(x<LW||x>W-12)continue;ctx.beginPath();ctx.moveTo(x+.5,16);ctx.lineTo(x+.5,22);ctx.stroke();ctx.fillText((c+1).toLocaleString(),x+3,10);}
+ ctx.font=SANS;
+ // conservation + residues
+ const idx=rows.map(g=>b.seqs[g]),nr=rows.length,BASE={A:0,C:1,G:2,T:3,U:3};
+ for(let c=c0;c<c1;c++){const x=LW+(c-MV.dc)*cw;if(x+cw<LW||x>W-12)continue;const cnt=[0,0,0,0];for(let r=0;r<nr;r++){const k=BASE[idx[r][c]];if(k!==undefined)cnt[k]++;}
+  let mj=0;for(let k=1;k<4;k++)if(cnt[k]>cnt[mj])mj=k;const mc='ACGT'[mj],score=nr>1?Math.max(0,cnt[mj]-1)/(nr-1):1;
+  const px=Math.max(LW,x),pe=Math.min(W-12,x+cw);
+  ctx.fillStyle=score>=1?PAL.accent:PAL.muted;ctx.globalAlpha=0.8;const bh=Math.max(1,score*16);ctx.fillRect(px,40-bh,Math.max(0.8,pe-px-(cw>4?1:0)),bh);ctx.globalAlpha=1;
+  for(let r=0;r<nr;r++){const ch=idx[r][c],y=ry+r*RH;if(ch==='-'){ctx.fillStyle=PAL.muted;ctx.fillRect(px,y+RH/2-1,Math.max(0.8,pe-px),2);continue;}
+   const mism=ch!==mc&&cnt[mj]>0&&nr>1;ctx.fillStyle=PAL[ch==='U'?'T':ch]||PAL.N;ctx.globalAlpha=mism?0.9:0.2;ctx.fillRect(px,y,Math.max(0.8,pe-px-(cw>6?1:0)),RH-2);ctx.globalAlpha=1;
+   if(cw>=7){ctx.fillStyle=mism?'#fff':PAL.ink;ctx.font=MONO;ctx.textAlign='center';ctx.fillText(ch,x+cw/2,y+RH/2-1);ctx.textAlign='left';ctx.font=SANS;}}}
+ // row labels
+ rows.forEach((g,r)=>{const y=ry+r*RH,gi=m.genomes[g],k=mvNtBefore(b,g,c0);ctx.fillStyle=PAL.ink;ctx.font=SANS;ctx.textAlign='left';let nm=(gi.label||gi.name)+(b.g[g].st<0?' (−)':'');const mxc=Math.floor((LW-8)/6.6);if(nm.length>mxc)nm=nm.slice(0,Math.max(3,mxc-1))+'…';ctx.fillText(nm,6,y+RH/2-1);});
+ ctx.fillStyle=PAL.muted;ctx.font='10px "IBM Plex Sans",system-ui,sans-serif';ctx.fillText(`${Math.round(vis).toLocaleString()} of ${L.toLocaleString()} columns shown · scroll to zoom, drag to pan · differences from the majority base are filled`,LW,ry+nr*RH+10);ctx.font=SANS;}
+function mvDetTip(cv,e){const m=curMv(),b=m&&m.blocks.find(x=>x.id===MV.sel);if(!b||!b.seqs)return hideTip();const r=cv.getBoundingClientRect(),x=e.clientX-r.left;if(x<cv._lw)return hideTip();
+ const c=Math.floor(MV.dc+(x-cv._lw)/MV.cw);if(c<0||c>=b.aln)return hideTip();
+ const rows=b.present.map(g=>{const ch=b.seqs[g][c],k=mvNtBefore(b,g,c);return`<tr><td>${esc(m.genomes[g].label||m.genomes[g].name)}</td><td><b>${ch}</b></td><td>${ch==='-'?'gap':mvCoord(b,g,k).toLocaleString()}</td></tr>`;}).join('');
+ showTip(`Alignment column <b>${(c+1).toLocaleString()}</b><table>${rows}</table>`,e);}
+function attachMvdNav(cv){let drag=null;
+ cv.addEventListener('wheel',e=>{e.preventDefault();let dy=e.deltaY;if(e.deltaMode===1)dy*=33;else if(e.deltaMode===2)dy*=400;dy=Math.max(-300,Math.min(300,dy));
+  const r=cv.getBoundingClientRect(),x=Math.max(0,e.clientX-r.left-(cv._lw||0)),under=MV.dc+x/MV.cw;MV.cw=Math.max(1,Math.min(18,MV.cw/Math.exp(dy*0.0022)));MV.dc=under-x/MV.cw;hideTip();drawMauveDet(cv);},{passive:false});
+ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);drag={x:e.clientX,dc:MV.dc,moved:false};});
+ cv.addEventListener('pointermove',e=>{if(drag){const dx=e.clientX-drag.x;if(Math.abs(dx)>3)drag.moved=true;if(drag.moved){MV.dc=drag.dc-dx/MV.cw;hideTip();drawMauveDet(cv);}return;}mvDetTip(cv,e);});
+ cv.addEventListener('pointerup',()=>{drag=null;});cv.addEventListener('pointerleave',hideTip);}
+function mvPairs(m){if(m._pw)return m._pw;const n=m.genomes.length,res={shared:[],ident:[]};for(let i=0;i<n;i++){res.shared.push(new Array(n).fill(0));res.ident.push(new Array(n).fill(null));}
+ let cols=0;if(!m.noSeq)for(const b of m.blocks)cols+=b.aln*b.present.length*b.present.length;const doSeq=!m.noSeq&&cols<4e8;
+ const same=[],tot=[];for(let i=0;i<n;i++){same.push(new Array(n).fill(0));tot.push(new Array(n).fill(0));}
+ for(const b of m.blocks){for(const i of b.present)for(const j of b.present){if(i>=j)continue;const l=Math.min(b.g[i].e-b.g[i].s,b.g[j].e-b.g[j].s);res.shared[i][j]+=l;res.shared[j][i]+=l;
+   if(doSeq){const a=b.seqs[i],c=b.seqs[j];let s=0,t=0;for(let k=0;k<b.aln;k++){const x=a.charCodeAt(k),y=c.charCodeAt(k);if(x!==45&&y!==45){t++;if(x===y)s++;}}same[i][j]+=s;tot[i][j]+=t;}}}
+ if(doSeq)for(let i=0;i<n;i++)for(let j=0;j<n;j++){if(i===j)continue;const a=Math.min(i,j),c=Math.max(i,j);if(tot[a][c])res.ident[i][j]=same[a][c]/tot[a][c];}
+ res.hasIdent=doSeq;return m._pw=res;}
+function mvCsv(m){const n=m.genomes.length;const h=['Block','Length_bp','Genomes','Identity'];m.genomes.forEach(g=>{const nm=(g.label||g.name).replace(/,/g,' ');h.push(nm+'_start',nm+'_end',nm+'_strand');});
+ const rows=mvBlocks(m).map(b=>{const id=mvIdent(b);const r=[b.id,b.len,b.present.length,id==null?'':(id*100).toFixed(2)];for(let g=0;g<n;g++){const x=b.g[g];r.push(...(x?[x.s+1,x.e,x.st>0?'+':'-']:['','','']));}return r.join(',');});
+ return h.join(',')+'\n'+rows.join('\n')+'\n';}
+let cvMv,cvMvd;
+function renderMauve(){PAL.ink||loadPal();const has=S.mauves.length>0;const main=$('#mv-main'),emp=$('#mv-empty');main.style.display=has?'flex':'none';emp.style.display=has?'none':'';
+ if(!has){emp.textContent='Import a Mauve alignment to compare whole genomes. Export it from Mauve (File > Export Alignment) as .xmfa, which holds the aligned bases. A .backbone file can be added for coordinates only. The demo includes one.';return;}
+ S.mauves.forEach(mvLink);const m=curMv();const sel=$('#mv-sel');sel.innerHTML='';S.mauves.forEach(x=>sel.append(el('option',{value:x.id,selected:x.id===m.id?'':null},x.name)));sel.value=m.id;
+ const rs=$('#mv-ref');rs.innerHTML='';m.genomes.forEach((g,i)=>rs.append(el('option',{value:i,selected:i===MV.ref?'':null},g.label||g.name)));rs.value=MV.ref;
+ $('#mv-min').value=MV.minLen;$('#mv-prof').checked=MV.prof;$('#mv-prof').disabled=!!m.noSeq;
+ const n=m.genomes.length;$('#cv-mv').style.height=(MV_TOP+n*MV_RH+22)+'px';$('#cv-mvd').style.height=(66+Math.min(n,12)*18+22)+'px';
+ mvInfo();const box=$('#mv-tables');box.innerHTML='';const blocks=mvBlocks(m);
+ const cov=m.genomes.map((g,i)=>{const iv=blocks.filter(b=>b.g[i]).map(b=>[b.g[i].s,b.g[i].e]).sort((a,b)=>a[0]-b[0]);let t=0,end=-1;for(const[s,e]of iv){const a=Math.max(s,end);if(e>a)t+=e-a;end=Math.max(end,e);}return t;});
+ const gcols=[{h:'#',v:g=>g.i+1},{h:'Genome',v:g=>g.g.label||g.g.name},{h:'Matched to loaded sequence',v:g=>g.g.ref?g.g.ref.name:'—'},{h:'Length (bp)',v:g=>g.g.len,r:g=>g.g.len.toLocaleString()},{h:'Blocks',v:g=>blocks.filter(b=>b.g[g.i]).length},{h:'In blocks',v:g=>cov[g.i]/Math.max(1,g.g.len),r:g=>(cov[g.i]/Math.max(1,g.g.len)*100).toFixed(1)+'%'}];
+ box.append(el('div',{class:'panel'},el('h2',{},'Genomes'),tbl(gcols,m.genomes.map((g,i)=>({g,i})))));
+ const pr=mvPairs(m);const names=m.genomes.map(g=>g.label||g.name);
+ if(n>1&&n<=14){const pcols=[{h:'',v:r=>r.name},...names.map((nm,j)=>({h:nm,v:r=>r.i===j?-1:(pr.hasIdent?(r.ident[j]??-1):r.shared[j]),r:r=>r.i===j?'—':(pr.hasIdent&&r.ident[j]!=null?(r.ident[j]*100).toFixed(1)+'% · ':'')+fmtBp(r.shared[j])+' bp'}))];
+  box.append(el('div',{class:'panel'},el('h2',{},'Pairwise similarity'),el('div',{class:'muted',style:'font-size:13px;margin-bottom:8px'},m.noSeq?'Shared sequence in blocks (backbone files carry no bases, so identity is not available).':'Identity over aligned columns where both genomes have a base, and total bp shared in blocks.'),tbl(pcols,names.map((nm,i)=>({name:nm,i,shared:pr.shared[i],ident:pr.ident[i]})))));}
+ const lcols=[{h:'Block',v:b=>b.id},{h:'Length (bp)',v:b=>b.len,r:b=>b.len.toLocaleString()},{h:'Genomes',v:b=>b.present.length},{h:'Identity',v:b=>mvIdent(b)??-1,r:b=>{const x=mvIdent(b);return x==null?'—':(x*100).toFixed(1)+'%';}},
+  ...names.map((nm,g)=>({h:nm,v:b=>b.g[g]?b.g[g].s:-1,r:b=>b.g[g]?`${(b.g[g].s+1).toLocaleString()}–${b.g[g].e.toLocaleString()} ${b.g[g].st>0?'+':'−'}`:'—'}))];
+ box.append(el('div',{class:'panel'},el('h2',{},'Blocks'),el('div',{class:'muted',style:'font-size:13px;margin-bottom:8px'},'Click a row to zoom to that block. A block is a region shared by two or more genomes without rearrangement inside it.'),tbl(lcols,blocks,{onRow:b=>{MV.sel=b.id;MV.dc=0;mvZoomBlock(b);mvInfo();drawAll();},limit:1000,empty:'No blocks at this size filter'})));}
+
 let cvMap,cvAln,cvDot,cvProf;
-function drawAll(){if(S.tab==='map'&&cvMap)cvMap._fit&&drawMap(cvMap);if(S.tab==='aln'&&cvAln)drawAln(cvAln);if(S.tab==='cmp'){cvDot&&drawDot(cvDot);cvProf&&drawProf(cvProf);}}
+function drawAll(){if(S.tab==='map'&&cvMap)cvMap._fit&&drawMap(cvMap);if(S.tab==='aln'&&cvAln)drawAln(cvAln);if(S.tab==='cmp'){cvDot&&drawDot(cvDot);cvProf&&drawProf(cvProf);}if(S.tab==='mauve'){cvMv&&cvMv._fit&&drawMauve(cvMv);cvMvd&&cvMvd._fit&&drawMauveDet(cvMvd);}}
 function switchTab(t){S.tab=t;TABS.forEach(([k])=>{$('#v-'+k).classList.toggle('on',k===t);const b=$('#tab-'+k);b.setAttribute('aria-selected',k===t);});
- if(t==='ann')renderAnn();if(t==='var')renderVar();if(t==='cmp')renderCmp();if(t==='asm')renderAsm();if(t==='qc')renderQC();if(t==='notes')renderNotes();if(t==='map')renderMapBar();if(t==='aln')renderAlnBar();
- requestAnimationFrame(()=>{[cvMap,cvAln,cvDot,cvProf].forEach(c=>c&&c._fit&&c._fit());drawAll();});$('#side').classList.remove('open');}
+ if(t==='ann')renderAnn();if(t==='mauve')renderMauve();if(t==='var')renderVar();if(t==='cmp')renderCmp();if(t==='asm')renderAsm();if(t==='qc')renderQC();if(t==='notes')renderNotes();if(t==='map')renderMapBar();if(t==='aln')renderAlnBar();
+ requestAnimationFrame(()=>{[cvMap,cvAln,cvDot,cvProf,cvMv,cvMvd].forEach(c=>c&&c._fit&&c._fit());drawAll();});$('#side').classList.remove('open');}
 function syncSeg(){$('#m-lin').setAttribute('aria-pressed',S.mapMode==='linear');$('#m-cir').setAttribute('aria-pressed',S.mapMode==='circular');}
 function renderMapBar(){const bar=$('#m-chips');bar.innerHTML='';const smp=S.samples.filter(s=>s.refIdx===S.active);
  if(smp.length){bar.append(el('span',{class:'muted'},'Show coverage and variants for'));smp.forEach(s=>{const c=el('button',{class:'chip','aria-pressed':String(!!s.show),onclick:()=>{s.show=!s.show;renderMapBar();drawAll();}},el('i'),s.name);bar.append(c);});}
@@ -926,7 +1133,7 @@ function init(){loadPal();
  $('#m-gob').onclick=()=>{go('#m-go');drawAll();};$('#m-go').onkeydown=e=>{if(e.key==='Enter')$('#m-gob').click();};
  const mz=f=>{if(S.mapMode==='circular')circZoomAt(1/f,cvMap._w/2,cvMap._h/2,cvMap._w,cvMap._h);else zoomBy(f);drawAll();};
  $('#m-zi').onclick=()=>mz(0.5);$('#m-zo').onclick=()=>mz(2);$('#m-fit').onclick=()=>{resetView();drawAll();};
- ['m','a'].forEach(p=>{$('#'+p+'-png').onclick=()=>exportImage('png');$('#'+p+'-svg').onclick=()=>exportImage('svg');});
+ ['m','a','mv'].forEach(p=>{$('#'+p+'-png').onclick=()=>exportImage('png');$('#'+p+'-svg').onclick=()=>exportImage('svg');});
  $('#m-amr').onchange=e=>{S.amr=e.target.checked;drawAll();};
  $('#m-bed').onclick=()=>curRef()?openExport('BED · '+curRef().name,'features.bed',bedText(curRef())):toast('No reference loaded.');$('#m-gff').onclick=()=>curRef()?openExport('GFF3 · '+curRef().name,'features.gff3',gffText(curRef())):toast('No reference loaded.');
  cvMap=makeCanvas($('#cv-map'),drawMap);attachNav(cvMap,drawAll,{circ:()=>S.mapMode==='circular',sget:()=>MAP.scroll,sset:v=>{MAP.scroll=v;},vscroll:d=>{MAP.scroll+=d;drawAll();},click:(x,y,e)=>mapHover(cvMap,e,true)});cvMap.addEventListener('pointermove',e=>{if(!e.buttons)mapHover(cvMap,e,false);});
@@ -936,6 +1143,12 @@ function init(){loadPal();
  $('#a-zi').onclick=()=>{zoomBy(0.5);drawAll();};$('#a-zo').onclick=()=>{zoomBy(2);drawAll();};$('#a-fit').onclick=()=>{resetView();drawAll();};
  $('#a-nv').onclick=()=>nextEvent('var');$('#a-nl').onclick=()=>nextEvent('low');
  cvAln=makeCanvas($('#cv-aln'),drawAln);attachNav(cvAln,drawAll,{sget:()=>AL.scroll,sset:v=>{AL.scroll=v;},vscroll:d=>{AL.scroll+=d;drawAll();},click:(x,y,e)=>alnPointer(cvAln,e,true)});cvAln.addEventListener('pointermove',e=>{if(!e.buttons)alnPointer(cvAln,e,false);});
+ // mauve
+ $('#mv-sel').onchange=e=>{MV.id=+e.target.value;MV.key=null;renderMauve();drawAll();};$('#mv-ref').onchange=e=>{MV.ref=+e.target.value;drawAll();};
+ $('#mv-min').onchange=e=>{MV.minLen=Math.max(0,+e.target.value||0);renderMauve();drawAll();};$('#mv-prof').onchange=e=>{MV.prof=e.target.checked;drawAll();};
+ $('#mv-zi').onclick=()=>{mvZoom(0.5);drawAll();};$('#mv-zo').onclick=()=>{mvZoom(2);drawAll();};$('#mv-fit').onclick=()=>{mvFit();drawAll();};
+ $('#mv-csv').onclick=()=>{const m=curMv();if(m)openExport('Alignment blocks','mauve_blocks.csv',mvCsv(m));};
+ cvMv=makeCanvas($('#cv-mv'),drawMauve);attachMvNav(cvMv);cvMvd=makeCanvas($('#cv-mvd'),drawMauveDet);attachMvdNav(cvMvd);
  // compare
  $('#c-q').onchange=e=>{CMP.q=+e.target.value;renderCmp();};
  $('#c-circ').onclick=()=>{if(CMP.q==null)return;S.cmpShow.add(CMP.q);S.mapMode='circular';syncSeg();switchTab('map');};
