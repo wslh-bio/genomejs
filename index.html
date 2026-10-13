@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genome JS</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23101A23'/%3E%3Cpath d='M33.09 13.56L32.29 12.86L31.48 12.17L30.67 11.50L29.85 10.83L29.01 10.18L28.18 9.53L27.35 8.88L26.51 8.23L25.67 7.59L24.82 6.96L23.95 6.35L23.09 5.74L23.03 5.82L23.83 6.51L24.63 7.20L25.44 7.88L26.27 8.54L27.10 9.19L27.93 9.85L28.77 10.50L29.60 11.15L30.44 11.79L31.30 12.41L32.16 13.03L33.03 13.63ZM31.91 15.52L31.07 14.80L30.23 14.08L29.38 13.38L28.52 12.68L27.65 12.00L26.78 11.32L25.91 10.64L25.04 9.96L24.16 9.30L23.27 8.64L22.37 8.00L21.46 7.36L21.40 7.44L22.24 8.16L23.08 8.88L23.93 9.59L24.79 10.28L25.66 10.96L26.53 11.64L27.40 12.32L28.27 13.00L29.15 13.67L30.04 14.32L30.94 14.96L31.85 15.60ZM27.87 15.25L27.47 14.87L27.07 14.50L26.66 14.14L26.24 13.79L25.81 13.45L25.38 13.12L24.95 12.78L24.52 12.45L24.08 12.12L23.63 11.81L23.17 11.51L22.70 11.22L22.64 11.30L23.04 11.68L23.44 12.05L23.85 12.41L24.27 12.76L24.70 13.10L25.13 13.43L25.56 13.77L25.99 14.10L26.43 14.43L26.88 14.74L27.34 15.04L27.80 15.33ZM17.70 13.21L18.45 13.87L19.21 14.52L19.98 15.16L20.76 15.79L21.54 16.40L22.33 17.02L23.12 17.63L23.90 18.25L24.70 18.85L25.51 19.44L26.32 20.02L27.14 20.59L27.20 20.51L26.45 19.85L25.69 19.20L24.93 18.56L24.15 17.93L23.36 17.32L22.57 16.70L21.79 16.09L21.00 15.48L20.21 14.87L19.40 14.28L18.58 13.71L17.76 13.13ZM15.64 14.49L16.50 15.23L17.37 15.97L18.25 16.70L19.13 17.41L20.03 18.11L20.93 18.81L21.82 19.51L22.72 20.21L23.63 20.90L24.54 21.58L25.47 22.24L26.40 22.90L26.46 22.82L25.60 22.08L24.73 21.34L23.85 20.61L22.97 19.90L22.07 19.20L21.17 18.50L20.28 17.80L19.38 17.10L18.47 16.41L17.56 15.73L16.63 15.07L15.70 14.41ZM16.53 18.07L17.01 18.52L17.50 18.96L17.99 19.39L18.50 19.80L19.01 20.20L19.53 20.61L20.04 21.01L20.56 21.41L21.08 21.80L21.62 22.18L22.16 22.54L22.71 22.90L22.77 22.82L22.29 22.38L21.80 21.94L21.31 21.51L20.80 21.10L20.29 20.69L19.77 20.29L19.26 19.89L18.74 19.49L18.22 19.10L17.68 18.72L17.14 18.35L16.59 17.99ZM21.26 27.42L20.57 26.81L19.86 26.20L19.15 25.60L18.43 25.02L17.70 24.45L16.97 23.88L16.24 23.31L15.51 22.74L14.77 22.18L14.02 21.63L13.26 21.10L12.49 20.57L12.43 20.65L13.13 21.26L13.83 21.87L14.54 22.47L15.26 23.05L15.99 23.62L16.72 24.19L17.46 24.76L18.19 25.33L18.93 25.89L19.68 26.44L20.44 26.97L21.20 27.50ZM20.95 30.07L20.08 29.31L19.19 28.56L18.30 27.82L17.39 27.10L16.48 26.38L15.57 25.67L14.66 24.96L13.74 24.25L12.82 23.54L11.89 22.86L10.95 22.18L10.00 21.51L9.94 21.59L10.82 22.34L11.70 23.09L12.59 23.83L13.50 24.56L14.41 25.27L15.32 25.99L16.24 26.70L17.15 27.41L18.07 28.11L19.00 28.80L19.95 29.48L20.89 30.15ZM17.64 30.37L17.08 29.86L16.52 29.36L15.94 28.87L15.36 28.39L14.76 27.93L14.17 27.46L13.57 27.00L12.98 26.54L12.38 26.08L11.76 25.64L11.14 25.22L10.51 24.80L10.45 24.87L11.01 25.38L11.57 25.88L12.15 26.37L12.73 26.85L13.33 27.31L13.92 27.78L14.52 28.24L15.11 28.71L15.71 29.16L16.33 29.60L16.95 30.03L17.58 30.45ZM7.21 28.12L7.85 28.69L8.48 29.24L9.13 29.79L9.79 30.32L10.45 30.85L11.12 31.37L11.79 31.89L12.45 32.41L13.13 32.92L13.82 33.41L14.51 33.90L15.21 34.37L15.27 34.29L14.64 33.73L14.00 33.17L13.36 32.63L12.70 32.09L12.03 31.57L11.37 31.05L10.70 30.53L10.03 30.01L9.36 29.50L8.67 29.01L7.97 28.52L7.27 28.04Z' fill='%238FA3B5'/%3E%3Cpath d='M30.22 6.78L29.62 6.56L29.02 6.35L28.42 6.14L27.83 5.93L27.25 5.73L26.68 5.54L26.13 5.37L25.59 5.20L25.07 5.04L24.57 4.90L24.09 4.78L23.63 4.67L23.18 4.57L22.74 4.50L22.31 4.45L21.87 4.42L21.41 4.45L20.95 4.56L20.49 4.77L20.08 5.10L19.77 5.54L19.59 6.03L19.53 6.53L19.55 7.01L19.63 7.46L19.75 7.91L19.90 8.35L20.08 8.80L20.28 9.25L20.50 9.71L20.74 10.19L21.00 10.68L21.27 11.18L21.56 11.69L21.86 12.22L22.17 12.75L22.49 13.30L22.81 13.84L23.14 14.40L23.47 14.95L23.79 15.50L24.11 16.05L24.42 16.59L24.71 17.13L24.99 17.66L25.26 18.17L25.50 18.67L25.72 19.15L25.91 19.61L26.07 20.04L26.19 20.45L26.28 20.83L26.33 21.16L26.33 21.45L26.30 21.69L26.24 21.85L26.15 21.93L26.08 21.93L26.06 21.86L26.10 21.78L26.19 21.73L26.27 21.76L26.29 21.85L26.22 21.96L26.07 22.07L25.85 22.17L25.56 22.24L25.22 22.28L24.83 22.28L24.40 22.26L23.93 22.22L23.44 22.14L22.92 22.05L22.37 21.94L21.81 21.80L21.23 21.66L20.64 21.50L20.03 21.33L19.42 21.16L18.81 20.98L18.19 20.80L17.58 20.61L16.97 20.43L16.37 20.25L15.77 20.08L15.19 19.92L14.63 19.76L14.07 19.61L13.54 19.48L13.02 19.36L12.53 19.25L12.04 19.16L11.57 19.09L11.11 19.03L10.66 19.00L10.19 19.00L9.71 19.06L9.21 19.20L8.73 19.46L8.32 19.85L8.02 20.33L7.87 20.86L7.83 21.38L7.88 21.87L7.98 22.33L8.11 22.77L8.28 23.21L8.46 23.66L8.66 24.11L8.89 24.57L9.13 25.05L9.40 25.53L9.68 26.03L9.97 26.54L10.28 27.06L10.60 27.59L10.93 28.12L11.27 28.66L11.61 29.21L11.96 29.75L12.30 30.29L12.64 30.83L12.97 31.36L13.29 31.89L13.60 32.40L13.89 32.90L14.17 33.39L14.42 33.85L14.66 34.30L14.87 34.73L15.05 35.13L15.20 35.51L15.32 35.86L15.42 36.18L15.48 36.46L15.52 36.71L15.53 36.92L15.53 37.10L15.52 37.26L15.47 37.45L16.19 37.91L16.39 37.70L16.56 37.40L16.67 37.07L16.72 36.71L16.72 36.33L16.68 35.93L16.60 35.52L16.49 35.09L16.35 34.64L16.19 34.18L16.00 33.69L15.78 33.19L15.55 32.68L15.29 32.15L15.02 31.61L14.74 31.07L14.45 30.51L14.15 29.95L13.84 29.39L13.53 28.82L13.23 28.26L12.92 27.70L12.63 27.15L12.34 26.61L12.07 26.07L11.82 25.56L11.59 25.05L11.37 24.57L11.19 24.11L11.03 23.67L10.91 23.26L10.82 22.89L10.77 22.55L10.76 22.26L10.80 22.03L10.86 21.86L10.94 21.78L11.01 21.79L11.04 21.85L11.00 21.94L10.91 21.98L10.83 21.96L10.81 21.87L10.87 21.76L11.02 21.64L11.25 21.55L11.54 21.48L11.88 21.44L12.27 21.43L12.70 21.45L13.17 21.50L13.66 21.57L14.18 21.67L14.73 21.78L15.29 21.91L15.87 22.06L16.46 22.21L17.06 22.38L17.68 22.56L18.29 22.74L18.91 22.92L19.52 23.10L20.13 23.28L20.73 23.46L21.32 23.63L21.90 23.80L22.47 23.95L23.02 24.10L23.56 24.23L24.07 24.35L24.57 24.46L25.05 24.55L25.52 24.63L25.98 24.68L26.44 24.71L26.91 24.71L27.39 24.65L27.88 24.51L28.36 24.25L28.78 23.87L29.07 23.38L29.23 22.86L29.27 22.34L29.22 21.85L29.12 21.39L28.98 20.94L28.82 20.50L28.64 20.06L28.43 19.61L28.21 19.14L27.97 18.67L27.71 18.18L27.43 17.68L27.15 17.16L26.85 16.64L26.54 16.10L26.22 15.56L25.89 15.01L25.57 14.46L25.24 13.91L24.92 13.35L24.60 12.80L24.29 12.26L23.99 11.72L23.71 11.20L23.45 10.69L23.21 10.19L22.99 9.71L22.80 9.25L22.64 8.81L22.51 8.40L22.42 8.03L22.36 7.70L22.34 7.41L22.36 7.17L22.40 7.01L22.46 6.91L22.51 6.89L22.51 6.92L22.46 6.96L22.37 6.96L22.31 6.88L22.32 6.76L22.41 6.62L22.59 6.48L22.84 6.36L23.15 6.27L23.52 6.22L23.93 6.19L24.37 6.19L24.85 6.22L25.36 6.27L25.90 6.34L26.46 6.43L27.03 6.54L27.63 6.66L28.23 6.79L28.85 6.93L29.47 7.07L30.09 7.22Z' fill='%23D5DEE6'/%3E%3Cpath d='M29.94 7.13L30.23 7.70L30.51 8.27L30.79 8.84L31.06 9.39L31.32 9.94L31.56 10.48L31.78 11.00L31.97 11.50L32.14 11.98L32.28 12.44L32.39 12.87L32.46 13.27L32.49 13.64L32.48 13.96L32.43 14.22L32.34 14.42L32.24 14.54L32.13 14.57L32.06 14.53L32.05 14.46L32.09 14.42L32.13 14.43L32.13 14.50L32.04 14.59L31.89 14.69L31.66 14.77L31.36 14.82L31.02 14.85L30.63 14.86L30.20 14.83L29.74 14.79L29.24 14.71L28.72 14.62L28.18 14.51L27.61 14.37L27.03 14.23L26.44 14.07L25.84 13.90L25.23 13.73L24.61 13.55L24.00 13.37L23.38 13.18L22.77 13.00L22.17 12.82L21.58 12.65L21.00 12.49L20.43 12.33L19.88 12.18L19.35 12.05L18.83 11.93L18.33 11.82L17.85 11.73L17.38 11.66L16.92 11.60L16.46 11.57L15.99 11.57L15.51 11.63L15.02 11.77L14.54 12.03L14.12 12.42L13.83 12.90L13.67 13.43L13.64 13.95L13.68 14.44L13.78 14.90L13.92 15.34L14.08 15.78L14.27 16.23L14.47 16.68L14.69 17.14L14.93 17.62L15.19 18.11L15.47 18.61L15.76 19.12L16.06 19.65L16.37 20.18L16.69 20.73L17.01 21.27L17.34 21.82L17.66 22.38L17.99 22.93L18.30 23.48L18.61 24.02L18.91 24.56L19.19 25.09L19.45 25.60L19.69 26.10L19.91 26.58L20.10 27.04L20.26 27.47L20.39 27.88L20.47 28.26L20.52 28.59L20.53 28.88L20.50 29.12L20.43 29.28L20.35 29.36L20.28 29.36L20.25 29.29L20.30 29.21L20.38 29.16L20.46 29.19L20.48 29.28L20.42 29.39L20.27 29.50L20.04 29.60L19.76 29.67L19.41 29.71L19.02 29.71L18.59 29.69L18.13 29.65L17.63 29.58L17.11 29.49L16.56 29.39L16.00 29.26L15.41 29.13L14.82 28.98L14.21 28.83L13.59 28.67L12.97 28.51L12.35 28.34L11.73 28.18L11.12 28.02L10.51 27.87L9.91 27.72L9.33 27.59L8.76 27.46L8.20 27.36L7.67 27.27L7.16 27.19L6.67 27.14L6.20 27.11L5.76 27.10L5.34 27.12L4.95 27.17L4.59 27.26L4.25 27.38L3.95 27.56L3.70 27.79L3.55 28.03L4.16 28.61L4.33 28.52L4.48 28.46L4.65 28.41L4.86 28.36L5.11 28.33L5.41 28.32L5.74 28.32L6.11 28.35L6.52 28.41L6.96 28.48L7.43 28.58L7.92 28.69L8.44 28.82L8.98 28.97L9.54 29.13L10.11 29.30L10.70 29.48L11.30 29.67L11.90 29.87L12.51 30.07L13.12 30.27L13.73 30.47L14.34 30.66L14.94 30.85L15.53 31.03L16.11 31.21L16.67 31.37L17.22 31.52L17.75 31.66L18.27 31.78L18.77 31.89L19.25 31.98L19.72 32.06L20.18 32.11L20.64 32.14L21.10 32.14L21.59 32.08L22.08 31.94L22.56 31.68L22.97 31.30L23.27 30.81L23.42 30.29L23.46 29.77L23.41 29.28L23.31 28.82L23.18 28.37L23.02 27.93L22.83 27.49L22.63 27.04L22.40 26.57L22.16 26.10L21.90 25.61L21.63 25.11L21.34 24.59L21.04 24.07L20.73 23.53L20.41 22.99L20.09 22.44L19.76 21.89L19.44 21.34L19.11 20.78L18.79 20.23L18.49 19.69L18.19 19.15L17.91 18.63L17.65 18.11L17.40 17.62L17.19 17.14L17.00 16.68L16.84 16.24L16.71 15.83L16.62 15.46L16.58 15.12L16.57 14.83L16.60 14.60L16.67 14.44L16.75 14.35L16.82 14.36L16.84 14.42L16.80 14.51L16.71 14.55L16.63 14.53L16.61 14.44L16.68 14.33L16.83 14.21L17.05 14.12L17.34 14.05L17.69 14.01L18.08 14.00L18.51 14.02L18.97 14.07L19.47 14.14L19.99 14.24L20.53 14.35L21.09 14.48L21.67 14.63L22.27 14.78L22.87 14.95L23.48 15.13L24.09 15.31L24.71 15.49L25.32 15.67L25.93 15.85L26.54 16.03L27.13 16.20L27.71 16.37L28.28 16.53L28.83 16.67L29.36 16.80L29.88 16.92L30.38 17.03L30.86 17.11L31.33 17.18L31.79 17.23L32.24 17.24L32.70 17.22L33.16 17.14L33.63 16.98L34.07 16.71L34.43 16.32L34.68 15.85L34.79 15.35L34.79 14.87L34.72 14.42L34.60 13.99L34.44 13.58L34.27 13.17L34.07 12.75L33.84 12.32L33.60 11.89L33.34 11.43L33.06 10.97L32.77 10.49L32.46 10.00L32.13 9.49L31.79 8.98L31.45 8.46L31.10 7.93L30.74 7.40L30.38 6.87Z' fill='%237DB3E6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17222C;--paper:#EEF1F4;--panel:#FFFFFF;--line:#D3DAE1;--muted:#5A6775;--side:#101A23;--sidetext:#D5DEE6;--sidemuted:#8696A5;--accent:#1E5A8C;--A:#2E9E5B;--C:#2F6FDE;--G:#E3A413;--T:#D6453D;--N:#8D98A3;--bad:#B42318;--warn:#B45309;--ok:#1B7F4B;--readF:#BFD0DF;--readR:#D7C9E3;--grid:#E4E9EE;--hover:#E6EEF6;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#E5ECF2;--paper:#0C1319;--panel:#151F29;--line:#2A3846;--muted:#97A5B2;--side:#080D12;--accent:#7DB3E6;--A:#46C07A;--C:#5B93F2;--G:#EDB93A;--T:#EE6A62;--N:#6F7C89;--bad:#F2877D;--warn:#F0A25A;--ok:#52C98D;--readF:#33495C;--readR:#483B58;--grid:#1E2A36;--hover:#1D2B39;color-scheme:dark}}
+:root[data-theme="dark"]{--ink:#E5ECF2;--paper:#0C1319;--panel:#151F29;--line:#2A3846;--muted:#97A5B2;--side:#080D12;--accent:#7DB3E6;--A:#46C07A;--C:#5B93F2;--G:#EDB93A;--T:#EE6A62;--N:#6F7C89;--bad:#F2877D;--warn:#F0A25A;--ok:#52C98D;--readF:#33495C;--readR:#483B58;--grid:#1E2A36;--hover:#1D2B39;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font:14px/1.45 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);overflow:hidden}
+button,select,input,textarea{font:inherit;color:inherit}
+#app{display:grid;grid-template-columns:304px minmax(0,1fr);height:100%}
+#side{background:var(--side);color:var(--sidetext);overflow:auto;padding:16px 16px 24px;display:flex;flex-direction:column;gap:6px}
+#side h3{font-size:12px;font-weight:600;margin:14px 0 4px;color:var(--sidemuted);letter-spacing:.02em}
+.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;margin-bottom:6px}
+.logo{flex:none;display:block}
+.mark{display:grid;grid-template-columns:repeat(2,10px);gap:2px}
+.mark i{width:10px;height:10px;border-radius:2px;display:block}
+.mark i:nth-child(1){background:var(--A)}.mark i:nth-child(2){background:var(--C)}.mark i:nth-child(3){background:var(--G)}.mark i:nth-child(4){background:var(--T)}
+#drop{border:1.5px dashed #3A4B5B;border-radius:8px;padding:14px;text-align:center;transition:background .15s,border-color .15s}
+#drop.over{background:#1B2A38;border-color:#7DB3E6}
+#drop p{margin:0 0 4px;font-weight:500}#drop small{color:var(--sidemuted);display:block;margin-bottom:10px}
+#side button,.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 11px;cursor:pointer}
+#side button{background:#E8EEF3;color:#101A23;border-color:#E8EEF3}
+#side button.ghost{background:transparent;color:var(--sidetext);border-color:#3A4B5B}
+button:hover{filter:brightness(.96)}button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,#drop:focus-visible,th:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+:root[data-theme="dark"] .btn.primary{color:#08121b}
+#files{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+#files li{display:flex;gap:8px;align-items:center;padding:5px 8px;border-radius:6px;background:#17232E}
+#files .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#files .dt{display:block;color:var(--sidemuted);font-size:12px}
+#files .k{font:500 11px "IBM Plex Mono",monospace;background:#243442;border-radius:4px;padding:1px 5px;color:#BFD0DF}
+#files .x{background:none!important;border:none!important;color:var(--sidemuted)!important;padding:0 4px!important;font-size:16px}
+#side select,#side input[type=number]{width:100%;background:#17232E;color:var(--sidetext);border:1px solid #2C3C4B;border-radius:6px;padding:5px 8px}
+.set{display:grid;grid-template-columns:1fr 78px;gap:6px 8px;align-items:center;font-size:13px}
+.set input[type=number]{padding:3px 6px!important}
+#status{margin-top:auto;padding-top:12px;color:var(--sidemuted);font-size:12px;min-height:34px}
+main{display:flex;flex-direction:column;min-width:0;min-height:0}
+#tabs{display:flex;gap:2px;padding:8px 12px 0;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto;align-items:flex-end}
+#tabs button{border:none;background:none;padding:8px 12px;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+#tabs button[aria-selected=true]{color:var(--ink);font-weight:600;border-bottom-color:var(--accent)}
+#menu{display:none;margin-right:6px;border:1px solid var(--line)!important;border-radius:6px!important;margin-bottom:4px}
+.view{display:none;flex:1;min-height:0;flex-direction:column}
+.view.on{display:flex}
+.bar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
+.bar label{display:inline-flex;gap:5px;align-items:center;color:var(--muted);font-size:13px}
+.bar select,.bar input[type=text],.bar input[type=number]{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 8px;max-width:220px}
+.bar .sp{flex:1}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:none;border-radius:0;background:var(--panel);padding:4px 11px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed=true]{color:#08121b}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:2px 10px;cursor:pointer;background:var(--panel);font-size:13px}
+.chip[aria-pressed=true]{background:var(--hover);border-color:var(--accent)}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--accent);display:inline-block}
+.chip[aria-pressed=false] i{background:transparent;border:1px solid var(--muted)}
+.cv{position:relative;flex:1;min-height:180px;background:var(--panel);overflow:hidden}
+.cv canvas{position:absolute;left:0;top:0;display:block;cursor:grab;touch-action:none}
+.cv canvas.dragging{cursor:grabbing}
+.scroll{flex:1;overflow:auto;padding:14px 16px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:14px}
+.panel h2{font-size:15px;margin:0 0 8px;font-weight:600}
+.muted{color:var(--muted)}.mono{font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+.tblwrap{overflow:auto;max-height:55vh;border:1px solid var(--line);border-radius:6px}
+.tbl{border-collapse:collapse;width:100%;font-size:13px}
+.tbl th{position:sticky;top:0;background:var(--panel);text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap;font-weight:600}
+.tbl td{padding:5px 10px;border-bottom:1px solid var(--grid);white-space:nowrap}
+.tbl tr.clk{cursor:pointer}.tbl tr.clk:hover td{background:var(--hover)}
+.badge{display:inline-block;border-radius:4px;padding:0 7px;font-size:12px;font-weight:600}
+.b-pass{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.b-review{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.b-repeat{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.info{padding:8px 12px;background:var(--panel);border-top:1px solid var(--line);font-size:13px;min-height:44px;max-height:30%;overflow:auto}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.empty{padding:40px 24px;color:var(--muted);max-width:60ch}
+#tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--panel);padding:5px 9px;border-radius:6px;font-size:12.5px;max-width:320px;display:none;line-height:1.35}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:8px 14px;border-radius:8px;z-index:30;display:none;max-width:80vw}
+#ov{position:fixed;inset:0;background:rgba(5,10,15,.55);display:none;align-items:center;justify-content:center;z-index:25;padding:16px}
+#ov .box{background:var(--panel);border-radius:10px;padding:16px;width:min(720px,100%);max-height:90%;display:flex;flex-direction:column;gap:10px}
+#ov textarea{flex:1;min-height:240px;font:12px "IBM Plex Mono",monospace;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px}
+textarea.notes{width:100%;min-height:260px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+@media (max-width:860px){#app{grid-template-columns:1fr}#side{position:fixed;inset:0 20% 0 0;z-index:15;transform:translateX(-102%);transition:transform .2s;padding-top:calc(16px + env(safe-area-inset-top,0px))}#side.open{transform:none}#menu{display:inline-block}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<aside id="side" aria-label="Files and settings">
+  <div class="brand"><svg class="logo" viewBox="0 0 40 40" width="32" height="32" role="img" aria-label="Genome JS" xmlns="http://www.w3.org/2000/svg"><path d="M33.09 13.56L32.29 12.86L31.48 12.17L30.67 11.50L29.85 10.83L29.01 10.18L28.18 9.53L27.35 8.88L26.51 8.23L25.67 7.59L24.82 6.96L23.95 6.35L23.09 5.74L23.03 5.82L23.83 6.51L24.63 7.20L25.44 7.88L26.27 8.54L27.10 9.19L27.93 9.85L28.77 10.50L29.60 11.15L30.44 11.79L31.30 12.41L32.16 13.03L33.03 13.63ZM31.91 15.52L31.07 14.80L30.23 14.08L29.38 13.38L28.52 12.68L27.65 12.00L26.78 11.32L25.91 10.64L25.04 9.96L24.16 9.30L23.27 8.64L22.37 8.00L21.46 7.36L21.40 7.44L22.24 8.16L23.08 8.88L23.93 9.59L24.79 10.28L25.66 10.96L26.53 11.64L27.40 12.32L28.27 13.00L29.15 13.67L30.04 14.32L30.94 14.96L31.85 15.60ZM27.87 15.25L27.47 14.87L27.07 14.50L26.66 14.14L26.24 13.79L25.81 13.45L25.38 13.12L24.95 12.78L24.52 12.45L24.08 12.12L23.63 11.81L23.17 11.51L22.70 11.22L22.64 11.30L23.04 11.68L23.44 12.05L23.85 12.41L24.27 12.76L24.70 13.10L25.13 13.43L25.56 13.77L25.99 14.10L26.43 14.43L26.88 14.74L27.34 15.04L27.80 15.33ZM17.70 13.21L18.45 13.87L19.21 14.52L19.98 15.16L20.76 15.79L21.54 16.40L22.33 17.02L23.12 17.63L23.90 18.25L24.70 18.85L25.51 19.44L26.32 20.02L27.14 20.59L27.20 20.51L26.45 19.85L25.69 19.20L24.93 18.56L24.15 17.93L23.36 17.32L22.57 16.70L21.79 16.09L21.00 15.48L20.21 14.87L19.40 14.28L18.58 13.71L17.76 13.13ZM15.64 14.49L16.50 15.23L17.37 15.97L18.25 16.70L19.13 17.41L20.03 18.11L20.93 18.81L21.82 19.51L22.72 20.21L23.63 20.90L24.54 21.58L25.47 22.24L26.40 22.90L26.46 22.82L25.60 22.08L24.73 21.34L23.85 20.61L22.97 19.90L22.07 19.20L21.17 18.50L20.28 17.80L19.38 17.10L18.47 16.41L17.56 15.73L16.63 15.07L15.70 14.41ZM16.53 18.07L17.01 18.52L17.50 18.96L17.99 19.39L18.50 19.80L19.01 20.20L19.53 20.61L20.04 21.01L20.56 21.41L21.08 21.80L21.62 22.18L22.16 22.54L22.71 22.90L22.77 22.82L22.29 22.38L21.80 21.94L21.31 21.51L20.80 21.10L20.29 20.69L19.77 20.29L19.26 19.89L18.74 19.49L18.22 19.10L17.68 18.72L17.14 18.35L16.59 17.99ZM21.26 27.42L20.57 26.81L19.86 26.20L19.15 25.60L18.43 25.02L17.70 24.45L16.97 23.88L16.24 23.31L15.51 22.74L14.77 22.18L14.02 21.63L13.26 21.10L12.49 20.57L12.43 20.65L13.13 21.26L13.83 21.87L14.54 22.47L15.26 23.05L15.99 23.62L16.72 24.19L17.46 24.76L18.19 25.33L18.93 25.89L19.68 26.44L20.44 26.97L21.20 27.50ZM20.95 30.07L20.08 29.31L19.19 28.56L18.30 27.82L17.39 27.10L16.48 26.38L15.57 25.67L14.66 24.96L13.74 24.25L12.82 23.54L11.89 22.86L10.95 22.18L10.00 21.51L9.94 21.59L10.82 22.34L11.70 23.09L12.59 23.83L13.50 24.56L14.41 25.27L15.32 25.99L16.24 26.70L17.15 27.41L18.07 28.11L19.00 28.80L19.95 29.48L20.89 30.15ZM17.64 30.37L17.08 29.86L16.52 29.36L15.94 28.87L15.36 28.39L14.76 27.93L14.17 27.46L13.57 27.00L12.98 26.54L12.38 26.08L11.76 25.64L11.14 25.22L10.51 24.80L10.45 24.87L11.01 25.38L11.57 25.88L12.15 26.37L12.73 26.85L13.33 27.31L13.92 27.78L14.52 28.24L15.11 28.71L15.71 29.16L16.33 29.60L16.95 30.03L17.58 30.45ZM7.21 28.12L7.85 28.69L8.48 29.24L9.13 29.79L9.79 30.32L10.45 30.85L11.12 31.37L11.79 31.89L12.45 32.41L13.13 32.92L13.82 33.41L14.51 33.90L15.21 34.37L15.27 34.29L14.64 33.73L14.00 33.17L13.36 32.63L12.70 32.09L12.03 31.57L11.37 31.05L10.70 30.53L10.03 30.01L9.36 29.50L8.67 29.01L7.97 28.52L7.27 28.04Z" fill="#8FA3B5"/><path d="M30.22 6.78L29.62 6.56L29.02 6.35L28.42 6.14L27.83 5.93L27.25 5.73L26.68 5.54L26.13 5.37L25.59 5.20L25.07 5.04L24.57 4.90L24.09 4.78L23.63 4.67L23.18 4.57L22.74 4.50L22.31 4.45L21.87 4.42L21.41 4.45L20.95 4.56L20.49 4.77L20.08 5.10L19.77 5.54L19.59 6.03L19.53 6.53L19.55 7.01L19.63 7.46L19.75 7.91L19.90 8.35L20.08 8.80L20.28 9.25L20.50 9.71L20.74 10.19L21.00 10.68L21.27 11.18L21.56 11.69L21.86 12.22L22.17 12.75L22.49 13.30L22.81 13.84L23.14 14.40L23.47 14.95L23.79 15.50L24.11 16.05L24.42 16.59L24.71 17.13L24.99 17.66L25.26 18.17L25.50 18.67L25.72 19.15L25.91 19.61L26.07 20.04L26.19 20.45L26.28 20.83L26.33 21.16L26.33 21.45L26.30 21.69L26.24 21.85L26.15 21.93L26.08 21.93L26.06 21.86L26.10 21.78L26.19 21.73L26.27 21.76L26.29 21.85L26.22 21.96L26.07 22.07L25.85 22.17L25.56 22.24L25.22 22.28L24.83 22.28L24.40 22.26L23.93 22.22L23.44 22.14L22.92 22.05L22.37 21.94L21.81 21.80L21.23 21.66L20.64 21.50L20.03 21.33L19.42 21.16L18.81 20.98L18.19 20.80L17.58 20.61L16.97 20.43L16.37 20.25L15.77 20.08L15.19 19.92L14.63 19.76L14.07 19.61L13.54 19.48L13.02 19.36L12.53 19.25L12.04 19.16L11.57 19.09L11.11 19.03L10.66 19.00L10.19 19.00L9.71 19.06L9.21 19.20L8.73 19.46L8.32 19.85L8.02 20.33L7.87 20.86L7.83 21.38L7.88 21.87L7.98 22.33L8.11 22.77L8.28 23.21L8.46 23.66L8.66 24.11L8.89 24.57L9.13 25.05L9.40 25.53L9.68 26.03L9.97 26.54L10.28 27.06L10.60 27.59L10.93 28.12L11.27 28.66L11.61 29.21L11.96 29.75L12.30 30.29L12.64 30.83L12.97 31.36L13.29 31.89L13.60 32.40L13.89 32.90L14.17 33.39L14.42 33.85L14.66 34.30L14.87 34.73L15.05 35.13L15.20 35.51L15.32 35.86L15.42 36.18L15.48 36.46L15.52 36.71L15.53 36.92L15.53 37.10L15.52 37.26L15.47 37.45L16.19 37.91L16.39 37.70L16.56 37.40L16.67 37.07L16.72 36.71L16.72 36.33L16.68 35.93L16.60 35.52L16.49 35.09L16.35 34.64L16.19 34.18L16.00 33.69L15.78 33.19L15.55 32.68L15.29 32.15L15.02 31.61L14.74 31.07L14.45 30.51L14.15 29.95L13.84 29.39L13.53 28.82L13.23 28.26L12.92 27.70L12.63 27.15L12.34 26.61L12.07 26.07L11.82 25.56L11.59 25.05L11.37 24.57L11.19 24.11L11.03 23.67L10.91 23.26L10.82 22.89L10.77 22.55L10.76 22.26L10.80 22.03L10.86 21.86L10.94 21.78L11.01 21.79L11.04 21.85L11.00 21.94L10.91 21.98L10.83 21.96L10.81 21.87L10.87 21.76L11.02 21.64L11.25 21.55L11.54 21.48L11.88 21.44L12.27 21.43L12.70 21.45L13.17 21.50L13.66 21.57L14.18 21.67L14.73 21.78L15.29 21.91L15.87 22.06L16.46 22.21L17.06 22.38L17.68 22.56L18.29 22.74L18.91 22.92L19.52 23.10L20.13 23.28L20.73 23.46L21.32 23.63L21.90 23.80L22.47 23.95L23.02 24.10L23.56 24.23L24.07 24.35L24.57 24.46L25.05 24.55L25.52 24.63L25.98 24.68L26.44 24.71L26.91 24.71L27.39 24.65L27.88 24.51L28.36 24.25L28.78 23.87L29.07 23.38L29.23 22.86L29.27 22.34L29.22 21.85L29.12 21.39L28.98 20.94L28.82 20.50L28.64 20.06L28.43 19.61L28.21 19.14L27.97 18.67L27.71 18.18L27.43 17.68L27.15 17.16L26.85 16.64L26.54 16.10L26.22 15.56L25.89 15.01L25.57 14.46L25.24 13.91L24.92 13.35L24.60 12.80L24.29 12.26L23.99 11.72L23.71 11.20L23.45 10.69L23.21 10.19L22.99 9.71L22.80 9.25L22.64 8.81L22.51 8.40L22.42 8.03L22.36 7.70L22.34 7.41L22.36 7.17L22.40 7.01L22.46 6.91L22.51 6.89L22.51 6.92L22.46 6.96L22.37 6.96L22.31 6.88L22.32 6.76L22.41 6.62L22.59 6.48L22.84 6.36L23.15 6.27L23.52 6.22L23.93 6.19L24.37 6.19L24.85 6.22L25.36 6.27L25.90 6.34L26.46 6.43L27.03 6.54L27.63 6.66L28.23 6.79L28.85 6.93L29.47 7.07L30.09 7.22Z" fill="#D5DEE6"/><path d="M29.94 7.13L30.23 7.70L30.51 8.27L30.79 8.84L31.06 9.39L31.32 9.94L31.56 10.48L31.78 11.00L31.97 11.50L32.14 11.98L32.28 12.44L32.39 12.87L32.46 13.27L32.49 13.64L32.48 13.96L32.43 14.22L32.34 14.42L32.24 14.54L32.13 14.57L32.06 14.53L32.05 14.46L32.09 14.42L32.13 14.43L32.13 14.50L32.04 14.59L31.89 14.69L31.66 14.77L31.36 14.82L31.02 14.85L30.63 14.86L30.20 14.83L29.74 14.79L29.24 14.71L28.72 14.62L28.18 14.51L27.61 14.37L27.03 14.23L26.44 14.07L25.84 13.90L25.23 13.73L24.61 13.55L24.00 13.37L23.38 13.18L22.77 13.00L22.17 12.82L21.58 12.65L21.00 12.49L20.43 12.33L19.88 12.18L19.35 12.05L18.83 11.93L18.33 11.82L17.85 11.73L17.38 11.66L16.92 11.60L16.46 11.57L15.99 11.57L15.51 11.63L15.02 11.77L14.54 12.03L14.12 12.42L13.83 12.90L13.67 13.43L13.64 13.95L13.68 14.44L13.78 14.90L13.92 15.34L14.08 15.78L14.27 16.23L14.47 16.68L14.69 17.14L14.93 17.62L15.19 18.11L15.47 18.61L15.76 19.12L16.06 19.65L16.37 20.18L16.69 20.73L17.01 21.27L17.34 21.82L17.66 22.38L17.99 22.93L18.30 23.48L18.61 24.02L18.91 24.56L19.19 25.09L19.45 25.60L19.69 26.10L19.91 26.58L20.10 27.04L20.26 27.47L20.39 27.88L20.47 28.26L20.52 28.59L20.53 28.88L20.50 29.12L20.43 29.28L20.35 29.36L20.28 29.36L20.25 29.29L20.30 29.21L20.38 29.16L20.46 29.19L20.48 29.28L20.42 29.39L20.27 29.50L20.04 29.60L19.76 29.67L19.41 29.71L19.02 29.71L18.59 29.69L18.13 29.65L17.63 29.58L17.11 29.49L16.56 29.39L16.00 29.26L15.41 29.13L14.82 28.98L14.21 28.83L13.59 28.67L12.97 28.51L12.35 28.34L11.73 28.18L11.12 28.02L10.51 27.87L9.91 27.72L9.33 27.59L8.76 27.46L8.20 27.36L7.67 27.27L7.16 27.19L6.67 27.14L6.20 27.11L5.76 27.10L5.34 27.12L4.95 27.17L4.59 27.26L4.25 27.38L3.95 27.56L3.70 27.79L3.55 28.03L4.16 28.61L4.33 28.52L4.48 28.46L4.65 28.41L4.86 28.36L5.11 28.33L5.41 28.32L5.74 28.32L6.11 28.35L6.52 28.41L6.96 28.48L7.43 28.58L7.92 28.69L8.44 28.82L8.98 28.97L9.54 29.13L10.11 29.30L10.70 29.48L11.30 29.67L11.90 29.87L12.51 30.07L13.12 30.27L13.73 30.47L14.34 30.66L14.94 30.85L15.53 31.03L16.11 31.21L16.67 31.37L17.22 31.52L17.75 31.66L18.27 31.78L18.77 31.89L19.25 31.98L19.72 32.06L20.18 32.11L20.64 32.14L21.10 32.14L21.59 32.08L22.08 31.94L22.56 31.68L22.97 31.30L23.27 30.81L23.42 30.29L23.46 29.77L23.41 29.28L23.31 28.82L23.18 28.37L23.02 27.93L22.83 27.49L22.63 27.04L22.40 26.57L22.16 26.10L21.90 25.61L21.63 25.11L21.34 24.59L21.04 24.07L20.73 23.53L20.41 22.99L20.09 22.44L19.76 21.89L19.44 21.34L19.11 20.78L18.79 20.23L18.49 19.69L18.19 19.15L17.91 18.63L17.65 18.11L17.40 17.62L17.19 17.14L17.00 16.68L16.84 16.24L16.71 15.83L16.62 15.46L16.58 15.12L16.57 14.83L16.60 14.60L16.67 14.44L16.75 14.35L16.82 14.36L16.84 14.42L16.80 14.51L16.71 14.55L16.63 14.53L16.61 14.44L16.68 14.33L16.83 14.21L17.05 14.12L17.34 14.05L17.69 14.01L18.08 14.00L18.51 14.02L18.97 14.07L19.47 14.14L19.99 14.24L20.53 14.35L21.09 14.48L21.67 14.63L22.27 14.78L22.87 14.95L23.48 15.13L24.09 15.31L24.71 15.49L25.32 15.67L25.93 15.85L26.54 16.03L27.13 16.20L27.71 16.37L28.28 16.53L28.83 16.67L29.36 16.80L29.88 16.92L30.38 17.03L30.86 17.11L31.33 17.18L31.79 17.23L32.24 17.24L32.70 17.22L33.16 17.14L33.63 16.98L34.07 16.71L34.43 16.32L34.68 15.85L34.79 15.35L34.79 14.87L34.72 14.42L34.60 13.99L34.44 13.58L34.27 13.17L34.07 12.75L33.84 12.32L33.60 11.89L33.34 11.43L33.06 10.97L32.77 10.49L32.46 10.00L32.13 9.49L31.79 8.98L31.45 8.46L31.10 7.93L30.74 7.40L30.38 6.87Z" fill="#7DB3E6"/></svg>Genome JS</div>
+  <div id="drop" tabindex="0" role="button" aria-label="Add files">
+    <p>Drop genomic files here</p>
+    <small>FASTA, GenBank, GFF3, BED, VCF, FASTQ, SAM, BAM (.gz accepted)</small>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button id="pick">Choose files</button><button id="demo" class="ghost">Load demo data</button></div>
+    <input id="fileinput" type="file" multiple hidden>
+  </div>
+  <h3>Loaded files</h3>
+  <ul id="files"></ul>
+  <h3>Reference sequence</h3>
+  <select id="refsel" aria-label="Reference sequence"></select>
+  <h3>Analysis settings</h3>
+  <div class="set" id="settings"></div>
+  <button id="apply" style="margin-top:8px">Re-run analysis</button>
+  <div id="status" role="status"></div>
+</aside>
+<main>
+  <nav id="tabs" role="tablist"><button id="menu" aria-label="Files and settings">Files</button></nav>
+
+  <section class="view" id="v-map">
+    <div class="bar">
+      <span class="seg" role="group" aria-label="Map layout"><button id="m-lin" aria-pressed="true">Linear</button><button id="m-cir" aria-pressed="false">Circular</button></span>
+      <input id="m-go" type="text" placeholder="Position, range or gene name" aria-label="Go to">
+      <button class="btn" id="m-gob">Go</button>
+      <button class="btn" id="m-zi" aria-label="Zoom in">+</button><button class="btn" id="m-zo" aria-label="Zoom out">−</button><button class="btn" id="m-fit">Whole sequence</button>
+      <label><input type="checkbox" id="m-amr" checked> Highlight resistance-like gene names</label>
+      <span class="sp"></span>
+      <button class="btn" id="m-png">Save PNG</button><button class="btn" id="m-svg">Save SVG</button><button class="btn" id="m-bed">Export BED</button><button class="btn" id="m-gff">Export GFF3</button>
+    </div>
+    <div class="bar" id="m-chips"></div>
+    <div class="cv" id="cv-map"></div>
+    <div class="info" id="m-info">Scroll wheel to zoom, drag to pan. Click a feature to zoom to it.</div>
+  </section>
+
+  <section class="view" id="v-ann"><div class="scroll" id="ann-body"></div></section>
+
+  <section class="view" id="v-aln">
+    <div class="bar">
+      <label>Sample <select id="a-smp"></select></label>
+      <input id="a-go" type="text" placeholder="Position, range or gene name" aria-label="Go to">
+      <button class="btn" id="a-gob">Go</button>
+      <button class="btn" id="a-zi" aria-label="Zoom in">+</button><button class="btn" id="a-zo" aria-label="Zoom out">−</button><button class="btn" id="a-fit">Whole sequence</button>
+      <button class="btn" id="a-nv">Next variant</button><button class="btn" id="a-nl">Next low-coverage region</button>
+      <span class="sp"></span>
+      <button class="btn" id="a-png">Save PNG</button><button class="btn" id="a-svg">Save SVG</button><span class="muted" style="font-size:12.5px">Wheel: zoom · Shift+scroll or vertical drag: reads · Click: pileup details</span>
+    </div>
+    <div class="cv" id="cv-aln"></div>
+    <div class="info" id="a-info">Select a sample to inspect mapped reads, coverage, disagreements and consensus calls.</div>
+  </section>
+
+  <section class="view" id="v-var"><div class="scroll" id="var-body"></div></section>
+
+  <section class="view" id="v-cmp">
+    <div class="bar">
+      <label>Compare <b id="c-ref" style="font-weight:600"></b> against <select id="c-q"></select></label>
+      <button class="btn" id="c-circ">Show as ring on circular map</button>
+      <span class="sp"></span><button class="btn" id="c-exp">Export blocks (CSV)</button>
+    </div>
+    <div class="scroll" id="cmp-body">
+      <div class="grid2">
+        <div class="panel"><h2>Dot plot</h2><div class="cv" id="cv-dot" style="height:380px;flex:none"></div><div class="legend"><span><i style="background:var(--C)"></i>same strand</span><span><i style="background:var(--T)"></i>reverse strand</span></div></div>
+        <div class="panel"><h2>Shared identity along the reference</h2><div class="cv" id="cv-prof" style="height:380px;flex:none"></div><div class="muted" style="font-size:12.5px;margin-top:6px">Identity is estimated from shared 16-mers (Mash-style), so it is a screening estimate, not a base-level alignment.</div></div>
+      </div>
+      <div class="panel"><h2>Shared blocks</h2><div id="c-blocks"></div></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-asm"><div class="scroll" id="asm-body"></div></section>
+  <section class="view" id="v-qc"><div class="scroll" id="qc-body"></div></section>
+  <section class="view" id="v-notes"><div class="scroll" id="notes-body"></div></section>
+</main>
+</div>
+<div id="tip"></div><div id="toast" role="alert"></div>
+<div id="ov"><div class="box"><b id="ov-t"></b><textarea id="ov-x" readonly></textarea><div style="display:flex;gap:8px;justify-content:flex-end"><span class="muted" id="ov-m" style="flex:1;font-size:12.5px"></span><button class="btn" id="ov-c">Copy</button><button class="btn primary" id="ov-s">Save file</button><button class="btn" id="ov-x2">Close</button></div></div></div>
+
+<script>
+'use strict';
+/* ====================== helpers ====================== */
+const $=(s,e=document)=>e.querySelector(s);
+const el=(t,a={},...c)=>{const e=document.createElement(t);for(const k in a){if(a[k]==null||a[k]===false)continue;if(k==='selected'){e.selected=true;continue;}if(k==='class')e.className=a[k];else if(k.startsWith('on'))e[k]=a[k];else if(k==='html')e.innerHTML=a[k];else e.setAttribute(k,a[k]);}c.flat(9).filter(x=>x!=null&&x!==false).forEach(x=>e.append(x.nodeType?x:String(x)));return e;};
+const tick=()=>new Promise(r=>setTimeout(r,0));
+let UID=1;const uid=()=>UID++;
+const fmtBp=n=>n>=1e6?(n/1e6).toFixed(n%1e6?2:0)+' Mb':n>=1e4?(n/1e3).toFixed(n%1e3?1:0)+' kb':String(Math.round(n));
+const pct=(x,d=1)=>(x*100).toFixed(d)+'%';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const COMP={A:'T',C:'G',G:'C',T:'A',N:'N',R:'Y',Y:'R',S:'S',W:'W',K:'M',M:'K',B:'V',V:'B',D:'H',H:'D'};
+const rc=s=>{let o=[];for(let i=s.length-1;i>=0;i--)o.push(COMP[s[i]]||'N');return o.join('');};
+const IUPAC={AG:'R',CT:'Y',CG:'S',AT:'W',GT:'K',AC:'M',CGT:'B',AGT:'D',ACT:'H',ACG:'V',ACGT:'N'};
+const AAS='FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG',TI={T:0,C:1,A:2,G:3};
+const aa=c=>{const a=TI[c[0]],b=TI[c[1]],d=TI[c[2]];return(a==null||b==null||d==null)?'X':AAS[a*16+b*4+d];};
+const niceStep=x=>{const p=Math.pow(10,Math.floor(Math.log10(Math.max(x,1))));const m=x/p;return(m<=1?1:m<=2?2:m<=5?5:10)*p;};
+const median=a=>{if(!a.length)return 0;const b=Float64Array.from(a).sort();return b[b.length>>1];};
+const AMR_RE=/^(bla|tet[A-Z(\d-]|aac|aph|ant\(|sul\d|dfr|qnr|mcr|erm[A-Z(\d-]|cat[A-Z\d]|cml|van[A-Z]|mec[A-Z]|oxa|ndm|kpc|vim|ctx-?m|fos[A-Z]|mph|arr-|cfr|opt|lnu)/i;
+const isAMR=f=>f.type!=='variant'&&!/^(rep_origin|source|oriT|oriV)/.test(f.type)&&AMR_RE.test(f.name||'');
+const toast=(m,ms=3800)=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast._t);toast._t=setTimeout(()=>t.style.display='none',ms);};
+const setStatus=m=>{const s=$('#status');if(s)s.textContent=m||'';};
+
+/* ====================== state ====================== */
+const S={refs:[],files:[],samples:[],fastqs:[],assemblies:[],active:0,view:{s:0,e:1},cmpShow:new Set(),notes:'',tab:'map',mapMode:'linear',
+ P:{minDepth:10,minAlt:3,minAF:0.2,consFrac:0.75,minBQ:10,minMQ:0,passCov:90,reviewCov:70,iupac:true},amr:true};
+const curRef=()=>S.refs[S.active];
+const allFeatures=ref=>{if(!ref)return[];if(!ref._all){ref._all=[];for(const t of Object.values(ref.tracks))if(t.kind!=='vcf')ref._all.push(...t.items);}return ref._all;};
+function packTrack(t){const items=t.items.slice().sort((a,b)=>a.start-b.start||a.end-b.end);const ends=[];for(const f of items){let r=0;while(r<ends.length&&ends[r]>f.start)r++;if(r>=12)r=11;ends[r]=Math.max(ends[r]||0,f.end);f.row=r;}t.rows=Math.min(12,Math.max(1,ends.length));t.items=items;}
+function addTrack(ref,name,kind,items,fid){let n=name,i=2;while(ref.tracks[n])n=name+' ('+(i++)+')';const t={name:n,kind,items,fid,rows:1};packTrack(t);ref.tracks[n]=t;ref._all=null;return t;}
+function findRef(id){const c=S.refs.find(r=>r.name===id)||S.refs.find(r=>r.name.split('.')[0]===String(id).split('.')[0]);return c||(S.refs.length===1?S.refs[0]:null);}
+function mkRef(o){const r=Object.assign({id:uid(),tracks:{},desc:''},o);r.len=r.seq.length;r.cc=new Uint8Array(r.len);for(let i=0;i<r.len;i++)r.cc[i]=r.seq.charCodeAt(i);return r;}
+
+/* ====================== parsers ====================== */
+function parseFasta(text){const out=[];let cur=null,parts=[];const fin=()=>{if(cur){cur.seq=parts.join('').toUpperCase().replace(/U/g,'T').replace(/[^ACGTNRYSWKMBDHV]/g,'N');out.push(cur);}};
+ for(const raw of text.split(/\r?\n/)){if(raw[0]==='>'){fin();const h=raw.slice(1).trim();const sp=h.search(/\s/);cur={name:sp<0?h:h.slice(0,sp),desc:sp<0?'':h.slice(sp+1)};parts=[];}else if(cur){parts.push(raw.replace(/\s/g,''));}}
+ fin();return out.filter(r=>r.seq.length);}
+function parseLoc(loc){let s=loc.replace(/\s/g,'');let strand=1;if(/^complement\(/.test(s)){strand=-1;s=s.slice(11,-1);}else if(/complement/.test(s))strand=-1;
+ s=s.replace(/^(join|order)\(/,'').replace(/\)+$/,'');const parts=[];
+ for(const p of s.split(',')){const q=p.replace(/complement\(|\)/g,'');const m=q.match(/(\d+)\D*?\.\.\D*?(\d+)/);if(m)parts.push({s:+m[1]-1,e:+m[2]});else{const m2=q.match(/(\d+)/);if(m2)parts.push({s:+m2[1]-1,e:+m2[1]});}}
+ return{parts,strand};}
+function parseGenBank(text){const recs=[];for(const ch of text.split(/^\/\/\s*$/m)){if(!/^LOCUS/m.test(ch))continue;const lines=ch.split(/\r?\n/);
+  const lm=ch.match(/^LOCUS\s+(\S+)/m),dm=ch.match(/^DEFINITION\s+(.*)$/m);const name=lm?lm[1]:'seq';
+  const fi=lines.findIndex(l=>/^FEATURES/.test(l)),oi=lines.findIndex(l=>/^ORIGIN/.test(l));
+  const seq=oi>=0?lines.slice(oi+1).join('').replace(/[^a-zA-Z]/g,'').toUpperCase().replace(/[^ACGTNRYSWKMBDHV]/g,'N'):'';
+  const raw=[];let cur=null,lastQ=null;
+  if(fi>=0)for(let j=fi+1;j<(oi>=0?oi:lines.length);j++){const l=lines[j];
+   if(/^ {5}\S/.test(l)){if(cur)raw.push(cur);const m=l.match(/^ {5}(\S+)\s+(.*)$/);cur={type:m[1],loc:m[2].trim(),q:{}};lastQ=null;}
+   else if(cur&&/^ {21}\//.test(l)){const m=l.trim().match(/^\/([^=]+)(?:=(.*))?$/);lastQ=m[1];(cur.q[lastQ]=cur.q[lastQ]||[]).push(m[2]==null?'true':m[2]);}
+   else if(cur&&/^ {21}\S/.test(l)){if(lastQ){const a=cur.q[lastQ];a[a.length-1]+=' '+l.trim();}else cur.loc+=l.trim();}}
+  if(cur)raw.push(cur);
+  const clean=v=>v?String(v[0]).replace(/^"|"$/g,''):'';
+  const hasCds=raw.some(f=>f.type==='CDS');const feats=[];
+  for(const f of raw){if(f.type==='source'||(hasCds&&f.type==='gene'))continue;const{parts,strand}=parseLoc(f.loc);if(!parts.length)continue;
+   const q={};for(const k in f.q)q[k]=clean(f.q[k]);
+   feats.push({type:f.type,parts,strand,start:Math.min(...parts.map(p=>p.s)),end:Math.max(...parts.map(p=>p.e)),name:q.gene||q.locus_tag||q.product||q.label||q.note||f.type,q});}
+  if(seq)recs.push({name,desc:dm?dm[1].trim():'',seq,feats});}
+ return recs;}
+function parseGff(text){const items=[],byId=new Map();
+ for(const l of text.split(/\r?\n/)){if(!l)continue;if(l[0]==='#'){if(l.startsWith('##FASTA'))break;continue;}const f=l.split('\t');if(f.length<8)continue;
+  const at={};(f[8]||'').split(';').forEach(kv=>{const m=kv.trim().match(/^([^=\s]+)[=\s]+"?(.*?)"?$/);if(m)at[m[1]]=m[2];});
+  const type=f[2];if(type==='region'||type==='chromosome'||type==='source')continue;const s=+f[3]-1,e=+f[4],strand=f[6]==='-'?-1:1;
+  const key=at.ID&&type==='CDS'?f[0]+'|CDS|'+at.ID:null;
+  if(key&&byId.has(key)){byId.get(key).parts.push({s,e});continue;}
+  const it={seq:f[0],type,start:s,end:e,strand,parts:[{s,e}],name:at.Name||at.gene||at.product||at.locus_tag||at.ID||type,q:at};items.push(it);if(key)byId.set(key,it);}
+ for(const it of items){it.start=Math.min(...it.parts.map(p=>p.s));it.end=Math.max(...it.parts.map(p=>p.e));}
+ return items;}
+const BC=s=>s&&/^\d+,\d+,\d+$/.test(s)?'rgb('+s+')':null;
+function parseBed(text){const items=[];for(const l of text.split(/\r?\n/)){if(!l||/^(#|track|browser)/.test(l))continue;let f=l.split('\t');if(f.length<3)f=l.trim().split(/\s+/);if(f.length<3||isNaN(+f[1]))continue;
+ items.push({seq:f[0],type:'bed',start:+f[1],end:+f[2],name:f[3]||'',strand:f[5]==='-'?-1:f[5]==='+'?1:0,color:BC(f[8]),fileColor:BC(f[8]),parts:[{s:+f[1],e:+f[2]}],q:{}});}return items;}
+function parseVcf(text){const items=[];for(const l of text.split(/\r?\n/)){if(!l||l[0]==='#')continue;const f=l.split('\t');if(f.length<5)continue;const pos=+f[1]-1;const info={};(f[7]||'').split(';').forEach(kv=>{const[a,b]=kv.split('=');info[a]=b==null?true:b;});
+ items.push({seq:f[0],type:'variant',start:pos,end:pos+f[3].length,ref:f[3],alt:f[4],name:f[3]+'>'+f[4],strand:0,parts:[{s:pos,e:pos+f[3].length}],q:info,qual:f[5]});}return items;}
+async function textStream(file){let st=file.stream();if(/\.gz$/i.test(file.name))st=st.pipeThrough(new DecompressionStream('gzip'));return st.pipeThrough(new TextDecoderStream()).getReader();}
+async function readText(file){if(!/\.gz$/i.test(file.name))return file.text();const rd=await textStream(file);let s='';for(;;){const{value,done}=await rd.read();if(done)break;s+=value;}return s;}
+async function readLines(file,onLine){const rd=await textStream(file);let buf='',n=0;
+ for(;;){const{value,done}=await rd.read();if(done)break;buf+=value;let i,st=0;while((i=buf.indexOf('\n',st))>=0){let ln=buf.slice(st,i);if(ln.charCodeAt(ln.length-1)===13)ln=ln.slice(0,-1);if(onLine(ln)===false){rd.cancel();return;}st=i+1;if(++n%200000===0)await tick();}buf=buf.slice(st);}
+ if(buf)onLine(buf);}
+const CIG_RE=/(\d+)([MIDNSHP=X])/g;
+function parseCigar(s){const o=[];let m;CIG_RE.lastIndex=0;while((m=CIG_RE.exec(s)))o.push([+m[1],m[2]]);return o;}
+function refSpan(cig){let n=0;for(const[l,o]of cig)if(o==='M'||o==='D'||o==='N'||o==='='||o==='X')n+=l;return n;}
+async function parseSam(file){const refs=new Map();const reads=[];let skipped=0;
+ await readLines(file,l=>{if(!l)return;if(l[0]==='@'){if(l.startsWith('@SQ')){const n=l.match(/SN:(\S+)/),ln=l.match(/LN:(\d+)/);if(n)refs.set(n[1],ln?+ln[1]:0);}return;}
+  const f=l.split('\t');if(f.length<11)return;const flag=+f[1];if(flag&(4|256|1024|2048)||f[2]==='*'||f[9]==='*'){skipped++;return;}
+  const cig=parseCigar(f[5]);const pos=+f[3]-1;reads.push({name:f[0],ref:f[2],pos,end:pos+refSpan(cig),rev:!!(flag&16),mq:+f[4],cig,seq:f[9].toUpperCase(),qual:f[10]==='*'?null:f[10],row:-1});});
+ return{reads,refs,skipped};}
+async function inflateBgzf(buf,prog){const u8=new Uint8Array(buf),dv=new DataView(buf);let p=0;const blocks=[];
+ while(p+18<=u8.length){if(u8[p]!==31||u8[p+1]!==139)break;const xlen=dv.getUint16(p+10,true);let bsize=-1,q=p+12;const xe=q+xlen;
+  while(q<xe){const slen=dv.getUint16(q+2,true);if(u8[q]===66&&u8[q+1]===67)bsize=dv.getUint16(q+4,true);q+=4+slen;}
+  if(bsize<0)throw new Error('This gzip file is not BGZF-compressed, so it is not a valid BAM.');blocks.push(u8.subarray(xe,p+bsize+1-8));p+=bsize+1;}
+ const outs=[];let total=0;
+ for(let i=0;i<blocks.length;i+=24){const grp=blocks.slice(i,i+24).map(async b=>{if(!b.length)return new Uint8Array(0);const ds=new DecompressionStream('deflate-raw');const w=ds.writable.getWriter();w.write(b).catch(()=>{});w.close().catch(()=>{});return new Uint8Array(await new Response(ds.readable).arrayBuffer());});
+  const r=await Promise.all(grp);for(const x of r){outs.push(x);total+=x.length;}if(prog)prog(i/blocks.length);}
+ const out=new Uint8Array(total);let o=0;for(const x of outs){out.set(x,o);o+=x.length;}return out;}
+function parseBam(u8){const dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength);if(dv.getUint32(0,true)!==0x014d4142)throw new Error('Not a BAM file (missing BAM magic).');
+ let p=4;const lt=dv.getInt32(p,true);p+=4+lt;const nref=dv.getInt32(p,true);p+=4;const refs=new Map(),names=[];
+ for(let i=0;i<nref;i++){const ln=dv.getInt32(p,true);p+=4;let nm='';for(let j=0;j<ln-1;j++)nm+=String.fromCharCode(u8[p+j]);p+=ln;const l=dv.getInt32(p,true);p+=4;refs.set(nm,l);names.push(nm);}
+ const reads=[];let skipped=0;const NT='=ACMGRSVTWYHKDBN',OPS='MIDNSHP=X';
+ while(p+4<=u8.length&&reads.length<1500000){const bs=dv.getInt32(p,true);const b=p+4;if(bs<32||b+bs>u8.length)break;
+  const refID=dv.getInt32(b,true),pos=dv.getInt32(b+4,true),lrn=u8[b+8],mq=u8[b+9],ncig=dv.getUint16(b+12,true),flag=dv.getUint16(b+14,true),lseq=dv.getInt32(b+16,true);
+  p+=4+bs;if((flag&(4|256|1024|2048))||refID<0){skipped++;continue;}
+  let q=b+32,name='';for(let j=0;j<lrn-1;j++)name+=String.fromCharCode(u8[q+j]);q+=lrn;
+  const cig=[];let end=pos;for(let c=0;c<ncig;c++){const v=dv.getUint32(q,true);q+=4;const n=v>>>4,op=OPS[v&15];cig.push([n,op]);if(op==='M'||op==='D'||op==='N'||op==='='||op==='X')end+=n;}
+  const sq=new Array(lseq);for(let i=0;i<lseq;i++){const by=u8[q+(i>>1)];sq[i]=NT[i&1?by&15:by>>4];}q+=(lseq+1)>>1;
+  let qual=null;if(lseq&&u8[q]!==255){const qa=new Array(lseq);for(let i=0;i<lseq;i++)qa[i]=String.fromCharCode(u8[q+i]+33);qual=qa.join('');}
+  reads.push({name,ref:names[refID],pos,end,rev:!!(flag&16),mq,cig,seq:sq.join(''),qual,row:-1});}
+ return{reads,refs,skipped};}
+async function parseFastq(file,keep=100000,maxStats=500000){const st={reads:0,bases:0,minLen:1e9,maxLen:0,qsum:0,q20:0,q30:0,gc:0,posQ:new Float64Array(400),posN:new Float64Array(400),lens:new Map()};const kept=[];let n=0,name='',seq='';
+ await readLines(file,l=>{const m=n%4;n++;if(m===0){name=l.slice(1).split(/\s/)[0];}else if(m===1){seq=l;}else if(m===3){const len=seq.length;if(len!==l.length)return;st.reads++;st.bases+=len;if(len<st.minLen)st.minLen=len;if(len>st.maxLen)st.maxLen=len;
+   let gc=0;for(let i=0;i<len;i++){const q=l.charCodeAt(i)-33;st.qsum+=q;if(q>=20)st.q20++;if(q>=30)st.q30++;if(i<400){st.posQ[i]+=q;st.posN[i]++;}const c=seq.charCodeAt(i);if(c===67||c===71||c===99||c===103)gc++;}
+   st.gc+=gc;const bin=Math.round(len/50)*50;st.lens.set(bin,(st.lens.get(bin)||0)+1);if(kept.length<keep)kept.push({n:name,s:seq.toUpperCase(),q:l});if(st.reads>=maxStats)return false;}});
+ if(!st.reads)throw new Error('No valid FASTQ records found.');st.meanLen=st.bases/st.reads;st.meanQ=st.qsum/st.bases;st.gcPct=st.gc/st.bases;return{st,kept};}
+
+/* ====================== analysis ====================== */
+function packRows(reads){const ends=[];let maxSpan=0;for(const r of reads){let k=0;while(k<ends.length&&ends[k]>r.pos-1)k++;if(k>=900){r.row=-1;continue;}ends[k]=r.end;r.row=k;if(r.end-r.pos>maxSpan)maxSpan=r.end-r.pos;}return{rows:ends.length,maxSpan};}
+function pileup(smp){const ref=S.refs[smp.refIdx],L=ref.len,P=S.P;const cA=new Uint16Array(L),cC=new Uint16Array(L),cG=new Uint16Array(L),cT=new Uint16Array(L),cD=new Uint16Array(L);const ins=new Map();let mqs=0,nr=0;
+ for(const r of smp.reads){if(r.mq<P.minMQ)continue;nr++;mqs+=r.mq;let rp=r.pos,qp=0;const sq=r.seq,ql=r.qual;
+  for(const[n,op]of r.cig){if(op==='M'||op==='='||op==='X'){for(let i=0;i<n;i++){const p=rp+i;if(p<0||p>=L)continue;if(ql&&ql.charCodeAt(qp+i)-33<P.minBQ)continue;switch(sq.charCodeAt(qp+i)){case 65:cA[p]++;break;case 67:cC[p]++;break;case 71:cG[p]++;break;case 84:cT[p]++;break;}}rp+=n;qp+=n;}
+   else if(op==='D'){for(let i=0;i<n;i++){const p=rp+i;if(p>=0&&p<L)cD[p]++;}rp+=n;}else if(op==='N')rp+=n;else if(op==='I'){ins.set(rp,(ins.get(rp)||0)+1);qp+=n;}else if(op==='S')qp+=n;}}
+ const depth=new Uint32Array(L);for(let p=0;p<L;p++)depth[p]=cA[p]+cC[p]+cG[p]+cT[p]+cD[p];
+ Object.assign(smp,{cA,cC,cG,cT,cD,depth,ins,usedReads:nr,meanMQ:nr?mqs/nr:0});}
+function buildConsensus(smp){const ref=S.refs[smp.refIdx],P=S.P,L=ref.len;const out=new Array(L),cls=new Uint8Array(L);let nN=0,amb=0,run=0,maxRun=0;
+ for(let p=0;p<L;p++){const d=smp.depth[p];let ch='N',c=2;
+  if(d>=P.minDepth){const cs=[smp.cA[p],smp.cC[p],smp.cG[p],smp.cT[p],smp.cD[p]];let mi=0;for(let k=1;k<5;k++)if(cs[k]>cs[mi])mi=k;
+   if(cs[mi]/d>=P.consFrac){ch=mi===4?'-':'ACGT'[mi];}
+   else if(P.iupac){let set='';for(let k=0;k<4;k++)if(cs[k]>=P.minAlt&&cs[k]/d>=P.minAF)set+='ACGT'[k];ch=set.length>1?IUPAC[set]:set.length===1?set:'N';}
+   else ch=mi===4?'-':'ACGT'[mi];
+   c=ch==='N'?2:ch==='-'?4:ch.length&&'ACGT'.includes(ch)?(ch===ref.seq[p]?0:1):3;}
+  if(ch==='N'){nN++;run++;if(run>maxRun)maxRun=run;}else run=0;if(c===3)amb++;out[p]=ch;cls[p]=c;}
+ smp.cons=out.join('');smp.cls=cls;smp.nN=nN;smp.amb=amb;smp.maxN=maxRun;}
+function featAt(ref,pos){let best=null;for(const f of allFeatures(ref)){if(pos>=f.start&&pos<f.end){if(f.type==='CDS')return f;if(!best||f.type==='gene')best=f;}}return best;}
+function cdsEffect(ref,f,pos,alt){const coords=[];for(const p of f.parts.slice().sort((a,b)=>a.s-b.s))for(let i=p.s;i<p.e;i++)coords.push(i);if(f.strand<0)coords.reverse();
+ const idx=coords.indexOf(pos);if(idx<0)return null;const cs=idx-idx%3;if(cs+2>=coords.length)return null;
+ const get=(j,sub)=>{let b=(coords[j]===pos&&sub)?sub:ref.seq[coords[j]];return f.strand<0?(COMP[b]||'N'):b;};
+ const r0=get(cs)+get(cs+1)+get(cs+2),a0=get(cs,alt)+get(cs+1,alt)+get(cs+2,alt);const ar=aa(r0),aq=aa(a0),n=cs/3+1;
+ return ar===aq?`p.${ar}${n}= (synonymous, ${r0}>${a0})`:`p.${ar}${n}${aq} (${r0}>${a0})`;}
+function callVariants(smp){const ref=S.refs[smp.refIdx],P=S.P,L=ref.len,out=[];
+ for(let p=0;p<L;p++){const d=smp.depth[p];if(d<P.minDepth)continue;const rb=ref.seq[p];const cnt={A:smp.cA[p],C:smp.cC[p],G:smp.cG[p],T:smp.cT[p],'-':smp.cD[p]};
+  for(const b of['A','C','G','T','-']){if(b===rb)continue;const c=cnt[b];if(c>=P.minAlt&&c/d>=P.minAF)out.push({pos:p,len:1,ref:rb,alt:b,c,d,af:c/d,type:b==='-'?'DEL':'SNP'});}}
+ const merged=[];for(const v of out){const pv=merged[merged.length-1];if(v.type==='DEL'&&pv&&pv.type==='DEL'&&pv.pos+pv.len===v.pos&&Math.abs(pv.c-v.c)<=Math.max(2,0.25*v.c)){pv.len++;pv.ref+=v.ref;pv.c=Math.min(pv.c,v.c);pv.d=Math.min(pv.d,v.d);pv.af=pv.c/pv.d;}else merged.push(v);}
+ for(const v of merged){const f=featAt(ref,v.pos);v.feat=f?f.name:'';v.effect='';
+  if(f&&f.type==='CDS'){if(v.type==='SNP')v.effect=cdsEffect(ref,f,v.pos,v.alt)||'';else v.effect=v.len%3?'frameshift deletion':'in-frame deletion';}else if(v.type==='DEL'&&f)v.effect='deletion in '+f.type;}
+ smp.variants=merged;}
+function metrics(smp){const L=S.refs[smp.refIdx].len,P=S.P;let sum=0,cov=0;for(let p=0;p<L;p++){const d=smp.depth[p];sum+=d;if(d>=P.minDepth)cov++;}
+ smp.meanDepth=sum/L;smp.covPct=cov/L*100;smp.nPct=smp.nN/L*100;
+ const n=Math.min(720,L);smp.bins=new Float32Array(n);for(let b=0;b<n;b++){const a=Math.floor(b*L/n),e=Math.floor((b+1)*L/n);let s=0;for(let p=a;p<e;p++)s+=depthCap(smp.depth[p]);smp.bins[b]=s/Math.max(1,e-a);}
+ smp.medianDepth=median(Array.from(smp.bins));
+ smp.auto=smp.covPct>=P.passCov&&smp.nPct<=100-P.passCov?'pass':smp.covPct>=P.reviewCov?'review':'repeat';}
+const depthCap=d=>d;
+const sampleStatus=s=>s.flagUser||s.auto;
+function analyze(smp,repack){if(repack){smp.reads.sort((a,b)=>a.pos-b.pos);const r=packRows(smp.reads);smp.rows=r.rows;smp.maxSpan=r.maxSpan;}pileup(smp);buildConsensus(smp);callVariants(smp);metrics(smp);}
+function snpDistance(a,b){if(a.refIdx!==b.refIdx)return null;let d=0;const x=a.cons,y=b.cons;for(let i=0;i<x.length;i++){const p=x[i],q=y[i];if(p!==q&&'ACGT'.includes(p)&&'ACGT'.includes(q))d++;}return d;}
+
+/* ====================== k-mer comparison ====================== */
+const KMER=16;
+const seqCodes=s=>{const a=new Uint8Array(s.length);for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a[i]=c===65?0:c===67?1:c===71?2:c===84?3:255;}return a;};
+const hashK=x=>Math.imul(x,2654435761)>>>0;
+function forEachKmer(codes,k,fn){let km=0,valid=0;for(let i=0;i<codes.length;i++){const c=codes[i];if(c>3){valid=0;km=0;continue;}km=((km<<2)|c)>>>0;if(++valid>=k)fn(km,i-k+1);}}
+function compareSeqs(R,Q){const k=KMER,Lr=R.seq.length,Lq=Q.seq.length;const stride=Math.max(1,Math.ceil(Math.max(Lr,Lq)/600000));
+ R._cmp=R._cmp||new Map();Q._uid=Q._uid||uid();const ck=Q._uid+':'+stride;if(R._cmp.has(ck))return R._cmp.get(ck);
+ R._idx=R._idx||{};let ix=R._idx[stride];
+ if(!ix){const codes=seqCodes(R.seq),map=new Map();forEachKmer(codes,k,(km,pos)=>{if(stride>1&&hashK(km)%stride!==0)return;map.set(km,map.has(km)?-1:pos);});
+  const flags=new Uint8Array(Lr),pre=new Uint32Array(Lr+1);for(const pos of map.values())if(pos>=0)flags[pos]=1;for(let i=0;i<Lr;i++)pre[i+1]=pre[i]+flags[i];ix=R._idx[stride]={map,flags,pre};}
+ const anchors=[],hit=new Uint8Array(Lr);
+ const scan=(codes,rev)=>forEachKmer(codes,k,(km,pos)=>{if(stride>1&&hashK(km)%stride!==0)return;const rp=ix.map.get(km);if(rp>=0){anchors.push([rp,rev?Lq-(pos+k):pos,rev?-1:1]);hit[rp]=1;}});
+ scan(seqCodes(Q.seq),false);scan(seqCodes(rc(Q.seq)),true);
+ const hitPre=new Uint32Array(Lr+1);for(let i=0;i<Lr;i++)hitPre[i+1]=hitPre[i]+hit[i];
+ const blocks=[];
+ for(const st of[1,-1]){const A=anchors.filter(a=>a[2]===st).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);let cur=null;
+  const flush=()=>{if(cur&&cur.span>=150&&cur.n>=4){const tot=ix.pre[cur.r1]-ix.pre[cur.r0];cur.cont=Math.min(1,cur.n/Math.max(1,tot));cur.id=Math.pow(cur.cont,1/k);blocks.push(cur);}cur=null;};
+  for(const a of A){const diag=st>0?a[1]-a[0]:a[1]+a[0];
+   if(cur&&a[0]-cur.lastR<=800&&Math.abs(diag-cur.diag)<=300){if(a[0]!==cur.lastR){cur.n++;cur.lastR=a[0];}cur.r1=a[0]+k;cur.q0=Math.min(cur.q0,a[1]);cur.q1=Math.max(cur.q1,a[1]+k);cur.diag=diag;cur.span=cur.r1-cur.r0;}
+   else{flush();cur={strand:st,r0:a[0],r1:a[0]+k,q0:a[1],q1:a[1]+k,n:1,lastR:a[0],diag,span:k};}}
+  flush();}
+ blocks.sort((a,b)=>a.r0-b.r0);
+ const res={anchors,blocks,hitPre,pre:ix.pre,stride,Lr,Lq};R._cmp.set(ck,res);return res;}
+function identityBins(cmp,n){const out=new Float32Array(n);for(let b=0;b<n;b++){const a=Math.floor(b*cmp.Lr/n),e=Math.floor((b+1)*cmp.Lr/n);const tot=cmp.pre[e]-cmp.pre[a];if(tot<3){out[b]=-1;continue;}const h=cmp.hitPre[e]-cmp.hitPre[a];out[b]=Math.pow(Math.min(1,h/tot),1/KMER);}return out;}
+function cmpCandidates(){const out=[];S.refs.forEach((r,i)=>{if(i!==S.active)out.push({id:r.id,label:r.name,ent:r});});S.assemblies.forEach(a=>a.contigs.forEach(c=>{c._uid=c._uid||uid();out.push({id:c._uid,label:a.name+' · '+c.name,ent:c});}));return out;}
+const gcOf=s=>{let g=0,n=0;for(let i=0;i<s.length;i++){const c=s[i];if(c==='G'||c==='C')g++;if(c!=='N')n++;}return n?g/n:0;};
+
+/* ====================== import ====================== */
+const EXT={fa:'fasta',fasta:'fasta',fna:'fasta',ffn:'fasta',fas:'fasta',gb:'gb',gbk:'gb',gbff:'gb',genbank:'gb',gff:'gff',gff3:'gff',gtf:'gff',bed:'bed',vcf:'vcf',fq:'fastq',fastq:'fastq',sam:'sam',bam:'bam',txt:'note',md:'note'};
+async function classify(f){const ext=f.name.toLowerCase().replace(/\.gz$/,'').split('.').pop();if(EXT[ext])return EXT[ext];
+ const head=await new Response(f.slice(0,4096)).text();if(head.startsWith('>'))return'fasta';if(/^LOCUS/.test(head))return'gb';if(/^##fileformat=VCF/.test(head))return'vcf';if(head.startsWith('@')&&/^@(HD|SQ|RG|PG)\t/.test(head))return'sam';if(head.startsWith('@'))return'fastq';return null;}
+const PRIO={fasta:0,gb:0,gff:1,bed:1,vcf:1,sam:2,bam:2,fastq:3,note:4};
+async function importFiles(list){const items=[];for(const f of list){const k=await classify(f);if(!k){toast('Skipped '+f.name+': format not recognised.');continue;}items.push({f,k});}
+ items.sort((a,b)=>PRIO[a.k]-PRIO[b.k]);let added=0,smpBefore=S.samples.length,refBefore=S.refs.length;
+ for(const{f,k}of items){const fid=uid();const entry={id:fid,name:f.name,kind:k,size:f.size,detail:''};
+  try{setStatus('Reading '+f.name+'…');await tick();entry.detail=await importOne(f,k,fid)||'';S.files.push(entry);added++;}catch(e){console.error(e);toast(f.name+': '+(e.message||e),6000);}}
+ setStatus('');if(!added)return;
+ if(S.active>=S.refs.length)S.active=0;if(refBefore===0&&S.refs.length)resetView();
+ if(S.samples.length>smpBefore){AL.sample=S.samples[smpBefore].id;S.active=S.samples[smpBefore].refIdx;resetView();S.tab='aln';}else if(items.some(x=>x.k==='fastq'))S.tab='qc';else if(S.tab==='notes')S.tab='map';
+ refreshAll();}
+function attachItems(items,name,kind,fid){const groups=new Map();let miss=0;for(const it of items){const r=findRef(it.seq);if(!r){miss++;continue;}if(!groups.has(r))groups.set(r,[]);groups.get(r).push(it);}
+ for(const[r,its]of groups)addTrack(r,name,kind,its,fid);return{n:items.length-miss,miss};}
+async function importOne(f,kind,fid){
+ if(kind==='fasta'){const recs=parseFasta(await readText(f));if(!recs.length)throw new Error('No sequences found.');
+  if(recs.length>3&&(recs.length>6||/contig|assembl|scaffold|draft/i.test(f.name))||(recs.length>1&&/contig|assembl|scaffold|draft/i.test(f.name))){S.assemblies.push({id:uid(),fid,name:f.name,contigs:recs.map(r=>({name:r.name,seq:r.seq,len:r.seq.length}))});return recs.length+' contigs (assembly)';}
+  recs.forEach(r=>S.refs.push(mkRef({name:r.name,desc:r.desc,seq:r.seq,fid})));return recs.length+' sequence'+(recs.length>1?'s':'')+' · '+fmtBp(recs.reduce((a,r)=>a+r.seq.length,0))+' bp';}
+ if(kind==='gb'){const recs=parseGenBank(await readText(f));if(!recs.length)throw new Error('No GenBank records found.');let nf=0;
+  for(const r of recs){const ref=mkRef({name:r.name,desc:r.desc,seq:r.seq,fid});S.refs.push(ref);if(r.feats.length){addTrack(ref,'GenBank features','gb',r.feats,fid);nf+=r.feats.length;}}return recs.length+' record(s) · '+nf+' features';}
+ if(kind==='gff'||kind==='bed'||kind==='vcf'){if(!S.refs.length)throw new Error('Load a reference FASTA or GenBank file first, then add annotations.');
+  const t=await readText(f);const items=kind==='gff'?parseGff(t):kind==='bed'?parseBed(t):parseVcf(t);const nm=f.name.replace(/\.gz$/,'');const r=attachItems(items,nm,kind,fid);
+  if(!r.n)throw new Error('No records matched a loaded sequence name.');return r.n+' records'+(r.miss?' ('+r.miss+' unmatched)':'');}
+ if(kind==='sam'||kind==='bam'){if(!S.refs.length)throw new Error('Load the reference FASTA or GenBank file first.');
+  let res;if(kind==='sam')res=await parseSam(f);else{if(f.size>400e6)throw new Error('BAM files above about 400 MB are too large for in-browser analysis. Subset the region first.');
+   const u8=await inflateBgzf(await f.arrayBuffer(),p=>setStatus('Decompressing '+f.name+' '+Math.round(p*100)+'%'));res=parseBam(u8);}
+  const by=new Map();for(const r of res.reads){if(!by.has(r.ref))by.set(r.ref,[]);by.get(r.ref).push(r);}
+  let made=0;const multi=by.size>1;let unmatched=0;
+  for(const[rn,reads]of by){const ref=findRef(rn);if(!ref){unmatched+=reads.length;continue;}const smp={id:uid(),fid,name:f.name.replace(/\.(sam|bam)(\.gz)?$/i,'')+(multi?' · '+rn:''),refIdx:S.refs.indexOf(ref),reads,show:true,src:kind.toUpperCase()};
+   setStatus('Analysing '+smp.name+'…');await tick();analyze(smp,true);S.samples.push(smp);made++;}
+  if(!made)throw new Error('Reads map to sequences that are not loaded ('+[...by.keys()].slice(0,3).join(', ')+'). Load the matching reference.');
+  return made+' sample(s) · '+res.reads.length.toLocaleString()+' reads'+(res.skipped?' ('+res.skipped.toLocaleString()+' unmapped/secondary skipped)':'');}
+ if(kind==='fastq'){const{st,kept}=await parseFastq(f);S.fastqs.push({id:uid(),fid,name:f.name,st,reads:kept});return st.reads.toLocaleString()+' reads · mean Q'+st.meanQ.toFixed(1);}
+ if(kind==='note'){const t=await readText(f);S.notes+=(S.notes?'\n\n':'')+'--- '+f.name+' ---\n'+t;saveNotes();return t.length+' characters added to notes';}}
+function removeFile(fid){S.refs.forEach(r=>{for(const k of Object.keys(r.tracks))if(r.tracks[k].fid===fid)delete r.tracks[k];r._all=null;});
+ const removedRefs=S.refs.filter(r=>r.fid===fid).map(r=>r.id);const activeId=curRef()?.id;
+ const doomed=new Set(S.samples.filter(s=>s.fid===fid||removedRefs.includes(S.refs[s.refIdx].id)).map(s=>s.id));
+ const keepIds=S.samples.filter(s=>!doomed.has(s.id)).map(s=>[s,S.refs[s.refIdx].id]);
+ S.refs=S.refs.filter(r=>r.fid!==fid);keepIds.forEach(([s,id])=>s.refIdx=S.refs.findIndex(r=>r.id===id));S.samples=keepIds.map(x=>x[0]);
+ S.fastqs=S.fastqs.filter(x=>x.fid!==fid);S.assemblies=S.assemblies.filter(x=>x.fid!==fid);S.files=S.files.filter(x=>x.id!==fid);
+ const ni=S.refs.findIndex(r=>r.id===activeId);S.active=ni>=0?ni:0;resetView();refreshAll();}
+
+/* ---- quick mapper for FASTQ: k-mer seeds, diagonal voting, banded affine-gap local alignment ---- */
+const A_MATCH=2,A_MIS=-3,A_GO=-5,A_GE=-2,NEG=-1e9;
+function bandAlign(sc,n,rcod,L,d,B){
+ const W=2*B+1,tb=new Uint8Array((n+1)*W);
+ let Hp=new Int32Array(W+2),Hc=new Int32Array(W+2),Ip=new Int32Array(W+2).fill(NEG),Ic=new Int32Array(W+2).fill(NEG);
+ let best=0,bi=0,bk=0;
+ for(let i=1;i<=n;i++){
+  const row=i*W,rbase=d+i-1-B,c=sc[i-1];let Dv=NEG,Hleft=0;
+  for(let k=0;k<W;k++){
+   const r=rbase+k;
+   if(r<0||r>=L){Hc[k+1]=0;Ic[k+1]=NEG;Dv=NEG;Hleft=0;continue;}
+   const rb=rcod[r],s=(c>3||rb>3)?-1:(c===rb?A_MATCH:A_MIS);
+   const hd=Hp[k+1]+s;
+   const iO=Hp[k+2]+A_GO,iE=Ip[k+2]+A_GE;let iv=iO,ie=0;if(iE>iO){iv=iE;ie=1;}
+   const dO=Hleft+A_GO,dE=Dv+A_GE;let dv=dO,de=0;if(dE>dO){dv=dE;de=1;}
+   let h=0,t=0;if(hd>h){h=hd;t=1;}if(iv>h){h=iv;t=2;}if(dv>h){h=dv;t=3;}
+   tb[row+k]=t|(ie<<2)|(de<<3);Hc[k+1]=h;Ic[k+1]=iv;Dv=dv;Hleft=h;
+   if(h>best){best=h;bi=i;bk=k;}}
+  let x=Hp;Hp=Hc;Hc=x;x=Ip;Ip=Ic;Ic=x;}
+ if(best<=0)return null;
+ let i=bi,k=bk,r=d+i-1-B+k,state=0,nm=0;const ops=[];
+ const push=op=>{const l=ops.length;if(l&&ops[l-1][1]===op)ops[l-1][0]++;else ops.push([1,op]);};
+ while(i>0){const t=tb[i*W+k];
+  if(state===0){const src=t&3;if(src===0)break;
+   if(src===1){push('M');const a=sc[i-1],b=rcod[r];if(a!==b||a>3)nm++;i--;r--;}else state=src===2?1:2;}
+  else if(state===1){push('I');nm++;state=((t>>2)&1)?1:0;i--;k++;}
+  else{push('D');nm++;state=((t>>3)&1)?2:0;k--;r--;}}
+ ops.reverse();
+ const lead=i,trail=n-bi;if(lead)ops.unshift([lead,'S']);if(trail)ops.push([trail,'S']);
+ const pos=r+1;let span=0,aligned=0;for(const[l,o]of ops){if(o==='M'||o==='D')span+=l;if(o==='M'||o==='I')aligned+=l;}
+ return{pos,end:pos+span,cig:ops,score:best,nm,aligned};}
+function makeMapper(ref){
+ const K=11,L=ref.len,rcodes=seqCodes(ref.seq),NK=1<<(2*K);
+ const MASK=NK-1,cnt=new Int32Array(NK+1);forEachKmer(rcodes,K,km=>cnt[(km&MASK)+1]++);for(let i=0;i<NK;i++)cnt[i+1]+=cnt[i];
+ const fill=cnt.slice(),pos=new Int32Array(cnt[NK]);forEachKmer(rcodes,K,(km,p)=>{pos[fill[km&MASK]++]=p;});
+ function seed(sc,n){const votes=new Map();const step=n<=80?1:n<=300?2:Math.max(3,Math.floor(n/100));
+  for(let i=0;i+K<=n;i+=step){let km=0,ok=true;for(let j=0;j<K;j++){const c=sc[i+j];if(c>3){ok=false;break;}km=(km<<2)|c;}
+   if(!ok)continue;const a=cnt[km],b=cnt[km+1];if(b===a||b-a>30)continue;
+   for(let t=a;t<b;t++){const dd=pos[t]-i,key=Math.floor(dd/24);let e=votes.get(key);if(!e){e=[];votes.set(key,e);}e.push(dd);}}
+  if(!votes.size)return null;const sz=key=>(votes.get(key-1)?votes.get(key-1).length:0)+(votes.get(key)?votes.get(key).length:0)+(votes.get(key+1)?votes.get(key+1).length:0);
+  let bk=null,bv=0,sv=0;for(const key of votes.keys()){const s=sz(key);if(s>bv){bv=s;bk=key;}}
+  for(const key of votes.keys()){if(Math.abs(key-bk)<=2)continue;const s=sz(key);if(s>sv)sv=s;}
+  const arr=[].concat(votes.get(bk-1)||[],votes.get(bk)||[],votes.get(bk+1)||[]).sort((a,b)=>a-b);
+  return{d:arr[arr.length>>1],v:bv,v2:sv};}
+ function mapOne(seq,qual,name){const n=seq.length;if(n<30)return null;
+  const fw=seqCodes(seq),rseq=rc(seq),rv=seqCodes(rseq);const h1=seed(fw,n),h2=seed(rv,n);const cands=[];
+  if(h1)cands.push({h:h1,rev:false,sc:fw});if(h2)cands.push({h:h2,rev:true,sc:rv});cands.sort((a,b)=>b.h.v-a.h.v);
+  let best=null;const B=Math.min(120,Math.max(10,Math.round(n*0.06)));
+  for(const c of cands.slice(0,2)){if(c.h.v<3)continue;const a=bandAlign(c.sc,n,rcodes,L,c.h.d,B);if(a&&(!best||a.score>best.a.score))best={a,c};if(best&&best.a.score>=n*1.6)break;}
+  if(!best||best.a.score<Math.max(50,n*0.7))return null;
+  const{a,c}=best;let mq=60;if(c.h.v2>0.6*c.h.v)mq=3;else if(c.h.v2>0.3*c.h.v)mq=20;if(c.h.v<4)mq=Math.min(mq,10);if(a.aligned<n*0.6)mq=Math.min(mq,20);
+  return{name,ref:ref.name,pos:a.pos,end:a.end,rev:c.rev,mq,cig:a.cig,seq:c.rev?rseq:seq,qual:c.rev?qual.split('').reverse().join(''):qual,row:-1,score:a.score};}
+ return{mapOne};}
+async function mapReadsAsync(ref,list,o={}){const M=makeMapper(ref),out=[],t0=Date.now();let tried=0;
+ for(const r of list){const x=M.mapOne(r.s,r.q,r.n);if(x)out.push(x);tried++;
+  if(tried%1000===0){if(o.progress)o.progress(tried,out.length);await tick();if(o.budgetMs&&Date.now()-t0>o.budgetMs)break;}}
+ return{reads:out,tried};}
+async function mapFastq(fq){const ref=curRef();if(!ref){toast('Load a reference first.');return;}
+ setStatus('Indexing '+ref.name+'…');await tick();
+ const res=await mapReadsAsync(ref,fq.reads,{budgetMs:45000,progress:(t,m)=>setStatus(`Mapping ${fq.name}: ${t.toLocaleString()} reads, ${m.toLocaleString()} mapped…`)});
+ setStatus('');
+ if(res.reads.length<20){toast('Fewer than 20 reads mapped to '+ref.name+'. Check that the reference matches this sample.',6000);return;}
+ const smp={id:uid(),fid:fq.fid,name:fq.name.replace(/\.(fastq|fq)(\.gz)?$/i,'')+' (quick map)',refIdx:S.active,reads:res.reads,show:true,src:'FASTQ'};
+ analyze(smp,true);S.samples.push(smp);AL.sample=smp.id;
+ toast(`${res.reads.length.toLocaleString()} of ${res.tried.toLocaleString()} reads mapped with gapped local alignment`+(res.tried<fq.reads.length?' (time limit reached; remaining reads skipped)':'')+'. Reads that span the start of a circular sequence are soft-clipped.',7000);refreshAll();}
+
+/* ====================== exports ====================== */
+const wrap=(s,n=70)=>{const o=[];for(let i=0;i<s.length;i+=n)o.push(s.slice(i,i+n));return o.join('\n');};
+function consensusFasta(list){return list.map(s=>`>${s.name.replace(/\s+/g,'_')} consensus ref=${S.refs[s.refIdx].name} min_depth=${S.P.minDepth} mean_depth=${s.meanDepth.toFixed(1)} N=${s.nN}\n${wrap(s.cons.replace(/-/g,''))}`).join('\n')+'\n';}
+const featDesc=v=>v.feat||'';
+function mutationCsv(list){const rows=[['Sample','Reference','Position','Ref','Alt','Type','Depth','Alt_reads','Alt_fraction','Feature','Effect']];
+ for(const s of list)for(const v of s.variants)rows.push([s.name,S.refs[s.refIdx].name,v.pos+1,v.ref,v.type==='DEL'?'-':v.alt,v.type==='DEL'?'DEL'+v.len:'SNP',v.d,v.c,v.af.toFixed(3),featDesc(v),v.effect]);
+ return rows.map(r=>r.map(x=>/[",\n]/.test(String(x))?'"'+String(x).replace(/"/g,'""')+'"':x).join(',')).join('\n')+'\n';}
+function vcfText(s){const ref=S.refs[s.refIdx];let o=`##fileformat=VCFv4.2\n##source=GenomeJS\n##contig=<ID=${ref.name},length=${ref.len}>\n##INFO=<ID=DP,Number=1,Type=Integer,Description="Depth">\n##INFO=<ID=AO,Number=1,Type=Integer,Description="Alt-supporting reads">\n##INFO=<ID=AF,Number=1,Type=Float,Description="Alt fraction">\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n`;
+ for(const v of s.variants){const info=`DP=${v.d};AO=${v.c};AF=${v.af.toFixed(3)}`;if(v.type==='SNP')o+=`${ref.name}\t${v.pos+1}\t.\t${v.ref}\t${v.alt}\t.\tPASS\t${info}\n`;else if(v.pos>0){const pb=ref.seq[v.pos-1];o+=`${ref.name}\t${v.pos}\t.\t${pb+v.ref}\t${pb}\t.\tPASS\t${info}\n`;}}return o;}
+function qcCsv(){const rows=[['Sample','Reference','Reads','Mean_depth','Pct_ge_min_depth','Pct_N','Ambiguous_bases','Longest_N_run','Variants','Auto_status','Final_flag']];
+ for(const s of S.samples)rows.push([s.name,S.refs[s.refIdx].name,s.reads.length,s.meanDepth.toFixed(1),s.covPct.toFixed(1),s.nPct.toFixed(2),s.amb,s.maxN,s.variants.length,s.auto,sampleStatus(s)]);return rows.map(r=>r.join(',')).join('\n')+'\n';}
+function bedText(ref){return allFeatures(ref).map(f=>[ref.name,f.start,f.end,f.name,0,f.strand<0?'-':f.strand>0?'+':'.'].join('\t')).join('\n')+'\n';}
+function gffText(ref){return'##gff-version 3\n'+allFeatures(ref).flatMap((f,i)=>f.parts.slice().sort((a,b)=>a.s-b.s).map(p=>[ref.name,'GenomeJS',f.type==='bed'?'region':f.type,p.s+1,p.e,'.',f.strand<0?'-':f.strand>0?'+':'.','.',`ID=f${i};Name=${encodeURIComponent(f.name)}`].join('\t'))).join('\n')+'\n';}
+function distCsv(refIdx){const ss=S.samples.filter(s=>s.refIdx===refIdx);return[['',...ss.map(s=>s.name)].join(','),...ss.map(a=>[a.name,...ss.map(b=>snpDistance(a,b))].join(','))].join('\n')+'\n';}
+function reportMd(){const d=new Date().toISOString().slice(0,10);let o=`# Genome JS summary (${d})\n\n`;o+=`Thresholds: minimum depth ${S.P.minDepth}x, minimum alt reads ${S.P.minAlt}, minimum alt fraction ${S.P.minAF}, consensus fraction ${S.P.consFrac}.\n\n## Sample QC\n\n| Sample | Reference | Mean depth | Genome ≥ ${S.P.minDepth}x | % N | Ambiguous | Variants | Flag |\n|---|---|---|---|---|---|---|---|\n`;
+ for(const s of S.samples)o+=`| ${s.name} | ${S.refs[s.refIdx].name} | ${s.meanDepth.toFixed(1)} | ${s.covPct.toFixed(1)}% | ${s.nPct.toFixed(2)} | ${s.amb} | ${s.variants.length} | ${sampleStatus(s)} |\n`;
+ o+='\n## Variants\n\n| Sample | Position | Change | Depth | Alt reads | Fraction | Feature | Effect |\n|---|---|---|---|---|---|---|---|\n';
+ for(const s of S.samples)for(const v of s.variants)o+=`| ${s.name} | ${v.pos+1} | ${v.type==='SNP'?v.ref+'>'+v.alt:'del '+v.ref} | ${v.d} | ${v.c} | ${v.af.toFixed(2)} | ${v.feat} | ${v.effect} |\n`;
+ o+='\n## Notes\n\n'+(S.notes||'(none)')+'\n';return o;}
+function safeName(n){return n;}
+let OV=null;
+function openExport(title,filename,text,mime){OV={filename:safeName(filename),text};$('#ov-t').textContent=title;$('#ov-x').value=text.length>400000?text.slice(0,400000)+'\n… preview truncated; Save file writes everything':text;$('#ov-m').textContent=OV.filename+' · '+text.length.toLocaleString()+' characters';$('#ov').style.display='flex';}
+async function saveOv(){if(!OV)return;const ok=/\.(txt|csv|json|md)$/i.test(OV.filename);await saveBlob(OV.filename,new Blob([OV.text],{type:'text/plain'}));}
+async function copyOv(){try{await navigator.clipboard.writeText(OV.text);toast('Copied to clipboard');}catch(e){const t=$('#ov-x');t.select();try{document.execCommand('copy');toast('Copied to clipboard');}catch(_){toast('Select the text and copy it manually.');}}}
+
+/* ====================== demo data ====================== */
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function randSeq(n,r,gc=0.52){let o=[];for(let i=0;i<n;i++){const x=r();o.push(x<gc/2?'G':x<gc?'C':x<gc+(1-gc)/2?'A':'T');}return o.join('');}
+function mutate(s,rate,r){const o=s.split('');for(let i=0;i<o.length;i++)if(r()<rate){const b='ACGT'.replace(o[i],'');o[i]=b[Math.floor(r()*3)];}return o.join('');}
+function simSam(ref,name,seqName,opt,r){const L=ref.length,rl=150,n=Math.round(L*opt.depth/rl);const lines=[`@HD\tVN:1.6\tSO:coordinate`,`@SQ\tSN:${seqName}\tLN:${L}`];const recs=[];
+ for(let i=0;i<n;i++){const st=Math.floor(r()*(L-rl));const rel=opt.rel?opt.rel(st+rl/2):1;if(r()>rel)continue;const rev=r()<0.5;let seq=ref.slice(st,st+rl).split('');let cig=rl+'M';
+  if(opt.del){const{pos,len}=opt.del;if(st<pos&&st+rl>pos+len){const a=pos-st;seq=seq.slice(0,a).concat(ref.slice(pos+len,st+rl+len).split(''));cig=`${a}M${len}D${rl-a}M`;}else if(st+rl>pos-5&&st<pos+len+5)continue;}
+  for(const[vp,v]of Object.entries(opt.snps||{})){const p=+vp,idx=p-st;if(idx>=0&&idx<rl&&(!opt.del||cig==='150M')&&r()<(v.f||1))seq[idx]=v.alt;}
+  let qual='';for(let j=0;j<rl;j++){if(r()<opt.err){seq[j]='ACGT'.replace(seq[j],'')[Math.floor(r()*3)];qual+='+';}else qual+=String.fromCharCode(33+30+Math.floor(r()*9));}
+  recs.push({pos:st+1,line:[`${name}_r${i}`,rev?16:0,seqName,st+1,60,cig,'*',0,0,seq.join(''),qual].join('\t')});}
+ recs.sort((a,b)=>a.pos-b.pos);return lines.concat(recs.map(x=>x.line)).join('\n')+'\n';}
+function toGenBank(name,seq,feats){let o=`LOCUS       ${name.padEnd(16)}${String(seq.length).padStart(7)} bp    DNA     circular SYN 01-JAN-2026\nDEFINITION  Synthetic demo plasmid generated by Genome JS.\nFEATURES             Location/Qualifiers\n     source          1..${seq.length}\n                     /organism="synthetic construct"\n`;
+ for(const f of feats){o+='     '+f.type.padEnd(16)+(f.strand<0?`complement(${f.s+1}..${f.e})`:`${f.s+1}..${f.e}`)+'\n'+`                     /gene="${f.name}"\n`;if(f.type==='CDS')o+=`                     /product="${f.name} (synthetic)"\n`;}
+ o+='ORIGIN\n';for(let i=0;i<seq.length;i+=60){let l=String(i+1).padStart(9)+' ';for(let j=i;j<Math.min(i+60,seq.length);j+=10)l+=seq.slice(j,j+10).toLowerCase()+' ';o+=l.trimEnd()+'\n';}return o+'//\n';}
+async function loadDemo(){setStatus('Generating demo data…');await tick();const r=rng(42);
+ const p1=randSeq(6200,r);const feats=[{type:'CDS',s:300,e:1400,strand:1,name:'repA-demo'},{type:'CDS',s:1900,e:2760,strand:-1,name:'blaX-demo'},{type:'mobile_element',s:2800,e:2990,strand:1,name:'IS-demo'},{type:'CDS',s:3000,e:4200,strand:1,name:'tetY-demo'},{type:'CDS',s:4500,e:5300,strand:1,name:'mobA-demo'},{type:'rep_origin',s:5500,e:5800,strand:1,name:'oriV'}];
+ const p2=p1.slice(0,1500)+mutate(p1.slice(1500,2800),0.08,r)+p1.slice(2800,3400)+p1.slice(4000,4500)+rc(p1.slice(4500,5300))+p1.slice(5300,5800)+randSeq(800,r)+p1.slice(5800);
+ const p3=mutate(p1.slice(0,3000),0.012,r)+randSeq(1200,r)+mutate(p1.slice(4200),0.012,r);
+ const asm=['>contig_1 length='+3500+'\n'+wrap(p2.slice(0,3500)),'>contig_2 length='+3300+'\n'+wrap(rc(p2.slice(3500,6800))),'>contig_3 length=1200\n'+wrap(randSeq(1200,r))].join('\n')+'\n';
+ const bed=['pDEMO-1\t1900\t2760\tblaX-demo\t0\t-\t0\t0\t179,64,46','pDEMO-1\t3000\t4200\ttetY-demo\t0\t+\t0\t0\t179,64,46'].join('\n')+'\n';
+ const snpsAll={820:{alt:'T'},2105:{alt:'G'},3512:{alt:'A'},4777:{alt:'C'},5230:{alt:'A'}};
+ const pick=(...k)=>Object.fromEntries(k.map(x=>{const b=p1[x];const alt=snpsAll[x].alt===b?'ACGT'.replace(b,'')[0]:snpsAll[x].alt;return[x,{alt}];}));
+ const s1=simSam(p1,'S1','pDEMO-1',{depth:130,err:0.004,snps:pick(820,2105,3512)},r);
+ const m3512={...pick(4777,5230,820,2105)};{const b=p1[3512];m3512[3512]={alt:'ACGT'.replace(b,'')[1],f:0.42};}
+ const s2=simSam(p1,'S2','pDEMO-1',{depth:90,err:0.004,snps:m3512,del:{pos:5950,len:2},rel:p=>p>3800&&p<4700?0.07:1},r);
+ const s3=simSam(p1,'S3','pDEMO-1',{depth:30,err:0.004,snps:pick(820,3512),rel:p=>p>1500&&p<3600?0:1},r);
+ // FASTQ from S1 reads
+ let fq='';{const rr=rng(7);const body=s1.split('\n').filter(l=>l&&l[0]!=='@');let c=0;for(const l of body){if(rr()>0.35)continue;const f=l.split('\t');const rev=+f[1]&16;const sq=rev?rc(f[9]):f[9],ql=rev?f[10].split('').reverse().join(''):f[10];fq+=`@${f[0]}\n${sq}\n+\n${ql}\n`;if(++c>=3500)break;}}
+ const mk=(t,n)=>new File([t],n);
+ await importFiles([mk(toGenBank('pDEMO-1',p1,feats),'pDEMO-1.gbk'),mk('>pDEMO-2 structural variant of pDEMO-1\n'+wrap(p2)+'\n','pDEMO-2.fasta'),mk('>pDEMO-3 related plasmid\n'+wrap(p3)+'\n','pDEMO-3.fasta'),mk(asm,'S1_assembly.fasta'),mk(bed,'resistance_hits.bed'),mk(s1,'S1.sam'),mk(s2,'S2.sam'),mk(s3,'S3.sam'),mk(fq,'S1_reads.fastq')]);
+ S.tab='aln';AL.sample=S.samples[0]?.id;refreshAll();toast('Demo loaded: one plasmid, two relatives, three samples, an assembly and a FASTQ. All sequence is synthetic.',6000);}
+
+/* ====================== canvas utilities ====================== */
+let PAL={};
+function loadPal(){const cs=getComputedStyle(document.documentElement),g=n=>cs.getPropertyValue(n).trim();PAL={ink:g('--ink'),panel:g('--panel'),line:g('--line'),muted:g('--muted'),A:g('--A'),C:g('--C'),G:g('--G'),T:g('--T'),N:g('--N'),readF:g('--readF'),readR:g('--readR'),bad:g('--bad'),accent:g('--accent'),grid:g('--grid'),warn:g('--warn')};PAL['-']=PAL.ink;}
+const SANS='12px "IBM Plex Sans",system-ui,sans-serif',MONO='11px "IBM Plex Mono",ui-monospace,monospace';
+function makeCanvas(host,draw){const cv=el('canvas');host.append(cv);cv._draw=draw;
+ const fit=()=>{const r=host.getBoundingClientRect();if(r.width<2||r.height<2)return;const d=window.devicePixelRatio||1;cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);cv.style.width=r.width+'px';cv.style.height=r.height+'px';cv._w=r.width;cv._h=r.height;cv._d=d;draw(cv);};
+ new ResizeObserver(fit).observe(host);cv._fit=fit;return cv;}
+function prep(cv){const ctx=cv.getContext('2d');ctx.setTransform(cv._d,0,0,cv._d,0,0);ctx.clearRect(0,0,cv._w,cv._h);ctx.font=SANS;ctx.textBaseline='middle';return ctx;}
+function msg(ctx,W,H,t){ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.textAlign='center';ctx.fillText(t,W/2,H/2);ctx.textAlign='left';}
+const mapper=(W,v)=>({x:p=>(p-v.s)/(v.e-v.s)*W,p:x=>v.s+x/W*(v.e-v.s),ppb:W/(v.e-v.s)});
+function setView(s,e){const L=curRef()?curRef().len:1;let span=Math.max(20,e-s);if(span>L)span=L;if(s<0){s=0;}if(s+span>L)s=L-span;S.view={s,e:s+span};}
+const resetView=()=>{const r=curRef();S.view={s:0,e:r?r.len:1};AL.scroll=0;MAP.scroll=0;circReset();};
+const zoomBy=(f,cx=0.5)=>{const v=S.view,c=v.s+(v.e-v.s)*cx,span=(v.e-v.s)*f;setView(c-span*cx,c+span*(1-cx));};
+const AL={scroll:0,sample:null};
+const CIRC={k:1,ox:0,oy:0,R0:200};
+const MAP={scroll:0};
+function circReset(){CIRC.k=1;CIRC.ox=0;CIRC.oy=0;}
+function circZoomAt(f,px,py,W,H){const k0=CIRC.k,k1=Math.max(1,Math.min(80,k0*f));if(k1===k0)return;const cx=W/2+CIRC.ox,cy=H/2+CIRC.oy,q=k1/k0;
+ CIRC.k=k1;CIRC.ox=px-(px-cx)*q-W/2;CIRC.oy=py-(py-cy)*q-H/2;if(k1<=1.0001)circReset();}
+function circGoto(s,e,W,H){const ref=curRef();if(!ref)return;const L=ref.len,th=Math.max((e-s)/L*2*Math.PI,0.002),R=CIRC.R0||Math.min(W,H)*0.3;
+ let k=0.8*Math.min(W,H)/(R*th);if(th<2.4)k=Math.max(k,2.2);k=Math.max(1,Math.min(80,k));if(k<=1.05){circReset();return;}
+ const a=-Math.PI/2+((s+e)/2)/L*2*Math.PI;CIRC.k=k;CIRC.ox=-Math.cos(a)*R*k;CIRC.oy=-Math.sin(a)*R*k;}
+function attachNav(cv,onChange,o={}){let drag=null;const circ=()=>!!(o.circ&&o.circ());
+ cv.addEventListener('wheel',e=>{e.preventDefault();let dy=e.deltaY;if(e.deltaMode===1)dy*=33;else if(e.deltaMode===2)dy*=400;dy=Math.max(-300,Math.min(300,dy));
+  if(e.shiftKey&&o.vscroll&&!circ()){o.vscroll(dy||e.deltaX);return;}
+  const r=cv.getBoundingClientRect(),f=Math.exp(dy*0.0022);
+  if(circ()){circZoomAt(1/f,e.clientX-r.left,e.clientY-r.top,cv._w,cv._h);onChange();hideTip();return;}
+  zoomBy(f,(e.clientX-r.left)/r.width);onChange();hideTip();},{passive:false});
+ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY,s:S.view.s,e:S.view.e,sc:o.sget?o.sget():0,ox:CIRC.ox,oy:CIRC.oy,moved:false};cv.classList.add('dragging');});
+ cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;if(!drag.moved)return;hideTip();
+  if(circ()){if(CIRC.k>1){CIRC.ox=drag.ox+dx;CIRC.oy=drag.oy+dy;onChange();}return;}
+  const bp=(drag.e-drag.s)/cv._w;setView(drag.s-dx*bp,drag.e-dx*bp);if(o.sset)o.sset(drag.sc-dy);onChange();});
+ cv.addEventListener('pointerup',e=>{cv.classList.remove('dragging');const moved=drag&&drag.moved;drag=null;if(!moved&&o.click){const r=cv.getBoundingClientRect();o.click(e.clientX-r.left,e.clientY-r.top,e);}});
+ cv.addEventListener('dblclick',e=>{const r=cv.getBoundingClientRect();if(circ()){circZoomAt(2.2,e.clientX-r.left,e.clientY-r.top,cv._w,cv._h);onChange();return;}zoomBy(0.4,(e.clientX-r.left)/r.width);onChange();});
+ cv.addEventListener('pointerleave',hideTip);}
+function showTip(html,e){const t=$('#tip');t.innerHTML=html;t.style.display='block';const w=t.offsetWidth,h=t.offsetHeight;t.style.left=Math.min(innerWidth-w-8,e.clientX+14)+'px';t.style.top=Math.min(innerHeight-h-8,e.clientY+16)+'px';}
+function hideTip(){$('#tip').style.display='none';}
+const hitAt=(cv,x,y)=>{const h=cv._hits||[];for(let i=h.length-1;i>=0;i--){const a=h[i];if(x>=a.x&&x<=a.x+a.w&&y>=a.y&&y<=a.y+a.h)return a;}return null;};
+const featColor=f=>f.color||(S.amr&&isAMR(f)?PAL.T:{CDS:'#4C78A8',gene:'#4C78A8',rep_origin:'#9B6BB0',mobile_element:'#C98A2B',bed:'#7A8793',misc_feature:'#7A8793',variant:PAL.T}[f.type]||'#6E8CA0');
+
+/* ---- shared linear track pieces ---- */
+function drawRuler(ctx,M,W,y){const v=S.view,span=v.e-v.s,step=niceStep(span/8);ctx.fillStyle=PAL.muted;ctx.strokeStyle=PAL.line;ctx.font=SANS;ctx.textAlign='left';
+ ctx.beginPath();ctx.moveTo(0,y+24.5);ctx.lineTo(W,y+24.5);ctx.stroke();
+ for(let p=Math.ceil(v.s/step)*step;p<=v.e;p+=step){const x=M.x(p);ctx.beginPath();ctx.moveTo(x+.5,y+19);ctx.lineTo(x+.5,y+25);ctx.stroke();ctx.fillText(fmtBp(p),x+4,y+11);}
+ return y+28;}
+function drawRefStrip(ctx,M,W,y,ref,h=16){const v=S.view,ppb=M.ppb;const a=Math.max(0,Math.floor(v.s)),b=Math.min(ref.len,Math.ceil(v.e));
+ if(ppb<0.9){ctx.fillStyle=PAL.line;ctx.fillRect(0,y+h/2-2,W,4);return y+h+2;}
+ for(let p=a;p<b;p++){const ch=ref.seq[p],x=M.x(p);ctx.fillStyle=PAL[ch]||PAL.N;if(ppb>=8){ctx.globalAlpha=.18;ctx.fillRect(x,y,ppb,h);ctx.globalAlpha=1;ctx.fillStyle=PAL[ch]||PAL.N;ctx.font=MONO;ctx.textAlign='center';ctx.fillText(ch,x+ppb/2,y+h/2+1);ctx.textAlign='left';}else ctx.fillRect(x,y,Math.max(1,ppb-(ppb>3?1:0)),h);}
+ return y+h+2;}
+function lumaOf(c){let m=String(c).match(/^#([0-9a-f]{6})$/i),r,g,b;if(m){r=parseInt(m[1].slice(0,2),16);g=parseInt(m[1].slice(2,4),16);b=parseInt(m[1].slice(4,6),16);}
+ else if((m=String(c).match(/^#([0-9a-f]{3})$/i))){r=parseInt(m[1][0]+m[1][0],16);g=parseInt(m[1][1]+m[1][1],16);b=parseInt(m[1][2]+m[1][2],16);}
+ else if((m=String(c).match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/))){r=+m[1];g=+m[2];b=+m[3];}else return 0.3;return(0.299*r+0.587*g+0.114*b)/255;}
+function drawFeatTrack(ctx,M,W,y,t,hits){const rowH=17,top=y+13,v=S.view;ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.textAlign='left';ctx.fillText(t.name,6,y+6);const rowEnd=[];
+ for(const f of t.items){if(f.hidden||f.end<v.s||f.start>v.e)continue;const x0=M.x(f.start),x1=M.x(f.end),fy=top+f.row*rowH,w=Math.max(2,x1-x0),col=featColor(f);ctx.fillStyle=col;
+  if(f.type==='variant'){ctx.fillRect(x0,fy,Math.max(2,w),12);}
+  else if(w>12&&f.strand){const ah=Math.min(8,w/2);ctx.beginPath();if(f.strand>0){ctx.moveTo(x0,fy);ctx.lineTo(x1-ah,fy);ctx.lineTo(x1,fy+6);ctx.lineTo(x1-ah,fy+12);ctx.lineTo(x0,fy+12);}else{ctx.moveTo(x1,fy);ctx.lineTo(x0+ah,fy);ctx.lineTo(x0,fy+6);ctx.lineTo(x0+ah,fy+12);ctx.lineTo(x1,fy+12);}ctx.closePath();ctx.fill();}
+  else ctx.fillRect(x0,fy,w,12);
+  hits.push({x:x0,y:fy,w:Math.max(w,4),h:12,f});
+  if(f.type==='variant')continue;
+  ctx.font='11px "IBM Plex Sans",sans-serif';const tw=ctx.measureText(f.name).width,vis=Math.min(x1,W)-Math.max(x0,0);let drawn=false;
+  if(vis>tw+14){ctx.fillStyle=lumaOf(col)>0.62?'#111':'#fff';ctx.textAlign='left';ctx.fillText(f.name,Math.max(x0,0)+7,fy+6.5);drawn=true;}
+  else{const lx=x1+4;if(x1>=0&&lx+tw<W-2&&lx>(rowEnd[f.row]||-1e9)){ctx.fillStyle=PAL.ink;ctx.textAlign='left';ctx.fillText(f.name,lx,fy+6.5);rowEnd[f.row]=lx+tw+6;drawn=true;}}
+  if(!drawn&&vis>30){ctx.save();ctx.beginPath();ctx.rect(Math.max(0,x0),fy,Math.min(w,W),12);ctx.clip();ctx.fillStyle=lumaOf(col)>0.62?'#111':'#fff';ctx.textAlign='left';ctx.fillText(f.name,Math.max(x0,0)+7,fy+6.5);ctx.restore();}
+  ctx.font=SANS;}
+ return top+t.rows*rowH+4;}
+function drawCov(ctx,M,W,y,s,h,hits,opt={}){const ref=S.refs[s.refIdx],v=S.view,P=S.P,ppb=M.ppb;const a=Math.max(0,Math.floor(v.s)),b=Math.min(ref.len,Math.ceil(v.e));
+ ctx.font=SANS;ctx.textAlign='left';ctx.fillStyle=PAL.ink;ctx.fillText(s.name,6,y+8);ctx.fillStyle=PAL.muted;const lab=`${s.meanDepth.toFixed(0)}x mean · ${s.covPct.toFixed(0)}% ≥ ${P.minDepth}x · ${s.variants.length} variants`;ctx.fillText(lab,12+ctx.measureText(s.name).width,y+8);
+ const top=y+16,bh=h-16;let mx=1;const cols=Math.ceil(W),dcol=new Float32Array(cols);
+ for(let c=0;c<cols;c++){const p0=Math.max(a,Math.floor(M.p(c))),p1=Math.min(b,Math.ceil(M.p(c+1))+0);let m=0;const step=Math.max(1,Math.floor((p1-p0)/6));for(let p=p0;p<Math.max(p1,p0+1)&&p<b;p+=step)if(s.depth[p]>m)m=s.depth[p];dcol[c]=m;if(m>mx)mx=m;}
+ const top_=niceStep(mx*1.05);const ymax=Math.max(top_,mx<=top_*0.6?top_:Math.ceil(mx*1.05/(top_/2))*(top_/2));
+ ctx.fillStyle=PAL.grid;ctx.fillRect(0,top,W,bh);
+ const ty=top+bh-P.minDepth/ymax*bh;
+ if(ppb>=1&&opt.alleles){for(let p=a;p<b;p++){const d=s.depth[p],x=M.x(p),bw=Math.max(1,ppb-(ppb>3?1:0));if(!d)continue;const hh=Math.min(bh,d/ymax*bh);const cs=[s.cA[p],s.cC[p],s.cG[p],s.cT[p],s.cD[p]];const rb='ACGT'.indexOf(ref.seq[p]);let alt=false;for(let k=0;k<5;k++)if(k!==rb&&cs[k]/d>=P.minAF&&cs[k]>=P.minAlt)alt=true;
+   if(!alt){ctx.fillStyle=d<P.minDepth?PAL.bad:PAL.muted;ctx.globalAlpha=d<P.minDepth?.7:.55;ctx.fillRect(x,top+bh-hh,bw,hh);ctx.globalAlpha=1;}
+   else{let yy=top+bh;for(let k=0;k<5;k++){const sh=cs[k]/d*hh;if(!sh)continue;ctx.fillStyle=k<4?PAL['ACGT'[k]]:PAL.ink;ctx.fillRect(x,yy-sh,bw,sh);yy-=sh;}}}}
+ else{for(let c=0;c<cols;c++){const d=dcol[c];if(d<P.minDepth){ctx.fillStyle=PAL.bad;ctx.globalAlpha=.16;ctx.fillRect(c,top,1,bh);ctx.globalAlpha=1;}if(!d)continue;const hh=Math.min(bh,d/ymax*bh);ctx.fillStyle=d<P.minDepth?PAL.bad:PAL.accent;ctx.globalAlpha=.8;ctx.fillRect(c,top+bh-hh,1,hh);ctx.globalAlpha=1;}}
+ ctx.strokeStyle=PAL.bad;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(0,ty+.5);ctx.lineTo(W,ty+.5);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle=PAL.muted;ctx.textAlign='right';ctx.fillText(ymax+'x',W-4,top+8);ctx.textAlign='left';
+ if(opt.alleles){for(const[p,n]of s.ins)if(p>=a&&p<=b&&n>=Math.max(3,S.P.minAlt)){ctx.fillStyle='#A24FCB';ctx.fillRect(M.x(p)-1,top,2,6);}}
+ let vy=top+bh+2;for(const vr of s.variants){if(vr.pos+vr.len<v.s||vr.pos>v.e)continue;const x=M.x(vr.pos);ctx.fillStyle=vr.type==='SNP'?PAL[vr.alt]:PAL.ink;const w=Math.max(3,M.x(vr.pos+vr.len)-x);ctx.fillRect(x,vy,w,6);hits.push({x:x-2,y:vy-2,w:w+4,h:10,v:vr,s});}
+ hits.push({x:0,y:top,w:W,h:bh,cov:s,M});return y+h+10;}
+
+/* ====================== MAP view ====================== */
+function circLabel(ctx,t,maxw){if(ctx.measureText(t).width<=maxw)return t;let s=t;while(s.length>2&&ctx.measureText(s+'…').width>maxw)s=s.slice(0,-1);return s+'…';}
+function drawMap(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h,ref=curRef();cv._hits=[];cv._arcs=[];if(!ref){msg(ctx,W,H,'Add a reference (FASTA or GenBank) to see it here.');return;}
+ if(S.mapMode==='circular')return drawCircular(cv,ctx,W,H,ref);
+ const M=mapper(W,S.view);let y=drawRuler(ctx,M,W,0);const top=y;
+ MAP.scroll=Math.max(0,Math.min(MAP.scroll,Math.max(0,(cv._content||0)-H)));
+ ctx.save();ctx.beginPath();ctx.rect(0,top-2,W,H-top+2);ctx.clip();ctx.translate(0,-MAP.scroll);
+ y=drawRefStrip(ctx,M,W,y,ref,16)+2;
+ for(const t of Object.values(ref.tracks))y=drawFeatTrack(ctx,M,W,y,t,cv._hits);
+ for(const s of S.samples.filter(s=>s.refIdx===S.active&&s.show))y=drawCov(ctx,M,W,y,s,64,cv._hits);
+ ctx.restore();for(const h of cv._hits)h.y-=MAP.scroll;
+ cv._content=y+26;const maxS=Math.max(0,cv._content-H);
+ if(maxS>0){const th=Math.max(24,H*H/cv._content),ty=top+(H-top-th)*MAP.scroll/maxS;ctx.fillStyle=PAL.muted;ctx.globalAlpha=.35;ctx.fillRect(W-5,ty,3,th);ctx.globalAlpha=1;}
+ if(!S.exporting){ctx.fillStyle=PAL.panel;ctx.globalAlpha=.88;ctx.fillRect(0,H-22,W,22);ctx.globalAlpha=1;}ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.textAlign='left';ctx.fillText(ref.name+' · '+ref.len.toLocaleString()+' bp · '+Math.round(S.view.e-S.view.s).toLocaleString()+' bp in view'+(maxS>0&&!S.exporting?' · scroll for more tracks (Shift + wheel or drag up and down)':''),6,H-10);}
+function drawCircular(cv,ctx,W,H,ref){const L=ref.len,feats=[],tracks=[];
+ for(const t of Object.values(ref.tracks)){if(t.kind==='vcf')continue;const items=t.items.filter(f=>!f.hidden&&f.type!=='variant');if(items.length){tracks.push({t,items});feats.push(...items);}}
+ ctx.font=SANS;let maxLab=40;for(const f of feats){const w=ctx.measureText(f.name).width;if(w>maxLab)maxLab=w;}
+ const narrow=W<640,labW=Math.max(30,Math.min(maxLab,190,W/2-108)),R0=narrow?Math.max(70,Math.min(W/2-28,H/2-30)):Math.max(50,Math.min((W-2*(labW+58))/2,H/2-36));CIRC.R0=R0;
+ const k=CIRC.k,u=Math.pow(k,0.55),R=R0*k,cx=W/2+CIRC.ox,cy=H/2+CIRC.oy;cv._circ={cx,cy,L};
+ const ang=p=>-Math.PI/2+p/L*2*Math.PI,onScr=(x,y)=>x>-60&&x<W+60&&y>-30&&y<H+30;
+ const arc=(r,a0,a1,w,col)=>{ctx.beginPath();ctx.arc(cx,cy,r,a0,Math.max(a1,a0+0.003));ctx.lineWidth=w;ctx.strokeStyle=col;ctx.stroke();};
+ ctx.strokeStyle=PAL.ink;ctx.lineWidth=1.5*Math.min(u,3);ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
+ const step=Math.max(1,niceStep(L/(12*k)));ctx.fillStyle=PAL.muted;ctx.strokeStyle=PAL.muted;ctx.lineWidth=1;ctx.font=SANS;ctx.textAlign='center';
+ for(let p=0;p<L;p+=step){const a=ang(p),c=Math.cos(a),s=Math.sin(a);if(!onScr(cx+c*R,cy+s*R))continue;ctx.beginPath();ctx.moveTo(cx+c*R,cy+s*R);ctx.lineTo(cx+c*(R+6*u),cy+s*(R+6*u));ctx.stroke();ctx.fillText(p===0?'1':fmtBp(p),cx+c*(R+18*u),cy+s*(R+18*u));}
+ const bandH=9*u,gap=2*u;let off=4*u;
+ const drawArrow=(f,rMid,h,col)=>{const a0=ang(f.start),a1=ang(f.end),span=a1-a0;const headA=f.strand&&span>0?Math.min(span*0.5,h*1.1/rMid):0;let b0=a0,b1=a1;if(f.strand>0)b1=a1-headA;else if(f.strand<0)b0=a0+headA;
+  ctx.beginPath();ctx.arc(cx,cy,rMid,b0,Math.max(b1,b0+0.002));ctx.lineWidth=h;ctx.strokeStyle=col;ctx.stroke();
+  if(headA>0){const base=f.strand>0?b1:b0,tip=f.strand>0?a1:a0;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(cx+Math.cos(base)*(rMid+h/2),cy+Math.sin(base)*(rMid+h/2));ctx.lineTo(cx+Math.cos(tip)*rMid,cy+Math.sin(tip)*rMid);ctx.lineTo(cx+Math.cos(base)*(rMid-h/2),cy+Math.sin(base)*(rMid-h/2));ctx.closePath();ctx.fill();}};
+ for(const{t,items}of tracks){const rows=Math.min(t.rows,12);
+  for(const f of items){const row=Math.min(f.row||0,rows-1),rMid=R-off-(row+0.5)*(bandH+gap);drawArrow(f,rMid,bandH,featColor(f));cv._arcs.push({r0:rMid-bandH/2,r1:rMid+bandH/2,a0:f.start,a1:f.end,f});f._cr=rMid+bandH/2;f._rm=rMid;}
+  off+=rows*(bandH+gap)+3*u;}
+ let rr=R-off-6*u;const legend=[],bins=Math.min(720,L);ctx.lineWidth=1;
+ for(const s of S.samples.filter(s=>s.refIdx===S.active&&s.show)){const rh=24*u,r0=rr-rh,mx=Math.max(1,s.medianDepth*2);
+  for(let b=0;b<bins;b++){const d=s.bins[b],a0=-Math.PI/2+b/bins*Math.PI*2,hh=Math.min(1,d/mx)*rh;arc(r0+hh/2,a0,a0+Math.PI*2/bins+0.002,Math.max(0.5,hh),d<S.P.minDepth?PAL.bad:PAL.accent);}
+  ctx.strokeStyle=PAL.line;ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,r0,0,Math.PI*2);ctx.stroke();rr=r0-3*u;
+  for(const v of s.variants){const a=ang(v.pos);ctx.strokeStyle=v.type==='SNP'?PAL[v.alt]:PAL.ink;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);ctx.lineTo(cx+Math.cos(a)*(rr-11*u),cy+Math.sin(a)*(rr-11*u));ctx.stroke();}ctx.lineWidth=1;rr-=16*u;legend.push([PAL.accent,s.name+' coverage + variants']);}
+ const cands=cmpCandidates().filter(c=>S.cmpShow.has(c.id));
+ for(const c of cands){const cmp=compareSeqs(ref,c.ent),idb=identityBins(cmp,bins),rw=13*u,rm=rr-rw/2;
+  for(let b=0;b<bins;b++){const a0=-Math.PI/2+b/bins*Math.PI*2,id=idb[b];const col=id<0?PAL.grid:id<0.02?PAL.line:`hsl(212,62%,${Math.round(88-Math.max(0,Math.min(1,(id-0.7)/0.3))*58)}%)`;arc(rm,a0,a0+Math.PI*2/bins+0.003,rw,col);}
+  for(const bl of cmp.blocks)if(bl.strand<0)arc(rm,ang(bl.r0),ang(bl.r1),2*Math.min(u,3),'#E07A1F');rr-=rw+4*u;legend.push(['hsl(212,62%,40%)',c.label+' (shade = shared identity; orange = inverted)']);}
+ const lab=feats.filter(f=>f._cr!=null).sort((a,b)=>(b.end-b.start)-(a.end-a.start));ctx.font=SANS;
+ const legBottom=legend.length?16+legend.length*17:12;
+ if(k<=1.25&&!narrow){const cap=Math.max(2,Math.floor((H-24)/15)),sides={r:[],l:[]};
+  for(const f of lab){const a=ang((f.start+f.end)/2),side=Math.cos(a)>=0?'r':'l';if(sides[side].length<cap)sides[side].push({f,a,y:cy+Math.sin(a)*(R+30)});}
+  for(const side of['r','l']){const arr=sides[side].sort((p,q)=>p.y-q.y);
+   for(let i=0;i<arr.length;i++)arr[i].ly=Math.max(arr[i].y,i?arr[i-1].ly+15:(side==='l'?legBottom:12));
+   for(let i=arr.length-1;i>=0;i--){const lim=i<arr.length-1?arr[i+1].ly-15:H-10;if(arr[i].ly>lim)arr[i].ly=lim;}
+   for(let i=0;i<arr.length;i++)arr[i].ly=Math.max(arr[i].ly,i?arr[i-1].ly+15:(side==='l'?legBottom:12));
+   const colX=cx+(side==='r'?1:-1)*(R+48);
+   for(const it of arr){const c=Math.cos(it.a),s=Math.sin(it.a),col=featColor(it.f);ctx.strokeStyle=col;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx+c*(it.f._cr+2),cy+s*(it.f._cr+2));ctx.lineTo(cx+c*(R+30),cy+s*(R+30));ctx.lineTo(colX,it.ly);ctx.stroke();
+    ctx.fillStyle=col;ctx.fillRect(colX-(side==='r'?0:5),it.ly-3,5,6);ctx.fillStyle=PAL.ink;ctx.textAlign=side==='r'?'left':'right';ctx.fillText(circLabel(ctx,it.f.name,labW),colX+(side==='r'?8:-8),it.ly);}}}
+ else{const rects=[];let n=0;ctx.textAlign='center';
+  for(const f of lab){if(n>=200)break;const a=ang((f.start+f.end)/2),x=cx+Math.cos(a)*f._rm,y=cy+Math.sin(a)*f._rm;const tw=ctx.measureText(f.name).width,bx=x-tw/2-8,bw=tw+14,by=y-8;
+   if(bx<2||bx+bw>W-2||by<2||by+16>H-2)continue;let hit=false;for(const r of rects)if(bx<r[0]+r[2]+2&&bx+bw>r[0]-2&&by<r[1]+r[3]+1&&by+16>r[1]-1){hit=true;break;}if(hit)continue;
+   rects.push([bx,by,bw,16]);n++;ctx.globalAlpha=.9;ctx.fillStyle=PAL.panel;ctx.fillRect(bx,by,bw,16);ctx.globalAlpha=1;ctx.fillStyle=featColor(f);ctx.fillRect(bx,by,4,16);ctx.fillStyle=PAL.ink;ctx.fillText(f.name,x+3,y);}}
+ ctx.textAlign='center';if(k<1.5&&rr>44*u){ctx.fillStyle=PAL.ink;ctx.font='600 14px "IBM Plex Sans",sans-serif';ctx.fillText(ref.name,cx,cy-8);ctx.font=SANS;ctx.fillStyle=PAL.muted;ctx.fillText(L.toLocaleString()+' bp',cx,cy+10);}
+ ctx.font=SANS;ctx.textAlign='left';legend.forEach((l,i)=>{ctx.fillStyle=l[0];ctx.fillRect(10,10+i*17,10,10);ctx.fillStyle=PAL.muted;ctx.fillText(l[1],26,16+i*17);});
+ if(!S.exporting){ctx.fillStyle=PAL.muted;ctx.fillText(k>1.01?`${k.toFixed(1)}× zoom · drag to pan · scroll to zoom out`:'Scroll to zoom, then drag to pan. Click a gene to zoom to it.',10,H-10);}}
+function mapHover(cv,e,click){const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+ if(S.mapMode==='circular'){const c=cv._circ;if(!c)return;const dx=x-c.cx,dy=y-c.cy,rad=Math.hypot(dx,dy);let a=Math.atan2(dy,dx)+Math.PI/2;if(a<0)a+=Math.PI*2;const pos=a/(Math.PI*2)*c.L;
+  const h=(cv._arcs||[]).find(h=>rad>=h.r0&&rad<=h.r1&&pos>=h.a0&&pos<=h.a1);
+  if(click){if(h){$('#m-info').innerHTML=featTip(h.f,true);circGoto(h.f.start,h.f.end,cv._w,cv._h);drawAll();}return;}
+  if(h)showTip(featTip(h.f),e);else hideTip();return;}
+ const h=hitAt(cv,x,y);if(!h){hideTip();return;}
+ if(h.f){if(click){const f=h.f,pad=(f.end-f.start)*0.15+10;setView(f.start-pad,f.end+pad);drawAll();$('#m-info').innerHTML=featTip(f,true);}else showTip(featTip(h.f),e);}
+ else if(h.v){const t=varTip(h.v,h.s);if(click)$('#m-info').innerHTML=t;else showTip(t,e);}
+ else if(h.cov&&!click){const p=Math.floor(h.M.p(x));const s=h.cov;if(p>=0&&p<s.depth.length)showTip(`<b>${s.name}</b><br>Position ${(p+1).toLocaleString()} · depth ${s.depth[p]}`,e);}}
+const featTip=(f,long)=>`<b>${esc(f.name)}</b> <span style="opacity:.75">${esc(f.type)}</span><br>${(f.start+1).toLocaleString()}..${f.end.toLocaleString()} (${(f.end-f.start).toLocaleString()} bp)${f.strand?' · '+(f.strand>0?'+':'−')+' strand':''}${S.amr&&isAMR(f)?'<br><i>name resembles a resistance gene (name match only, verify against a curated database)</i>':''}${f.q&&f.q.product&&f.q.product!==f.name?'<br>'+esc(f.q.product):''}`;
+const varTip=(v,s)=>`<b>${esc(s.name)}</b> · ${v.type==='SNP'?v.ref+(v.pos+1)+v.alt:'deletion of '+v.len+' bp at '+(v.pos+1)}<br>depth ${v.d}, alt reads ${v.c} (${pct(v.af,0)})${v.feat?'<br>'+esc(v.feat):''}${v.effect?' · '+esc(v.effect):''}`;
+
+/* ====================== ALIGNMENT view ====================== */
+const curSample=()=>S.samples.find(s=>s.id===AL.sample)||S.samples.find(s=>s.refIdx===S.active)||S.samples[0];
+function drawAln(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h;cv._hits=[];const smp=curSample();if(!smp){msg(ctx,W,H,'Load a BAM or SAM file (with its reference) to inspect alignments.');return;}
+ const ref=S.refs[smp.refIdx];const M=mapper(W,S.view),ppb=M.ppb,v=S.view;let y=0;
+ y=drawRuler(ctx,M,W,y);y=drawCov(ctx,M,W,y,smp,96,cv._hits,{alleles:true});
+ // consensus row
+ ctx.font=SANS;ctx.fillStyle=PAL.muted;ctx.textAlign='left';ctx.fillText('Consensus',6,y+7);const cy0=y+14;const a=Math.max(0,Math.floor(v.s)),b=Math.min(ref.len,Math.ceil(v.e));
+ const CC=[null,null,PAL.N,PAL.G,PAL.ink];
+ if(ppb>=1){for(let p=a;p<b;p++){const c=smp.cls[p],x=M.x(p),ch=smp.cons[p];let col=c===1?PAL[ch]:CC[c];if(!col&&ppb<8)continue;if(!col)col=PAL[ch];const bw=Math.max(1,ppb-(ppb>3?1:0));ctx.globalAlpha=c===0?.35:1;ctx.fillStyle=col||PAL.N;ctx.fillRect(x,cy0,bw,14);ctx.globalAlpha=1;if(ppb>=8){ctx.fillStyle=c===0?PAL.ink:'#fff';ctx.font=MONO;ctx.textAlign='center';ctx.fillText(ch,x+ppb/2,cy0+8);ctx.textAlign='left';}}}
+ else{ctx.fillStyle=PAL.line;ctx.fillRect(0,cy0+5,W,4);const st=Math.max(1,Math.floor((b-a)/(W*2)));for(let p=a;p<b;p+=st){const c=smp.cls[p];if(!c)continue;ctx.fillStyle=c===1?PAL.T:CC[c];ctx.fillRect(M.x(p),cy0,Math.max(1,st*ppb),14);}}
+ y=cy0+16;ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.fillText('Reference',6,y+7);y=drawRefStrip(ctx,M,W,y+14,ref,14)+4;cv._readTop=y;
+ // reads
+ const readH=ppb>=7?13:ppb>=2?10:6,rowH=readH+1,reads=smp.reads,vs=Math.floor(v.s),ve=Math.ceil(v.e);
+ ctx.save();ctx.beginPath();ctx.rect(0,y,W,H-y);ctx.clip();
+ let lo=0,hi=reads.length;const tg=vs-smp.maxSpan;while(lo<hi){const m=(lo+hi)>>1;if(reads[m].pos<tg)lo=m+1;else hi=m;}
+ let cnt=0;for(let i=lo;i<reads.length&&reads[i].pos<ve;i++)if(reads[i].end>vs&&++cnt>40000)break;
+ const maxScroll=Math.max(0,smp.rows*rowH-(H-y)+20);AL.scroll=Math.max(0,Math.min(maxScroll,AL.scroll));cv._maxScroll=maxScroll;cv._rowH=rowH;cv._readH=readH;
+ if(cnt>40000){ctx.fillStyle=PAL.muted;ctx.textAlign='center';ctx.fillText('More than 40,000 reads in view. Zoom in to see individual reads.',W/2,y+30);ctx.textAlign='left';}
+ else{for(let i=lo;i<reads.length&&reads[i].pos<ve;i++){const r=reads[i];if(r.end<=vs||r.row<0)continue;const ry=y+4+r.row*rowH-AL.scroll;if(ry+readH<y||ry>H)continue;
+   const x0=M.x(r.pos),x1=M.x(r.end);ctx.fillStyle=r.rev?PAL.readR:PAL.readF;ctx.globalAlpha=r.mq<10?.45:1;ctx.fillRect(x0,ry,Math.max(1,x1-x0),readH);ctx.globalAlpha=1;
+   if(ppb>=0.25){let rp=r.pos,qp=0;for(const[n,op]of r.cig){if(op==='M'||op==='='||op==='X'){const s0=Math.max(rp,vs),e0=Math.min(rp+n,ve);for(let p=s0;p<e0;p++){const qc=r.seq.charCodeAt(qp+p-rp);if(qc===ref.cc[p])continue;const ch=String.fromCharCode(qc);const q=r.qual?r.qual.charCodeAt(qp+p-rp)-33:40;ctx.globalAlpha=q<10?.3:q<20?.6:1;ctx.fillStyle=PAL[ch]||PAL.N;const x=M.x(p);ctx.fillRect(x,ry,Math.max(1,ppb),readH);ctx.globalAlpha=1;if(ppb>=7){ctx.fillStyle='#fff';ctx.font=MONO;ctx.textAlign='center';ctx.fillText(ch,x+ppb/2,ry+readH/2+1);ctx.textAlign='left';}}rp+=n;qp+=n;}
+     else if(op==='D'){ctx.fillStyle=PAL.ink;ctx.fillRect(M.x(rp),ry+readH/2-0.5,Math.max(1,n*ppb),2);rp+=n;}
+     else if(op==='N')rp+=n;else if(op==='I'){ctx.fillStyle='#A24FCB';ctx.fillRect(M.x(rp)-1,ry-1,2.5,readH+2);qp+=n;}else if(op==='S')qp+=n;}}}}
+ ctx.restore();ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.textAlign='right';ctx.fillText(`${Math.round(v.e-v.s).toLocaleString()} bp in view · ${cnt>40000?'40,000+':cnt.toLocaleString()} reads in view · ${smp.reads.length.toLocaleString()} total`,W-6,H-9);ctx.textAlign='left';}
+function readAt(cv,x,y){const smp=curSample();if(!smp||!cv._readTop)return null;const row=Math.floor((y-cv._readTop-4+AL.scroll)/cv._rowH);if(row<0)return null;const p=Math.floor(mapper(cv._w,S.view).p(x));
+ for(const r of smp.reads){if(r.row===row&&p>=r.pos&&p<r.end)return r;if(r.pos>p)break;}return null;}
+function pileupInfo(smp,p){const ref=S.refs[smp.refIdx],d=smp.depth[p];const cs={A:smp.cA[p],C:smp.cC[p],G:smp.cG[p],T:smp.cT[p],Del:smp.cD[p]};const f=featAt(ref,p);const v=smp.variants.find(v=>p>=v.pos&&p<v.pos+v.len);
+ const cells=Object.entries(cs).map(([k,c])=>`<td style="padding:2px 10px"><b style="color:${PAL[k]||PAL.ink}">${k}</b> ${c} <span class="muted">(${d?pct(c/d,1):'–'})</span></td>`).join('');
+ return`<b>${esc(smp.name)}</b> · position ${(p+1).toLocaleString()} · reference <b>${ref.seq[p]}</b> · consensus <b>${smp.cons[p]}</b> · depth <b>${d}</b>${f?' · '+esc(f.name):''}${smp.ins.get(p)?' · '+smp.ins.get(p)+' reads with an insertion here':''}<table><tr>${cells}</tr></table>${v?`<div>${varTip(v,smp).replace(/<b>.*?<\/b> · /,'Variant call: ')}</div>`:''}<button class="btn" onclick="addNote('${esc(smp.name)} position ${p+1}: ref ${ref.seq[p]}, consensus ${smp.cons[p]}, depth ${d}, A${cs.A}/C${cs.C}/G${cs.G}/T${cs.T}/del${cs.Del}')">Add to notes</button>`;}
+function alnPointer(cv,e,click){const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,smp=curSample();if(!smp)return;const h=hitAt(cv,x,y);
+ if(h&&h.v){const t=varTip(h.v,h.s);if(click){$('#a-info').innerHTML=t;}else showTip(t,e);return;}
+ if(h&&h.cov){const p=Math.floor(mapper(cv._w,S.view).p(x));if(p<0||p>=smp.depth.length)return;if(click)$('#a-info').innerHTML=pileupInfo(smp,p);else showTip(`Position ${(p+1).toLocaleString()} · depth ${smp.depth[p]}<br>A ${smp.cA[p]} · C ${smp.cC[p]} · G ${smp.cG[p]} · T ${smp.cT[p]} · del ${smp.cD[p]}`,e);return;}
+ if(y>(cv._readTop||1e9)){const rd=readAt(cv,x,y);if(rd){const t=`<b>${esc(rd.name)}</b><br>${rd.rev?'reverse':'forward'} strand · MAPQ ${rd.mq} · ${(rd.pos+1).toLocaleString()}..${rd.end.toLocaleString()}<br>CIGAR ${rd.cig.map(c=>c[0]+c[1]).join('')}`;if(click)$('#a-info').innerHTML=t;else showTip(t,e);return;}}
+ if(!click)hideTip();else{const p=Math.floor(mapper(cv._w,S.view).p(x)),sm=curSample();if(sm&&p>=0&&p<sm.depth.length&&y<(cv._readTop||0))$('#a-info').innerHTML=pileupInfo(sm,p);}}
+function nextEvent(kind){const smp=curSample();if(!smp)return;const ref=S.refs[smp.refIdx],mid=Math.floor((S.view.s+S.view.e)/2);const span=S.view.e-S.view.s;let target=null;
+ if(kind==='var'){const vs=smp.variants.slice().sort((a,b)=>a.pos-b.pos);target=vs.find(v=>v.pos>mid)||vs[0];if(target)target=target.pos;}
+ else{const L=ref.len,P=S.P.minDepth;for(let i=1;i<=L;i++){const p=(mid+i)%L;if(smp.depth[p]<P&&smp.depth[(p+L-1)%L]>=P){target=p;break;}}if(target==null&&smp.depth[mid]<P)target=mid;}
+ if(target==null){toast(kind==='var'?'No variants called at the current thresholds.':'No low-coverage regions at the current threshold.');return;}
+ setView(target-Math.min(span,200)/2,target+Math.min(span,200)/2);drawAll();}
+
+/* ====================== tables ====================== */
+function tbl(cols,data,o={}){const t=el('table',{class:'tbl'}),tr=el('tr'),body=el('tbody');let sk=null,dir=1;
+ const render=()=>{body.innerHTML='';let rows=data.slice();if(sk!=null){const c=cols[sk];rows.sort((a,b)=>{const x=c.v(a),y=c.v(b);return(x>y?1:x<y?-1:0)*dir;});}const lim=o.limit||1500;
+  rows.slice(0,lim).forEach(d=>{const r=el('tr');cols.forEach(c=>{const td=el('td');const v=c.r?c.r(d):c.v(d);if(v&&v.nodeType)td.append(v);else td.textContent=v==null?'':v;r.append(td);});if(o.onRow){r.classList.add('clk');r.onclick=()=>o.onRow(d);}body.append(r);});
+  if(rows.length>lim)body.append(el('tr',{},el('td',{colspan:cols.length,class:'muted'},`Showing first ${lim} of ${rows.length} rows`)));
+  if(!rows.length)body.append(el('tr',{},el('td',{colspan:cols.length,class:'muted'},o.empty||'No rows')));};
+ cols.forEach((c,i)=>tr.append(el('th',{tabindex:0,title:'Sort',onclick:()=>{if(sk===i)dir=-dir;else{sk=i;dir=1;}render();}},c.h)));t.append(el('thead',{},tr),body);render();return el('div',{class:'tblwrap'},t);}
+const badge=s=>el('span',{class:'badge b-'+s},{pass:'Pass',review:'Review',repeat:'Repeat'}[s]);
+const jump=(smp,pos,len=1)=>{AL.sample=smp.id;S.active=smp.refIdx;const pad=Math.max(40,len*3);setView(pos-pad,pos+len+pad);switchTab('aln');};
+
+/* ====================== VARIANTS tab ====================== */
+const VAR={sel:'all'};
+function renderVar(){const b=$('#var-body');b.innerHTML='';if(!S.samples.length){b.append(el('div',{class:'empty'},'Variants are called from mapped reads. Load a BAM or SAM file with its reference, or use the demo data.'));return;}
+ const list=VAR.sel==='all'?S.samples:S.samples.filter(s=>String(s.id)===String(VAR.sel));
+ const sel=el('select',{onchange:e=>{VAR.sel=e.target.value;renderVar();}},el('option',{value:'all'},'All samples'),...S.samples.map(s=>el('option',{value:s.id,selected:String(s.id)===String(VAR.sel)?'':null},s.name)));
+ b.append(el('div',{class:'bar',style:'border:1px solid var(--line);border-radius:8px;margin-bottom:14px'},el('label',{},'Show ',sel),el('span',{class:'muted'},`Calls need ≥ ${S.P.minDepth}x depth, ≥ ${S.P.minAlt} alt reads and ≥ ${pct(S.P.minAF,0)} alt fraction. Change them in the sidebar.`),el('span',{class:'sp'}),
+  el('button',{class:'btn',onclick:()=>openExport('Mutation table','mutations.csv',mutationCsv(list))},'Export mutation table (CSV)'),
+  el('button',{class:'btn',onclick:()=>{if(list.length!==1){toast('Choose one sample to export a VCF.');return;}openExport('VCF · '+list[0].name,list[0].name+'.vcf',vcfText(list[0]));}},'Export VCF')));
+ const rows=list.flatMap(s=>s.variants.map(v=>({s,v})));
+ b.append(el('div',{class:'panel'},el('h2',{},`Variant calls (${rows.length})`),tbl([
+  {h:'Sample',v:d=>d.s.name},{h:'Position',v:d=>d.v.pos+1},{h:'Change',v:d=>d.v.type==='SNP'?d.v.ref+'>'+d.v.alt:'del '+d.v.ref},{h:'Type',v:d=>d.v.type==='DEL'?'DEL '+d.v.len+' bp':'SNP'},{h:'Depth',v:d=>d.v.d},{h:'Alt reads',v:d=>d.v.c},
+  {h:'Fraction',v:d=>d.v.af,r:d=>{const x=el('span',{},pct(d.v.af,0)+(d.v.af<S.P.consFrac?' mixed':''));if(d.v.af<S.P.consFrac)x.style.color='var(--warn)';return x;}},{h:'Feature',v:d=>d.v.feat},{h:'Effect',v:d=>d.v.effect}],rows,{onRow:d=>jump(d.s,d.v.pos,d.v.len),empty:'No variants called at the current thresholds.'}),el('div',{class:'muted',style:'margin-top:6px;font-size:12.5px'},'Click a row to inspect it in the alignment. Effects are predicted from CDS annotation on the loaded reference.')));
+ // comparison matrix
+ const groups=[...new Set(S.samples.map(s=>s.refIdx))];
+ for(const gi of groups){const ss=S.samples.filter(s=>s.refIdx===gi);if(ss.length<2)continue;const ref=S.refs[gi];
+  const posSet=new Map();ss.forEach(s=>s.variants.forEach(v=>{if(v.type==='SNP')posSet.set(v.pos+':'+v.alt,v);}));const keys=[...posSet.values()].sort((a,b)=>a.pos-b.pos);
+  const cols=[{h:'Position',v:d=>d.pos+1},{h:'Ref>Alt',v:d=>d.ref+'>'+d.alt},{h:'Feature',v:d=>d.feat+(d.effect?' '+d.effect:'')}];
+  ss.forEach(s=>cols.push({h:s.name,v:d=>{const m=s.variants.find(x=>x.pos===d.pos&&x.alt===d.alt);return m?m.af:(s.depth[d.pos]<S.P.minDepth?-1:0);},r:d=>{const m=s.variants.find(x=>x.pos===d.pos&&x.alt===d.alt);const c=el('span',{class:'badge'});if(m){c.textContent=pct(m.af,0);c.style.cssText=`background:color-mix(in srgb,${PAL[d.alt]} ${Math.round(25+m.af*55)}%,transparent)`;}else if(s.depth[d.pos]<S.P.minDepth){c.textContent='no data';c.style.color='var(--muted)';}else{c.textContent='ref';c.style.color='var(--muted)';}return c;}}));
+  const dist=el('table',{class:'tbl'},el('thead',{},el('tr',{},el('th',{}),...ss.map(s=>el('th',{},s.name)))),el('tbody',{},...ss.map(a=>el('tr',{},el('td',{},el('b',{},a.name)),...ss.map(c=>{const d=snpDistance(a,c);const td=el('td',{},String(d));if(a!==c)td.style.cssText=`background:color-mix(in srgb,var(--accent) ${Math.min(60,d*8)}%,transparent)`;return td;})))));
+  b.append(el('div',{class:'panel'},el('h2',{},'Across samples on '+ref.name),el('div',{class:'muted',style:'margin-bottom:8px;font-size:13px'},'SNP positions found in any sample. Distances count positions where both consensus sequences have an unambiguous, different base.'),tbl(cols,keys,{onRow:d=>jump(ss[0],d.pos)}),el('h2',{style:'margin-top:14px'},'Pairwise SNP distance'),el('div',{class:'tblwrap',style:'max-height:none'},dist),el('div',{style:'margin-top:8px'},el('button',{class:'btn',onclick:()=>openExport('SNP distance matrix','snp_distances.csv',distCsv(gi))},'Export distance matrix (CSV)'))));}}
+
+/* ====================== COMPARE tab ====================== */
+const CMP={q:null};
+function drawCmp(){if(cvDot)drawDot(cvDot);if(cvProf)drawProf(cvProf);}
+function renderCmp(){const ref=curRef();$('#c-ref').textContent=ref?ref.name:'(no reference)';const sel=$('#c-q');sel.innerHTML='';const cands=cmpCandidates();
+ if(!ref||!cands.length){$('#c-blocks').innerHTML='<div class="empty">Load a second sequence (another plasmid or genome as FASTA or GenBank) or an assembly to compare it against the reference.</div>';CMP.q=null;drawCmp();return;}
+ if(!cands.some(c=>c.id===CMP.q))CMP.q=cands[0].id;cands.forEach(c=>sel.append(el('option',{value:c.id,selected:c.id===CMP.q?'':null},c.label)));drawCmp();
+ const c=cands.find(c=>c.id===CMP.q),cmp=compareSeqs(ref,c.ent);const med=median(cmp.blocks.map(b=>b.id));
+ const rows=cmp.blocks.map(bl=>({bl,flag:[bl.strand<0?'inverted':'',bl.id>med+0.04&&cmp.blocks.length>2?'higher identity than the rest':'',bl.id<med-0.04&&cmp.blocks.length>2?'more divergent':''].filter(Boolean).join(', ')}));
+ const cover=cmp.blocks.reduce((a,b)=>a+(b.r1-b.r0),0);
+ $('#c-blocks').innerHTML='';$('#c-blocks').append(el('div',{class:'muted',style:'margin-bottom:8px'},`${cmp.blocks.length} blocks cover about ${pct(Math.min(1,cover/ref.len),0)} of ${ref.name}. Median block identity ${pct(med,1)}. Blocks that differ from the median or sit in a different orientation are candidates for recombination or horizontal transfer; confirm with a proper alignment and phylogenetic evidence.`),
+  tbl([{h:'Reference start',v:d=>d.bl.r0+1},{h:'Reference end',v:d=>d.bl.r1},{h:'Query start',v:d=>d.bl.q0+1},{h:'Query end',v:d=>d.bl.q1},{h:'Strand',v:d=>d.bl.strand>0?'+':'−'},{h:'Length',v:d=>d.bl.r1-d.bl.r0},{h:'Shared identity',v:d=>d.bl.id,r:d=>pct(d.bl.id,1)},{h:'Note',v:d=>d.flag}],rows,{onRow:d=>{S.mapMode='linear';syncSeg();setView(d.bl.r0-50,d.bl.r1+50);switchTab('map');},empty:'No shared blocks found. These sequences may be unrelated.'}));}
+function drawDot(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h,ref=curRef();const c=cmpCandidates().find(c=>c.id===CMP.q);if(!ref||!c){msg(ctx,W,H,'Choose a sequence to compare');return;}
+ const cmp=compareSeqs(ref,c.ent),pad=40,pw=W-pad-10,ph=H-pad-10;ctx.strokeStyle=PAL.line;ctx.strokeRect(pad+.5,10.5,pw,ph);
+ const sx=pw/cmp.Lr,sy=ph/cmp.Lq;const step=Math.max(1,Math.floor(cmp.anchors.length/30000));
+ for(let i=0;i<cmp.anchors.length;i+=step){const a=cmp.anchors[i];ctx.fillStyle=a[2]>0?PAL.C:PAL.T;ctx.fillRect(pad+a[0]*sx-1,10+ph-a[1]*sy-1,2.5,2.5);}
+ ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.textAlign='center';ctx.fillText(ref.name+' ('+fmtBp(cmp.Lr)+')',pad+pw/2,H-10);ctx.save();ctx.translate(12,10+ph/2);ctx.rotate(-Math.PI/2);ctx.fillText(c.label+' ('+fmtBp(cmp.Lq)+')',0,0);ctx.restore();ctx.textAlign='left';}
+function drawProf(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h,ref=curRef();const c=cmpCandidates().find(c=>c.id===CMP.q);if(!ref||!c){msg(ctx,W,H,'Choose a sequence to compare');return;}
+ const cmp=compareSeqs(ref,c.ent),n=Math.min(300,ref.len>>2||1),idb=identityBins(cmp,n),pad=40,pw=W-pad-10,ph=H-60,y0=10;
+ ctx.strokeStyle=PAL.line;ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.textAlign='right';for(const g of[0.7,0.8,0.9,1]){const y=y0+ph-(g-0.6)/0.4*ph;ctx.beginPath();ctx.moveTo(pad,y+.5);ctx.lineTo(pad+pw,y+.5);ctx.stroke();ctx.fillText(Math.round(g*100)+'%',pad-5,y);}
+ const bw=pw/n;for(let i=0;i<n;i++){const id=idb[i];if(id<0)continue;const hh=Math.max(0,Math.min(1,(id-0.6)/0.4))*ph;ctx.fillStyle=id<0.7?PAL.bad:PAL.accent;ctx.globalAlpha=.85;ctx.fillRect(pad+i*bw,y0+ph-hh,Math.max(1,bw-0.5),hh);ctx.globalAlpha=1;}
+ for(const bl of cmp.blocks)if(bl.strand<0){ctx.fillStyle='#E07A1F';ctx.fillRect(pad+bl.r0/cmp.Lr*pw,y0+ph+6,Math.max(2,(bl.r1-bl.r0)/cmp.Lr*pw),5);}
+ // features strip
+ let fy=y0+ph+16;for(const f of allFeatures(ref)){if(f.type==='variant'||f.hidden)continue;ctx.fillStyle=featColor(f);ctx.fillRect(pad+f.start/ref.len*pw,fy,Math.max(1.5,(f.end-f.start)/ref.len*pw),6);}
+ ctx.fillStyle=PAL.muted;ctx.textAlign='center';ctx.fillText('Position on '+ref.name+'  ·  orange bar = inverted block  ·  red = below 70%',pad+pw/2,H-8);ctx.textAlign='left';}
+
+/* ====================== ASSEMBLY tab ====================== */
+const ASM={sel:null};
+function n50(lens){const a=lens.slice().sort((x,y)=>y-x),tot=a.reduce((p,c)=>p+c,0);let s=0;for(let i=0;i<a.length;i++){s+=a[i];if(s>=tot/2)return{n50:a[i],l50:i+1};}return{n50:0,l50:0};}
+function renderAsm(){const b=$('#asm-body');b.innerHTML='';if(!S.assemblies.length){b.append(el('div',{class:'empty'},'Load a multi-contig FASTA (name it with "assembly", "contigs" or "scaffolds", or include more than six sequences) to review contigs and place them on the reference.'));return;}
+ if(!S.assemblies.some(a=>a.id===ASM.sel))ASM.sel=S.assemblies[0].id;const A=S.assemblies.find(a=>a.id===ASM.sel),ref=curRef();
+ const lens=A.contigs.map(c=>c.len),tot=lens.reduce((p,c)=>p+c,0),{n50:N50,l50}=n50(lens);const all=A.contigs.map(c=>c.seq).join('');const nn=(all.match(/N/g)||[]).length;
+ const sel=el('select',{onchange:e=>{ASM.sel=+e.target.value;renderAsm();}},...S.assemblies.map(a=>el('option',{value:a.id,selected:a.id===ASM.sel?'':null},a.name)));
+ b.append(el('div',{class:'bar',style:'border:1px solid var(--line);border-radius:8px;margin-bottom:14px'},el('label',{},'Assembly ',sel),el('span',{class:'muted'},ref?'Contigs are placed on '+ref.name+' using shared 16-mers.':'Load a reference to place contigs.'),el('span',{class:'sp'}),el('button',{class:'btn',onclick:()=>openExport('Contigs','contigs.fasta',A.contigs.map(c=>'>'+c.name+'\n'+wrap(c.seq)).join('\n')+'\n')},'Export FASTA')));
+ b.append(el('div',{class:'panel'},el('h2',{},'Assembly statistics'),el('div',{style:'display:flex;gap:28px;flex-wrap:wrap'},...[['Contigs',A.contigs.length],['Total length',tot.toLocaleString()+' bp'],['Longest',Math.max(...lens).toLocaleString()+' bp'],['N50',N50.toLocaleString()+' bp'],['L50',l50],['GC',pct(gcOf(all),1)],['Ns',nn]].map(([k,v])=>el('div',{},el('div',{class:'muted',style:'font-size:12.5px'},k),el('div',{style:'font-size:18px;font-weight:600'},String(v)))))));
+ const place=A.contigs.map(c=>{if(!ref)return{c};c._uid=c._uid||uid();const cmp=compareSeqs(ref,c);const big=cmp.blocks.slice().sort((a,b)=>(b.r1-b.r0)-(a.r1-a.r0))[0];const cov=cmp.blocks.reduce((p,x)=>p+(x.q1-x.q0),0);return{c,big,cov:Math.min(1,cov/c.len),blocks:cmp.blocks};});
+ A._place=place;
+ if(ref){const host=el('div',{class:'cv',style:'height:'+(70+A.contigs.length*22)+'px;flex:none'});b.append(el('div',{class:'panel'},el('h2',{},'Contig layout on '+ref.name),host,el('div',{class:'legend',style:'margin-top:6px'},el('span',{},el('i',{style:'background:var(--C)'}),'same strand'),el('span',{},el('i',{style:'background:var(--T)'}),'reverse strand'))));makeCanvas(host,cv=>drawAsmLayout(cv,A));}
+ b.append(el('div',{class:'panel'},el('h2',{},'Contigs'),tbl([{h:'Contig',v:d=>d.c.name},{h:'Length',v:d=>d.c.len},{h:'GC',v:d=>gcOf(d.c.seq),r:d=>pct(gcOf(d.c.seq),1)},{h:'Placement',v:d=>d.big?d.big.r0:-1,r:d=>d.big?`${d.big.r0+1}..${d.big.r1} (${d.big.strand>0?'+':'−'})`:ref?'no match':'–'},{h:'Shared with reference',v:d=>d.cov||0,r:d=>d.cov!=null?pct(d.cov,0):'–'},{h:'Identity',v:d=>d.big?d.big.id:0,r:d=>d.big?pct(d.big.id,1):'–'}],place,{onRow:d=>{if(d.big){S.mapMode='linear';syncSeg();setView(d.big.r0-50,d.big.r1+50);switchTab('map');}}})));}
+function drawAsmLayout(cv,A){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,ref=curRef();if(!ref||!A._place)return;const pad=10,pw=W-2*pad;ctx.fillStyle=PAL.line;ctx.fillRect(pad,18,pw,8);ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.textAlign='left';ctx.fillText('0',pad,10);ctx.textAlign='right';ctx.fillText(fmtBp(ref.len),pad+pw,10);
+ for(const f of allFeatures(ref)){if(f.type==='variant'||f.hidden)continue;ctx.fillStyle=featColor(f);ctx.globalAlpha=.8;ctx.fillRect(pad+f.start/ref.len*pw,18,Math.max(1,(f.end-f.start)/ref.len*pw),8);ctx.globalAlpha=1;}
+ A._place.forEach((p,i)=>{const y=40+i*22;ctx.fillStyle=PAL.muted;ctx.textAlign='left';if(!p.blocks||!p.blocks.length){ctx.fillText(p.c.name+' · no match',pad,y+8);return;}for(const bl of p.blocks){ctx.fillStyle=bl.strand>0?PAL.C:PAL.T;ctx.globalAlpha=.85;ctx.fillRect(pad+bl.r0/ref.len*pw,y,Math.max(2,(bl.r1-bl.r0)/ref.len*pw),12);ctx.globalAlpha=1;}ctx.fillStyle=PAL.ink;const x0=pad+Math.min(...p.blocks.map(b=>b.r0))/ref.len*pw;ctx.fillText(p.c.name,Math.min(x0,W-120),y-2);});}
+
+/* ====================== QC tab ====================== */
+function spark(cv,s){const ctx=prep(cv),W=cv._w,H=cv._h;const n=s.bins.length,mx=Math.max(1,s.medianDepth*2.2);for(let i=0;i<n;i++){const d=s.bins[i],h=Math.min(1,d/mx)*(H-2);ctx.fillStyle=d<S.P.minDepth?PAL.bad:PAL.accent;ctx.fillRect(i/n*W,H-h,Math.max(1,W/n),Math.max(h,d<S.P.minDepth?H:0.5));ctx.globalAlpha=1;}}
+function renderQC(){const b=$('#qc-body');b.innerHTML='';PAL.ink||loadPal();
+ if(!S.samples.length&&!S.fastqs.length){b.append(el('div',{class:'empty'},'Load mapped reads (BAM or SAM) or FASTQ files to review coverage and read quality, and to flag samples for repeat sequencing.'));return;}
+ if(S.samples.length){const cols=[{h:'Sample',v:s=>s.name},{h:'Coverage profile',v:s=>s.covPct,r:s=>{const w=el('div',{style:'width:190px;height:28px'});const cv=makeCanvas(w,c=>spark(c,s));return w;}},{h:'Reads',v:s=>s.reads.length,r:s=>s.reads.length.toLocaleString()},{h:'Mean depth',v:s=>s.meanDepth,r:s=>s.meanDepth.toFixed(0)+'x'},{h:`Genome ≥ ${S.P.minDepth}x`,v:s=>s.covPct,r:s=>s.covPct.toFixed(1)+'%'},{h:'% N',v:s=>s.nPct,r:s=>s.nPct.toFixed(2)},{h:'Ambiguous',v:s=>s.amb},{h:'Longest N run',v:s=>s.maxN,r:s=>s.maxN.toLocaleString()},{h:'Variants',v:s=>s.variants.length},{h:'MAPQ',v:s=>s.meanMQ,r:s=>s.meanMQ.toFixed(0)},{h:'Suggested',v:s=>s.auto,r:s=>badge(s.auto)},
+  {h:'Your flag',v:s=>sampleStatus(s),r:s=>{const sel=el('select',{onchange:e=>{s.flagUser=e.target.value==='auto'?null:e.target.value;renderQC();}},...[['auto','Use suggestion'],['pass','Pass'],['review','Needs manual review'],['repeat','Repeat sequencing']].map(([v,l])=>el('option',{value:v,selected:(s.flagUser||'auto')===v?'':null},l)));return sel;}}];
+  const wrapEl=tbl(cols,S.samples,{limit:200});wrapEl.style.maxHeight='none';
+  b.append(el('div',{class:'panel'},el('h2',{},'Sample quality'),el('div',{class:'muted',style:'margin-bottom:8px;font-size:13px'},`Suggested flag: Pass at ≥ ${S.P.passCov}% of the genome covered to ${S.P.minDepth}x, Review at ≥ ${S.P.reviewCov}%, otherwise Repeat. Red in the profile marks bins below ${S.P.minDepth}x. Your flag overrides the suggestion in exports.`),wrapEl,el('div',{style:'margin-top:10px;display:flex;gap:8px;flex-wrap:wrap'},
+   el('button',{class:'btn',onclick:()=>openExport('QC table','qc_summary.csv',qcCsv())},'Export QC table (CSV)'),el('button',{class:'btn',onclick:()=>openExport('Consensus sequences (passing samples)','consensus_pass.fasta',consensusFasta(S.samples.filter(s=>sampleStatus(s)==='pass'))||'')},'Export consensus of passing samples'))));}
+ for(const fq of S.fastqs){const st=fq.st;const card=el('div',{class:'panel'},el('h2',{},fq.name),el('div',{style:'display:flex;gap:26px;flex-wrap:wrap;margin-bottom:10px'},...[['Reads',st.reads.toLocaleString()+(st.reads>=500000?'+ (first 500k)':'')],['Bases',fmtBp(st.bases)],['Mean length',st.meanLen.toFixed(0)],['Length range',st.minLen+'–'+st.maxLen],['Mean Q',st.meanQ.toFixed(1)],['≥ Q20',pct(st.q20/st.bases,1)],['≥ Q30',pct(st.q30/st.bases,1)],['GC',pct(st.gcPct,1)]].map(([k,v])=>el('div',{},el('div',{class:'muted',style:'font-size:12.5px'},k),el('div',{style:'font-size:16px;font-weight:600'},String(v))))));
+  const host=el('div',{class:'cv',style:'height:150px;flex:none;border:1px solid var(--line);border-radius:6px'});card.append(host,el('div',{class:'muted',style:'font-size:12.5px;margin:4px 0 10px'},'Mean base quality by position (dashed lines mark Q20 and Q30).'),
+   el('button',{class:'btn primary',onclick:()=>mapFastq(fq)},'Map to '+(curRef()?curRef().name:'reference')),el('span',{class:'muted',style:'margin-left:8px;font-size:12.5px'},'Quick ungapped mapper for screening the first '+Math.min(fq.reads.length,100000).toLocaleString()+' reads. Use minimap2 or BWA for reportable results.'));b.append(card);
+  makeCanvas(host,cv=>{const ctx=prep(cv),W=cv._w,H=cv._h,pad=34;const n=Math.min(400,st.maxLen);const maxQ=42;ctx.font=SANS;ctx.fillStyle=PAL.muted;ctx.textAlign='right';for(const q of[0,10,20,30,40]){const y=H-16-q/maxQ*(H-24);ctx.strokeStyle=PAL.grid;ctx.beginPath();ctx.moveTo(pad,y+.5);ctx.lineTo(W-6,y+.5);ctx.stroke();ctx.fillText(q,pad-5,y);}
+   ctx.strokeStyle=PAL.accent;ctx.lineWidth=1.8;ctx.beginPath();let first=true;for(let i=0;i<n;i++){if(!st.posN[i])continue;const x=pad+i/n*(W-pad-6),y=H-16-st.posQ[i]/st.posN[i]/maxQ*(H-24);if(first){ctx.moveTo(x,y);first=false;}else ctx.lineTo(x,y);}ctx.stroke();ctx.lineWidth=1;ctx.textAlign='center';ctx.fillText('Position in read (bp)',W/2,H-5);});}}
+
+/* ====================== NOTES tab ====================== */
+function saveNotes(){try{localStorage.setItem('genomejs.notes',S.notes);}catch(e){}}
+function addNote(t){S.notes+=(S.notes?'\n':'')+`[${new Date().toISOString().slice(0,16).replace('T',' ')}] ${t}`;saveNotes();if(S.tab==='notes')renderNotes();toast('Added to notes');}
+function renderNotes(){const b=$('#notes-body');b.innerHTML='';const ta=el('textarea',{class:'notes','aria-label':'Notes',placeholder:'Interpretation notes, observations and sample comments. They are included in the summary report.'});ta.value=S.notes;ta.oninput=()=>{S.notes=ta.value;saveNotes();};
+ b.append(el('div',{class:'panel'},el('h2',{},'Notes'),ta,el('div',{style:'margin-top:8px;display:flex;gap:8px;flex-wrap:wrap'},el('button',{class:'btn',onclick:()=>{ta.value+=(ta.value?'\n':'')+`[${new Date().toISOString().slice(0,16).replace('T',' ')}] `;S.notes=ta.value;ta.focus();}},'Insert timestamp'),el('button',{class:'btn',onclick:()=>openExport('Notes','notes.txt',S.notes||'')},'Export notes'))));
+ const items=[['Consensus genomes (all samples)','FASTA, deletions removed, low coverage masked as N',()=>S.samples.length?openExport('Consensus genomes','consensus.fasta',consensusFasta(S.samples)):toast('No mapped samples loaded.')],
+  ['Mutation table','CSV with position, depth, alt fraction, feature and predicted effect',()=>S.samples.length?openExport('Mutation table','mutations.csv',mutationCsv(S.samples)):toast('No mapped samples loaded.')],
+  ['QC summary','CSV with coverage metrics and flags',()=>S.samples.length?openExport('QC table','qc_summary.csv',qcCsv()):toast('No mapped samples loaded.')],
+  ['Summary report','Markdown with QC, variants and your notes',()=>openExport('Summary report','genome_js_report.md',reportMd())],
+  ['Reference annotations (GFF3)','Features on the active reference',()=>curRef()?openExport('GFF3','annotations.gff3',gffText(curRef())):toast('No reference loaded.')]];
+ b.append(el('div',{class:'panel'},el('h2',{},'Exports'),el('div',{class:'muted',style:'margin-bottom:8px;font-size:13px'},'Each export opens a preview you can copy or save. Files are saved with the extension your pipeline expects.'),...items.map(([t,d,f])=>el('div',{style:'display:flex;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--grid)'},el('div',{style:'flex:1'},el('b',{},t),el('div',{class:'muted',style:'font-size:12.5px'},d)),el('button',{class:'btn',onclick:f},'Open')))));}
+
+/* ====================== image export (PNG / SVG) ====================== */
+const fx=v=>Math.round(v*100)/100;
+class SvgCtx{
+ constructor(W,H,bg){this.W=W;this.H=H;this.out=bg?[`<rect width="${W}" height="${H}" fill="${bg}"/>`]:[];this.defs=[];this.cid=0;this.n=0;this.over=false;
+  this.fillStyle='#000';this.strokeStyle='#000';this.lineWidth=1;this.globalAlpha=1;this.font='10px sans-serif';this.textAlign='start';this.textBaseline='alphabetic';
+  this._dash=[];this.m=[1,0,0,1,0,0];this.stack=[];this.clips=0;this.path=[];}
+ get _mc(){return SvgCtx._m||(SvgCtx._m=document.createElement('canvas').getContext('2d'));}
+ measureText(t){const c=this._mc;c.font=this.font;return c.measureText(t);}
+ _push(s){if(this.n++>400000){this.over=true;return;}this.out.push(s);}
+ _tf(){const m=this.m;return(m[0]===1&&m[1]===0&&m[2]===0&&m[3]===1&&m[4]===0&&m[5]===0)?'':` transform="matrix(${m.map(fx).join(' ')})"`;}
+ save(){this.stack.push({fillStyle:this.fillStyle,strokeStyle:this.strokeStyle,lineWidth:this.lineWidth,globalAlpha:this.globalAlpha,font:this.font,textAlign:this.textAlign,textBaseline:this.textBaseline,_dash:this._dash,m:this.m.slice(),clips:this.clips});this.clips=0;}
+ restore(){const s=this.stack.pop();if(!s)return;this.out.push('</g>'.repeat(this.clips));Object.assign(this,s);}
+ translate(x,y){const m=this.m;m[4]=m[0]*x+m[2]*y+m[4];m[5]=m[1]*x+m[3]*y+m[5];}
+ scale(x,y){const m=this.m;m[0]*=x;m[1]*=x;m[2]*=y;m[3]*=y;}
+ rotate(t){const m=this.m,c=Math.cos(t),s=Math.sin(t),a=m[0],b=m[1],cc=m[2],d=m[3];m[0]=a*c+cc*s;m[1]=b*c+d*s;m[2]=-a*s+cc*c;m[3]=-b*s+d*c;}
+ setTransform(a,b,c,d,e,f){this.m=[a,b,c,d,e,f];}
+ setLineDash(a){this._dash=a||[];}
+ clearRect(){}
+ beginPath(){this.path=[];}
+ closePath(){this.path.push('Z');}
+ moveTo(x,y){this.path.push(`M${fx(x)} ${fx(y)}`);}
+ lineTo(x,y){this.path.push(`${this.path.length?'L':'M'}${fx(x)} ${fx(y)}`);}
+ rect(x,y,w,h){this.path.push(`M${fx(x)} ${fx(y)}h${fx(w)}v${fx(h)}h${fx(-w)}Z`);}
+ arc(cx,cy,r,a0,a1){if(!(r>0)||!isFinite(r))return;const T=Math.PI*2;let d=a1-a0;const sx=cx+r*Math.cos(a0),sy=cy+r*Math.sin(a0);
+  this.path.push(`${this.path.length?'L':'M'}${fx(sx)} ${fx(sy)}`);
+  if(Math.abs(d)>=T-1e-6){const mx=cx+r*Math.cos(a0+Math.PI),my=cy+r*Math.sin(a0+Math.PI);this.path.push(`A${fx(r)} ${fx(r)} 0 1 1 ${fx(mx)} ${fx(my)}A${fx(r)} ${fx(r)} 0 1 1 ${fx(sx)} ${fx(sy)}`);}
+  else{d=((d%T)+T)%T;this.path.push(`A${fx(r)} ${fx(r)} 0 ${d>Math.PI?1:0} 1 ${fx(cx+r*Math.cos(a0+d))} ${fx(cy+r*Math.sin(a0+d))}`);}}
+ clip(){const id='c'+(++this.cid);this.defs.push(`<clipPath id="${id}"><path d="${this.path.join('')}"${this._tf()}/></clipPath>`);this.out.push(`<g clip-path="url(#${id})">`);this.clips++;}
+ fill(){if(!this.path.length)return;this._push(`<path d="${this.path.join('')}" fill="${this.fillStyle}"${this.globalAlpha<1?` fill-opacity="${fx(this.globalAlpha)}"`:''}${this._tf()}/>`);}
+ stroke(){if(!this.path.length)return;this._push(`<path d="${this.path.join('')}" fill="none" stroke="${this.strokeStyle}" stroke-width="${fx(this.lineWidth)}"${this.globalAlpha<1?` stroke-opacity="${fx(this.globalAlpha)}"`:''}${this._dash.length?` stroke-dasharray="${this._dash.join(' ')}"`:''}${this._tf()}/>`);}
+ fillRect(x,y,w,h){if(!(isFinite(x+y+w+h)))return;this._push(`<rect x="${fx(x)}" y="${fx(y)}" width="${fx(w)}" height="${fx(h)}" fill="${this.fillStyle}"${this.globalAlpha<1?` fill-opacity="${fx(this.globalAlpha)}"`:''}${this._tf()}/>`);}
+ strokeRect(x,y,w,h){this._push(`<rect x="${fx(x)}" y="${fx(y)}" width="${fx(w)}" height="${fx(h)}" fill="none" stroke="${this.strokeStyle}" stroke-width="${fx(this.lineWidth)}"${this._tf()}/>`);}
+ fillText(t,x,y){if(!isFinite(x+y))return;const f=this.font,size=(f.match(/(\d+(?:\.\d+)?)px/)||[0,10])[1],wt=(f.match(/\b(bold|[1-9]00)\b/)||[0,''])[1],mono=/mono/i.test(f);
+  const anchor={left:'start',start:'start',center:'middle',right:'end',end:'end'}[this.textAlign]||'start';
+  this._push(`<text x="${fx(x)}" y="${fx(y)}" font-size="${size}"${wt?` font-weight="${wt}"`:''}${mono?` font-family="'IBM Plex Mono',Menlo,Consolas,monospace"`:''} text-anchor="${anchor}"${this.textBaseline==='middle'?' dominant-baseline="central"':''} fill="${this.fillStyle}"${this.globalAlpha<1?` fill-opacity="${fx(this.globalAlpha)}"`:''}${this._tf()}>${String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</text>`);}
+ toString(){const closing='</g>'.repeat(this.clips+this.stack.reduce((a,s)=>a+s.clips,0));
+  return`<svg xmlns="http://www.w3.org/2000/svg" width="${this.W}" height="${this.H}" viewBox="0 0 ${this.W} ${this.H}" font-family="'IBM Plex Sans',Arial,Helvetica,sans-serif">\n<defs>${this.defs.join('')}</defs>\n${this.out.join('\n')}\n${closing}</svg>\n`;}
+}
+async function saveBlob(name,blob){try{const d=(typeof claude!=='undefined'&&claude&&claude.use)?await claude.use('downloads'):null;if(d){await d.save({filename:name,data:blob});toast('Saved '+name);return;}}catch(e){if(e&&e.code==='declined')return;}
+ const a=el('a',{href:URL.createObjectURL(blob),download:name});document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);toast('Saved '+name);}
+function exportTarget(){if(S.tab==='map'&&cvMap&&curRef()){const lin=S.mapMode!=='circular';return{cv:cvMap,draw:drawMap,name:(curRef().name)+(lin?'_map':'_circular_map'),h:lin?Math.max(cvMap._h,Math.ceil((cvMap._content||0))):cvMap._h};}
+ if(S.tab==='aln'&&cvAln&&curSample()){const s=curSample();return{cv:cvAln,draw:drawAln,name:s.name+'_alignment',h:Math.min(4000,Math.max(cvAln._h,Math.ceil((cvAln._readTop||0)+s.rows*(cvAln._rowH||10)+50)))};}
+ return null;}
+const LIGHT_PAL={ink:'#17222C',panel:'#FFFFFF',line:'#D3DAE1',muted:'#5A6775',A:'#2E9E5B',C:'#2F6FDE',G:'#E3A413',T:'#D6453D',N:'#8D98A3',readF:'#BFD0DF',readR:'#D7C9E3',bad:'#B42318',accent:'#1E5A8C',grid:'#E4E9EE',warn:'#B45309'};
+async function exportImage(kind){const t=exportTarget();if(!t){toast('Open the Maps or Alignment tab with data loaded to export its view.');return;}
+ loadPal();const dark=Object.assign({},PAL);PAL=Object.assign({},LIGHT_PAL,{panel:'rgba(255,255,255,0)'});PAL['-']=PAL.ink;S.exporting=true;const W=t.cv._w,H=t.h,sM=MAP.scroll,sA=AL.scroll;MAP.scroll=0;AL.scroll=0;const name=t.name.replace(/[^\w.-]+/g,'_');
+ try{
+  if(kind==='svg'){const svg=new SvgCtx(W,H,null);const fake={_w:W,_h:H,_d:1,getContext:()=>svg};t.draw(fake);
+   if(svg.over){toast('This view has too many elements for SVG ('+svg.n.toLocaleString()+'). Zoom in or export PNG instead.',6000);return;}
+   await saveBlob(name+'.svg',new Blob([svg.toString()],{type:'image/svg+xml'}));}
+  else{const d=Math.min(3,Math.max(2,Math.ceil(window.devicePixelRatio||1))),tmp=document.createElement('canvas');tmp.width=Math.round(W*d);tmp.height=Math.round(H*d);tmp._w=W;tmp._h=H;tmp._d=d;t.draw(tmp);
+   const blob=await new Promise(r=>tmp.toBlob(r,'image/png'));if(!blob){toast('Could not create the PNG. Try a smaller view.');return;}await saveBlob(name+'.png',blob);}
+ }finally{PAL=dark;S.exporting=false;MAP.scroll=sM;AL.scroll=sA;drawAll();}}
+
+/* ====================== ANNOTATIONS tab ====================== */
+const ANN={q:'',type:'all'};
+function annList(ref){const out=[];for(const t of Object.values(ref.tracks)){if(t.kind==='vcf')continue;for(const f of t.items)out.push({f,t});}return out;}
+function toHex(c){try{const x=document.createElement('canvas').getContext('2d');x.fillStyle='#000000';x.fillStyle=c;const v=x.fillStyle;if(/^#[0-9a-f]{6}$/i.test(v))return v;const m=String(v).match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);if(m)return'#'+[m[1],m[2],m[3]].map(n=>(+n).toString(16).padStart(2,'0')).join('');}catch(e){}return'#6e8ca0';}
+function focusFeature(f){S.tab='map';if(S.mapMode==='circular'&&cvMap&&cvMap._w)circGoto(f.start,f.end,cvMap._w,cvMap._h);else{const pad=(f.end-f.start)*0.15+10;setView(f.start-pad,f.end+pad);}switchTab('map');}
+function annCsv(ref){const rows=[['Reference','Track','Type','Name','Start','End','Strand','Colour','Visible']];for(const{f,t}of annList(ref))rows.push([ref.name,t.name,f.type,f.name,f.start+1,f.end,f.strand>0?'+':f.strand<0?'-':'.',toHex(featColor(f)),f.hidden?'no':'yes']);
+ return rows.map(r=>r.map(x=>/[",\n]/.test(String(x))?'"'+String(x).replace(/"/g,'""')+'"':x).join(',')).join('\n')+'\n';}
+function renderAnn(){const b=$('#ann-body');b.innerHTML='';PAL.ink||loadPal();const ref=curRef();
+ if(!ref){b.append(el('div',{class:'empty'},'Load a reference with annotations (GenBank, or FASTA plus GFF3 or BED) to list and recolour its genes.'));return;}
+ const all=annList(ref);if(!all.length){b.append(el('div',{class:'empty'},ref.name+' has no annotations yet. Add a GenBank file, or a GFF3 or BED file for this sequence.'));return;}
+ const types=[...new Set(all.map(x=>x.f.type))].sort();
+ const rows=all.filter(x=>(ANN.type==='all'||x.f.type===ANN.type)&&(!ANN.q||(x.f.name+' '+x.f.type+' '+x.t.name).toLowerCase().includes(ANN.q.toLowerCase())));
+ const q=el('input',{type:'text',placeholder:'Filter by name, type or track','aria-label':'Filter annotations',value:ANN.q});
+ q.oninput=()=>{ANN.q=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{renderAnn();const n=$('#ann-body input[type=text]');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length);}},250);};
+ const ts=el('select',{'aria-label':'Feature type',onchange:e=>{ANN.type=e.target.value;renderAnn();}},el('option',{value:'all'},'All types'),...types.map(t=>el('option',{value:t,selected:ANN.type===t?'':null},t)));
+ b.append(el('div',{class:'bar',style:'border:1px solid var(--line);border-radius:8px;margin-bottom:14px'},el('b',{},ref.name),el('span',{class:'muted'},`${rows.length} of ${all.length} features`),q,ts,el('span',{class:'sp'}),
+  el('button',{class:'btn',onclick:()=>{rows.forEach(x=>x.f.hidden=false);renderAnn();}},'Show listed'),el('button',{class:'btn',onclick:()=>{rows.forEach(x=>x.f.hidden=true);renderAnn();}},'Hide listed'),
+  el('button',{class:'btn',onclick:()=>{all.forEach(x=>{x.f.color=x.f.fileColor||null;});renderAnn();}},'Reset colours'),
+  el('button',{class:'btn',onclick:()=>openExport('Annotations · '+ref.name,'annotations.csv',annCsv(ref))},'Export list (CSV)')));
+ b.append(el('div',{class:'panel'},el('h2',{},'Colour by type'),el('div',{style:'display:flex;flex-wrap:wrap;gap:10px 18px'},...types.map(t=>{const first=all.find(x=>x.f.type===t).f;
+   const inp=el('input',{type:'color',value:toHex(featColor(first)),'aria-label':'Colour for all '+t+' features',style:'width:34px;height:26px;padding:0;border:1px solid var(--line);border-radius:4px;background:none'});
+   inp.oninput=()=>{all.filter(x=>x.f.type===t).forEach(x=>{x.f.color=inp.value;});};inp.onchange=()=>renderAnn();
+   return el('label',{style:'display:inline-flex;align-items:center;gap:6px'},inp,`${t} (${all.filter(x=>x.f.type===t).length})`);})),
+  el('div',{class:'muted',style:'margin-top:6px;font-size:12.5px'},'A colour you set here or on a single row overrides the default and any colour from a BED file. Changes show in the map, comparison and exports.')));
+ const cols=[
+  {h:'Show',v:d=>d.f.hidden?0:1,r:d=>{const c=el('input',{type:'checkbox','aria-label':'Show '+d.f.name,checked:d.f.hidden?null:''});c.onclick=e=>e.stopPropagation();c.onchange=()=>{d.f.hidden=!c.checked;};return c;}},
+  {h:'Colour',v:d=>featColor(d.f),r:d=>{const c=el('input',{type:'color',value:toHex(featColor(d.f)),'aria-label':'Colour for '+d.f.name,style:'width:34px;height:24px;padding:0;border:1px solid var(--line);border-radius:4px;background:none'});c.onclick=e=>e.stopPropagation();c.oninput=()=>{d.f.color=c.value;};return c;}},
+  {h:'Name',v:d=>d.f.name},{h:'Type',v:d=>d.f.type},{h:'Track',v:d=>d.t.name},{h:'Start',v:d=>d.f.start+1},{h:'End',v:d=>d.f.end},{h:'Length',v:d=>d.f.end-d.f.start,r:d=>(d.f.end-d.f.start).toLocaleString()},
+  {h:'Strand',v:d=>d.f.strand,r:d=>d.f.strand>0?'+':d.f.strand<0?'−':''},{h:'Product',v:d=>(d.f.q&&d.f.q.product)||'',r:d=>(d.f.q&&d.f.q.product)||''}];
+ b.append(el('div',{class:'panel'},el('h2',{},'Annotations'),tbl(cols,rows,{limit:2500,onRow:d=>focusFeature(d.f),empty:'No annotations match the filter.'}),el('div',{class:'muted',style:'margin-top:6px;font-size:12.5px'},'Click a row to zoom to it on the map.')));}
+
+/* ====================== wiring ====================== */
+const TABS=[['map','Maps'],['ann','Annotations'],['aln','Alignment'],['var','Variants'],['cmp','Compare'],['asm','Assembly'],['qc','Samples & QC'],['notes','Notes & export']];
+let cvMap,cvAln,cvDot,cvProf;
+function drawAll(){if(S.tab==='map'&&cvMap)cvMap._fit&&drawMap(cvMap);if(S.tab==='aln'&&cvAln)drawAln(cvAln);if(S.tab==='cmp'){cvDot&&drawDot(cvDot);cvProf&&drawProf(cvProf);}}
+function switchTab(t){S.tab=t;TABS.forEach(([k])=>{$('#v-'+k).classList.toggle('on',k===t);const b=$('#tab-'+k);b.setAttribute('aria-selected',k===t);});
+ if(t==='ann')renderAnn();if(t==='var')renderVar();if(t==='cmp')renderCmp();if(t==='asm')renderAsm();if(t==='qc')renderQC();if(t==='notes')renderNotes();if(t==='map')renderMapBar();if(t==='aln')renderAlnBar();
+ requestAnimationFrame(()=>{[cvMap,cvAln,cvDot,cvProf].forEach(c=>c&&c._fit&&c._fit());drawAll();});$('#side').classList.remove('open');}
+function syncSeg(){$('#m-lin').setAttribute('aria-pressed',S.mapMode==='linear');$('#m-cir').setAttribute('aria-pressed',S.mapMode==='circular');}
+function renderMapBar(){const bar=$('#m-chips');bar.innerHTML='';const smp=S.samples.filter(s=>s.refIdx===S.active);
+ if(smp.length){bar.append(el('span',{class:'muted'},'Show coverage and variants for'));smp.forEach(s=>{const c=el('button',{class:'chip','aria-pressed':String(!!s.show),onclick:()=>{s.show=!s.show;renderMapBar();drawAll();}},el('i'),s.name);bar.append(c);});}
+ const cands=cmpCandidates();if(cands.length){bar.append(el('span',{class:'muted',style:'margin-left:10px'},'Concentric comparison rings (circular view)'));cands.slice(0,14).forEach(c=>{bar.append(el('button',{class:'chip','aria-pressed':String(S.cmpShow.has(c.id)),onclick:()=>{S.cmpShow.has(c.id)?S.cmpShow.delete(c.id):S.cmpShow.add(c.id);if(S.cmpShow.has(c.id)){S.mapMode='circular';syncSeg();}renderMapBar();drawAll();}},el('i'),c.label));});}
+ bar.style.display=bar.children.length?'flex':'none';}
+function renderAlnBar(){const sel=$('#a-smp');sel.innerHTML='';S.samples.forEach(s=>sel.append(el('option',{value:s.id,selected:s.id===AL.sample?'':null},s.name)));if(!S.samples.some(s=>s.id===AL.sample)&&S.samples[0])AL.sample=S.samples[0].id;sel.value=AL.sample;}
+function renderSide(){const ul=$('#files');ul.innerHTML='';S.files.forEach(f=>ul.append(el('li',{},el('span',{class:'k'},f.kind),el('span',{class:'nm'},f.name,el('span',{class:'dt'},f.detail||'')),el('button',{class:'x','aria-label':'Remove '+f.name,onclick:()=>removeFile(f.id)},'×'))));
+ const rs=$('#refsel');rs.innerHTML='';S.refs.forEach((r,i)=>rs.append(el('option',{value:i,selected:i===S.active?'':null},`${r.name} · ${fmtBp(r.len)} bp`)));if(!S.refs.length)rs.append(el('option',{},'No reference loaded'));}
+function refreshAll(){renderSide();switchTab(S.tab);}
+function init(){loadPal();
+ TABS.forEach(([k,l])=>$('#tabs').append(el('button',{id:'tab-'+k,role:'tab','aria-selected':'false',onclick:()=>switchTab(k)},l)));
+ const set=[['minDepth','Minimum depth',1],['minAlt','Minimum alt reads',1],['minAF','Min alt fraction (0–1)',0.05],['consFrac','Consensus fraction',0.05],['minBQ','Min base quality',1],['minMQ','Min mapping quality',1],['passCov','Pass: % genome covered',1],['reviewCov','Review: % genome covered',1]];
+ set.forEach(([k,l,st])=>{const id='set-'+k;$('#settings').append(el('label',{for:id},l),el('input',{id,type:'number',step:st,value:S.P[k]}));});
+ $('#settings').append(el('label',{for:'set-iupac'},'IUPAC codes for mixed sites'),el('input',{id:'set-iupac',type:'checkbox',checked:'',style:'justify-self:start'}));
+ $('#apply').onclick=async()=>{set.forEach(([k])=>{const v=parseFloat($('#set-'+k).value);if(!isNaN(v))S.P[k]=v;});S.P.iupac=$('#set-iupac').checked;for(const s of S.samples){setStatus('Re-analysing '+s.name+'…');await tick();analyze(s,false);}setStatus('');refreshAll();toast('Analysis updated');};
+ // drop zone
+ const dz=$('#drop'),fi=$('#fileinput');$('#pick').onclick=()=>fi.click();dz.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')fi.click();};fi.onchange=()=>{importFiles(fi.files);fi.value='';};
+ $('#demo').onclick=loadDemo;
+ ['dragenter','dragover'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over');}));['dragleave','drop'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over');}));document.addEventListener('drop',e=>{if(e.dataTransfer&&e.dataTransfer.files.length)importFiles(e.dataTransfer.files);});
+ $('#refsel').onchange=e=>{S.active=+e.target.value;resetView();refreshAll();};
+ $('#menu').onclick=()=>$('#side').classList.toggle('open');
+ // map bar
+ $('#m-lin').onclick=()=>{S.mapMode='linear';syncSeg();drawAll();};$('#m-cir').onclick=()=>{S.mapMode='circular';syncSeg();drawAll();};
+ const go=(inp)=>{goTo($(inp).value);};
+ $('#m-gob').onclick=()=>{go('#m-go');drawAll();};$('#m-go').onkeydown=e=>{if(e.key==='Enter')$('#m-gob').click();};
+ const mz=f=>{if(S.mapMode==='circular')circZoomAt(1/f,cvMap._w/2,cvMap._h/2,cvMap._w,cvMap._h);else zoomBy(f);drawAll();};
+ $('#m-zi').onclick=()=>mz(0.5);$('#m-zo').onclick=()=>mz(2);$('#m-fit').onclick=()=>{resetView();drawAll();};
+ ['m','a'].forEach(p=>{$('#'+p+'-png').onclick=()=>exportImage('png');$('#'+p+'-svg').onclick=()=>exportImage('svg');});
+ $('#m-amr').onchange=e=>{S.amr=e.target.checked;drawAll();};
+ $('#m-bed').onclick=()=>curRef()?openExport('BED · '+curRef().name,'features.bed',bedText(curRef())):toast('No reference loaded.');$('#m-gff').onclick=()=>curRef()?openExport('GFF3 · '+curRef().name,'features.gff3',gffText(curRef())):toast('No reference loaded.');
+ cvMap=makeCanvas($('#cv-map'),drawMap);attachNav(cvMap,drawAll,{circ:()=>S.mapMode==='circular',sget:()=>MAP.scroll,sset:v=>{MAP.scroll=v;},vscroll:d=>{MAP.scroll+=d;drawAll();},click:(x,y,e)=>mapHover(cvMap,e,true)});cvMap.addEventListener('pointermove',e=>{if(!e.buttons)mapHover(cvMap,e,false);});
+ // aln bar
+ $('#a-smp').onchange=e=>{AL.sample=+e.target.value;const s=curSample();if(s&&s.refIdx!==S.active){S.active=s.refIdx;resetView();renderSide();}drawAll();};
+ $('#a-gob').onclick=()=>{go('#a-go');drawAll();};$('#a-go').onkeydown=e=>{if(e.key==='Enter')$('#a-gob').click();};
+ $('#a-zi').onclick=()=>{zoomBy(0.5);drawAll();};$('#a-zo').onclick=()=>{zoomBy(2);drawAll();};$('#a-fit').onclick=()=>{resetView();drawAll();};
+ $('#a-nv').onclick=()=>nextEvent('var');$('#a-nl').onclick=()=>nextEvent('low');
+ cvAln=makeCanvas($('#cv-aln'),drawAln);attachNav(cvAln,drawAll,{sget:()=>AL.scroll,sset:v=>{AL.scroll=v;},vscroll:d=>{AL.scroll+=d;drawAll();},click:(x,y,e)=>alnPointer(cvAln,e,true)});cvAln.addEventListener('pointermove',e=>{if(!e.buttons)alnPointer(cvAln,e,false);});
+ // compare
+ $('#c-q').onchange=e=>{CMP.q=+e.target.value;renderCmp();};
+ $('#c-circ').onclick=()=>{if(CMP.q==null)return;S.cmpShow.add(CMP.q);S.mapMode='circular';syncSeg();switchTab('map');};
+ $('#c-exp').onclick=()=>{const ref=curRef(),c=cmpCandidates().find(c=>c.id===CMP.q);if(!ref||!c)return;const cmp=compareSeqs(ref,c.ent);openExport('Shared blocks','shared_blocks.csv','ref,ref_start,ref_end,query,query_start,query_end,strand,identity\n'+cmp.blocks.map(b=>[ref.name,b.r0+1,b.r1,c.label,b.q0+1,b.q1,b.strand>0?'+':'-',b.id.toFixed(4)].join(',')).join('\n')+'\n');};
+ cvDot=makeCanvas($('#cv-dot'),drawDot);cvDot.style.cursor='default';cvProf=makeCanvas($('#cv-prof'),drawProf);cvProf.style.cursor='default';
+ // overlay
+ $('#ov-x2').onclick=()=>$('#ov').style.display='none';$('#ov-c').onclick=copyOv;$('#ov-s').onclick=saveOv;$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')$('#ov').style.display='none';});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#ov').style.display='none';});
+ try{S.notes=localStorage.getItem('genomejs.notes')||'';}catch(e){}
+ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{loadPal();drawAll();switchTab(S.tab);});
+ new MutationObserver(()=>{loadPal();drawAll();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+ renderSide();switchTab('map');renderMapBar();}
+function applyRange(s,e){if(S.tab==='map'&&S.mapMode==='circular')circGoto(s,e,cvMap._w,cvMap._h);else setView(s,e);}
+function goTo(q){const ref=curRef();if(!ref||!q)return;q=q.trim();let m;const num=s=>+s.replace(/,/g,'');
+ if((m=q.match(/^(?:.*:)?([\d,]+)\s*(?:-|\.\.|–)\s*([\d,]+)$/)))applyRange(num(m[1])-1,num(m[2]));
+ else if((m=q.match(/^(?:.*:)?([\d,]+)$/))){const p=num(m[1]);applyRange(p-1-40,p+40);}
+ else{const ql=q.toLowerCase(),fs=allFeatures(ref),f=fs.find(f=>f.name.toLowerCase()===ql)||fs.find(f=>f.name.toLowerCase().includes(ql));if(f){const pad=(f.end-f.start)*0.1+10;applyRange(f.start-pad,f.end+pad);}else toast('No feature or position matches "'+q+'".');}}
+if(typeof document!=='undefined'&&document.body&&typeof window!=='undefined')init();
+</script>
+</body>
+</html>
