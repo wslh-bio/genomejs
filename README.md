@@ -16,6 +16,8 @@ Click **Load demo data** to try it with synthetic sequences.
 
 **Genome alignment export:** Save map PNG/SVG exports the block map. Select a block and use Save block PNG/SVG to export its base-level alignment as shown (zoom and pan first to choose the window). Exports have a transparent background.
 
+**Colours on the Maps tab:** the Colours button next to the resistance checkbox opens a panel listing the reference (backbone colour), each sample (coverage colour) and each comparison sequence (ring colour, with the shade still showing identity). Pick a colour to apply it live; ↺ resets it. Colours apply to PNG and SVG exports. Gene colours are set on the Annotations tab.
+
 ## Run locally
 
 Open `index.html` in a browser. No build step.

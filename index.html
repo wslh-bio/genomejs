@@ -120,6 +120,7 @@ textarea.notes{width:100%;min-height:260px;background:var(--panel);border:1px so
       <button class="btn" id="m-gob">Go</button>
       <button class="btn" id="m-zi" aria-label="Zoom in">+</button><button class="btn" id="m-zo" aria-label="Zoom out">−</button><button class="btn" id="m-fit">Whole sequence</button>
       <label><input type="checkbox" id="m-amr" checked> Highlight resistance-like gene names</label>
+      <button class="btn" id="m-col" aria-haspopup="true" aria-expanded="false">Colours</button>
       <span class="sp"></span>
       <button class="btn" id="m-png">Save PNG</button><button class="btn" id="m-svg">Save SVG</button><button class="btn" id="m-bed">Export BED</button><button class="btn" id="m-gff">Export GFF3</button>
     </div>
@@ -128,6 +129,7 @@ textarea.notes{width:100%;min-height:260px;background:var(--panel);border:1px so
     <div class="info" id="m-info">Scroll wheel to zoom, drag to pan. Click a feature to zoom to it.</div>
   </section>
 
+  <div id="colpop" role="dialog" aria-label="Sequence colours" style="display:none;position:fixed;z-index:30;max-height:60vh;overflow:auto;min-width:260px;max-width:min(380px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.25)"></div>
   <section class="view" id="v-ann"><div class="scroll" id="ann-body"></div></section>
 
   <section class="view" id="v-mauve">
@@ -610,12 +612,12 @@ const hitAt=(cv,x,y)=>{const h=cv._hits||[];for(let i=h.length-1;i>=0;i--){const
 const featColor=f=>f.color||(S.amr&&isAMR(f)?PAL.T:{CDS:'#4C78A8',gene:'#4C78A8',rep_origin:'#9B6BB0',mobile_element:'#C98A2B',bed:'#7A8793',misc_feature:'#7A8793',variant:PAL.T}[f.type]||'#6E8CA0');
 
 /* ---- shared linear track pieces ---- */
-function drawRuler(ctx,M,W,y){const v=S.view,span=v.e-v.s,step=niceStep(span/8);ctx.fillStyle=PAL.muted;ctx.strokeStyle=PAL.line;ctx.font=SANS;ctx.textAlign='left';
- ctx.beginPath();ctx.moveTo(0,y+24.5);ctx.lineTo(W,y+24.5);ctx.stroke();
+function drawRuler(ctx,M,W,y,col){const v=S.view,span=v.e-v.s,step=niceStep(span/8);ctx.fillStyle=PAL.muted;ctx.strokeStyle=PAL.line;ctx.font=SANS;ctx.textAlign='left';
+ if(col){ctx.strokeStyle=col;ctx.lineWidth=3;}ctx.beginPath();ctx.moveTo(0,y+24.5);ctx.lineTo(W,y+24.5);ctx.stroke();if(col){ctx.strokeStyle=PAL.line;ctx.lineWidth=1;}
  for(let p=Math.ceil(v.s/step)*step;p<=v.e;p+=step){const x=M.x(p);ctx.beginPath();ctx.moveTo(x+.5,y+19);ctx.lineTo(x+.5,y+25);ctx.stroke();ctx.fillText(fmtBp(p),x+4,y+11);}
  return y+28;}
 function drawRefStrip(ctx,M,W,y,ref,h=16){const v=S.view,ppb=M.ppb;const a=Math.max(0,Math.floor(v.s)),b=Math.min(ref.len,Math.ceil(v.e));
- if(ppb<0.9){ctx.fillStyle=PAL.line;ctx.fillRect(0,y+h/2-2,W,4);return y+h+2;}
+ if(ppb<0.9){ctx.fillStyle=ref.color||PAL.line;ctx.fillRect(0,y+h/2-2,W,4);return y+h+2;}
  for(let p=a;p<b;p++){const ch=ref.seq[p],x=M.x(p);ctx.fillStyle=PAL[ch]||PAL.N;if(ppb>=8){ctx.globalAlpha=.18;ctx.fillRect(x,y,ppb,h);ctx.globalAlpha=1;ctx.fillStyle=PAL[ch]||PAL.N;ctx.font=MONO;ctx.textAlign='center';ctx.fillText(ch,x+ppb/2,y+h/2+1);ctx.textAlign='left';}else ctx.fillRect(x,y,Math.max(1,ppb-(ppb>3?1:0)),h);}
  return y+h+2;}
 function lumaOf(c){let m=String(c).match(/^#([0-9a-f]{6})$/i),r,g,b;if(m){r=parseInt(m[1].slice(0,2),16);g=parseInt(m[1].slice(2,4),16);b=parseInt(m[1].slice(4,6),16);}
@@ -642,9 +644,9 @@ function drawCov(ctx,M,W,y,s,h,hits,opt={}){const ref=S.refs[s.refIdx],v=S.view,
  ctx.fillStyle=PAL.grid;ctx.fillRect(0,top,W,bh);
  const ty=top+bh-P.minDepth/ymax*bh;
  if(ppb>=1&&opt.alleles){for(let p=a;p<b;p++){const d=s.depth[p],x=M.x(p),bw=Math.max(1,ppb-(ppb>3?1:0));if(!d)continue;const hh=Math.min(bh,d/ymax*bh);const cs=[s.cA[p],s.cC[p],s.cG[p],s.cT[p],s.cD[p]];const rb='ACGT'.indexOf(ref.seq[p]);let alt=false;for(let k=0;k<5;k++)if(k!==rb&&cs[k]/d>=P.minAF&&cs[k]>=P.minAlt)alt=true;
-   if(!alt){ctx.fillStyle=d<P.minDepth?PAL.bad:PAL.muted;ctx.globalAlpha=d<P.minDepth?.7:.55;ctx.fillRect(x,top+bh-hh,bw,hh);ctx.globalAlpha=1;}
+   if(!alt){ctx.fillStyle=d<P.minDepth?PAL.bad:(s.color||PAL.muted);ctx.globalAlpha=d<P.minDepth?.7:.55;ctx.fillRect(x,top+bh-hh,bw,hh);ctx.globalAlpha=1;}
    else{let yy=top+bh;for(let k=0;k<5;k++){const sh=cs[k]/d*hh;if(!sh)continue;ctx.fillStyle=k<4?PAL['ACGT'[k]]:PAL.ink;ctx.fillRect(x,yy-sh,bw,sh);yy-=sh;}}}}
- else{for(let c=0;c<cols;c++){const d=dcol[c];if(d<P.minDepth){ctx.fillStyle=PAL.bad;ctx.globalAlpha=.16;ctx.fillRect(c,top,1,bh);ctx.globalAlpha=1;}if(!d)continue;const hh=Math.min(bh,d/ymax*bh);ctx.fillStyle=d<P.minDepth?PAL.bad:PAL.accent;ctx.globalAlpha=.8;ctx.fillRect(c,top+bh-hh,1,hh);ctx.globalAlpha=1;}}
+ else{for(let c=0;c<cols;c++){const d=dcol[c];if(d<P.minDepth){ctx.fillStyle=PAL.bad;ctx.globalAlpha=.16;ctx.fillRect(c,top,1,bh);ctx.globalAlpha=1;}if(!d)continue;const hh=Math.min(bh,d/ymax*bh);ctx.fillStyle=d<P.minDepth?PAL.bad:(s.color||PAL.accent);ctx.globalAlpha=.8;ctx.fillRect(c,top+bh-hh,1,hh);ctx.globalAlpha=1;}}
  ctx.strokeStyle=PAL.bad;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(0,ty+.5);ctx.lineTo(W,ty+.5);ctx.stroke();ctx.setLineDash([]);
  ctx.fillStyle=PAL.muted;ctx.textAlign='right';ctx.fillText(ymax+'x',W-4,top+8);ctx.textAlign='left';
  if(opt.alleles){for(const[p,n]of s.ins)if(p>=a&&p<=b&&n>=Math.max(3,S.P.minAlt)){ctx.fillStyle='#A24FCB';ctx.fillRect(M.x(p)-1,top,2,6);}}
@@ -655,7 +657,7 @@ function drawCov(ctx,M,W,y,s,h,hits,opt={}){const ref=S.refs[s.refIdx],v=S.view,
 function circLabel(ctx,t,maxw){if(ctx.measureText(t).width<=maxw)return t;let s=t;while(s.length>2&&ctx.measureText(s+'…').width>maxw)s=s.slice(0,-1);return s+'…';}
 function drawMap(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h,ref=curRef();cv._hits=[];cv._arcs=[];if(!ref){msg(ctx,W,H,'Add a reference (FASTA or GenBank) to see it here.');return;}
  if(S.mapMode==='circular')return drawCircular(cv,ctx,W,H,ref);
- const M=mapper(W,S.view);let y=drawRuler(ctx,M,W,0);const top=y;
+ const M=mapper(W,S.view);let y=drawRuler(ctx,M,W,0,ref.color);const top=y;
  MAP.scroll=Math.max(0,Math.min(MAP.scroll,Math.max(0,(cv._content||0)-H)));
  ctx.save();ctx.beginPath();ctx.rect(0,top-2,W,H-top+2);ctx.clip();ctx.translate(0,-MAP.scroll);
  y=drawRefStrip(ctx,M,W,y,ref,16)+2;
@@ -665,6 +667,8 @@ function drawMap(cv){PAL.ink||loadPal();const ctx=prep(cv),W=cv._w,H=cv._h,ref=c
  cv._content=y+26;const maxS=Math.max(0,cv._content-H);
  if(maxS>0){const th=Math.max(24,H*H/cv._content),ty=top+(H-top-th)*MAP.scroll/maxS;ctx.fillStyle=PAL.muted;ctx.globalAlpha=.35;ctx.fillRect(W-5,ty,3,th);ctx.globalAlpha=1;}
  if(!S.exporting){ctx.fillStyle=PAL.panel;ctx.globalAlpha=.88;ctx.fillRect(0,H-22,W,22);ctx.globalAlpha=1;}ctx.fillStyle=PAL.muted;ctx.font=SANS;ctx.textAlign='left';ctx.fillText(ref.name+' · '+ref.len.toLocaleString()+' bp · '+Math.round(S.view.e-S.view.s).toLocaleString()+' bp in view'+(maxS>0&&!S.exporting?' · scroll for more tracks (Shift + wheel or drag up and down)':''),6,H-10);}
+/* ring shade: paler where identity is lower; custom colours are blended with white */
+function ringShade(hex,id){const t=Math.max(0,Math.min(1,(id-0.7)/0.3));if(!hex)return`hsl(212,62%,${Math.round(88-t*58)}%)`;const h=/^#[0-9a-f]{6}$/i.test(hex)?hex:toHex(hex),r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16),k=0.22+0.78*t,m=v=>Math.round(255-(255-v)*k);return`rgb(${m(r)},${m(g)},${m(b)})`;}
 function drawCircular(cv,ctx,W,H,ref){const L=ref.len,feats=[],tracks=[];
  for(const t of Object.values(ref.tracks)){if(t.kind==='vcf')continue;const items=t.items.filter(f=>!f.hidden&&f.type!=='variant');if(items.length){tracks.push({t,items});feats.push(...items);}}
  ctx.font=SANS;let maxLab=40;for(const f of feats){const w=ctx.measureText(f.name).width;if(w>maxLab)maxLab=w;}
@@ -672,7 +676,7 @@ function drawCircular(cv,ctx,W,H,ref){const L=ref.len,feats=[],tracks=[];
  const k=CIRC.k,u=Math.pow(k,0.55),R=R0*k,cx=W/2+CIRC.ox,cy=H/2+CIRC.oy;cv._circ={cx,cy,L};
  const ang=p=>-Math.PI/2+p/L*2*Math.PI,onScr=(x,y)=>x>-60&&x<W+60&&y>-30&&y<H+30;
  const arc=(r,a0,a1,w,col)=>{ctx.beginPath();ctx.arc(cx,cy,r,a0,Math.max(a1,a0+0.003));ctx.lineWidth=w;ctx.strokeStyle=col;ctx.stroke();};
- ctx.strokeStyle=PAL.ink;ctx.lineWidth=1.5*Math.min(u,3);ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
+ ctx.strokeStyle=ref.color||PAL.ink;ctx.lineWidth=(ref.color?2.5:1.5)*Math.min(u,3);ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
  const step=Math.max(1,niceStep(L/(12*k)));ctx.fillStyle=PAL.muted;ctx.strokeStyle=PAL.muted;ctx.lineWidth=1;ctx.font=SANS;ctx.textAlign='center';
  for(let p=0;p<L;p+=step){const a=ang(p),c=Math.cos(a),s=Math.sin(a);if(!onScr(cx+c*R,cy+s*R))continue;ctx.beginPath();ctx.moveTo(cx+c*R,cy+s*R);ctx.lineTo(cx+c*(R+6*u),cy+s*(R+6*u));ctx.stroke();ctx.fillText(p===0?'1':fmtBp(p),cx+c*(R+18*u),cy+s*(R+18*u));}
  const bandH=9*u,gap=2*u;let off=4*u;
@@ -684,13 +688,13 @@ function drawCircular(cv,ctx,W,H,ref){const L=ref.len,feats=[],tracks=[];
   off+=rows*(bandH+gap)+3*u;}
  let rr=R-off-6*u;const legend=[],bins=Math.min(720,L);ctx.lineWidth=1;
  for(const s of S.samples.filter(s=>s.refIdx===S.active&&s.show)){const rh=24*u,r0=rr-rh,mx=Math.max(1,s.medianDepth*2);
-  for(let b=0;b<bins;b++){const d=s.bins[b],a0=-Math.PI/2+b/bins*Math.PI*2,hh=Math.min(1,d/mx)*rh;arc(r0+hh/2,a0,a0+Math.PI*2/bins+0.002,Math.max(0.5,hh),d<S.P.minDepth?PAL.bad:PAL.accent);}
+  for(let b=0;b<bins;b++){const d=s.bins[b],a0=-Math.PI/2+b/bins*Math.PI*2,hh=Math.min(1,d/mx)*rh;arc(r0+hh/2,a0,a0+Math.PI*2/bins+0.002,Math.max(0.5,hh),d<S.P.minDepth?PAL.bad:(s.color||PAL.accent));}
   ctx.strokeStyle=PAL.line;ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,r0,0,Math.PI*2);ctx.stroke();rr=r0-3*u;
-  for(const v of s.variants){const a=ang(v.pos);ctx.strokeStyle=v.type==='SNP'?PAL[v.alt]:PAL.ink;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);ctx.lineTo(cx+Math.cos(a)*(rr-11*u),cy+Math.sin(a)*(rr-11*u));ctx.stroke();}ctx.lineWidth=1;rr-=16*u;legend.push([PAL.accent,s.name+' coverage + variants']);}
+  for(const v of s.variants){const a=ang(v.pos);ctx.strokeStyle=v.type==='SNP'?PAL[v.alt]:PAL.ink;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);ctx.lineTo(cx+Math.cos(a)*(rr-11*u),cy+Math.sin(a)*(rr-11*u));ctx.stroke();}ctx.lineWidth=1;rr-=16*u;legend.push([s.color||PAL.accent,s.name+' coverage + variants']);}
  const cands=cmpCandidates().filter(c=>S.cmpShow.has(c.id));
  for(const c of cands){const cmp=compareSeqs(ref,c.ent),idb=identityBins(cmp,bins),rw=13*u,rm=rr-rw/2;
-  for(let b=0;b<bins;b++){const a0=-Math.PI/2+b/bins*Math.PI*2,id=idb[b];const col=id<0?PAL.grid:id<0.02?PAL.line:`hsl(212,62%,${Math.round(88-Math.max(0,Math.min(1,(id-0.7)/0.3))*58)}%)`;arc(rm,a0,a0+Math.PI*2/bins+0.003,rw,col);}
-  for(const bl of cmp.blocks)if(bl.strand<0)arc(rm,ang(bl.r0),ang(bl.r1),2*Math.min(u,3),'#E07A1F');rr-=rw+4*u;legend.push(['hsl(212,62%,40%)',c.label+' (shade = shared identity; orange = inverted)']);}
+  for(let b=0;b<bins;b++){const a0=-Math.PI/2+b/bins*Math.PI*2,id=idb[b];const col=id<0?PAL.grid:id<0.02?PAL.line:ringShade(c.ent.color,id);arc(rm,a0,a0+Math.PI*2/bins+0.003,rw,col);}
+  for(const bl of cmp.blocks)if(bl.strand<0)arc(rm,ang(bl.r0),ang(bl.r1),2*Math.min(u,3),'#E07A1F');rr-=rw+4*u;legend.push([c.ent.color||'hsl(212,62%,40%)',c.label+' (shade = shared identity; orange = inverted)']);}
  const lab=feats.filter(f=>f._cr!=null).sort((a,b)=>(b.end-b.start)-(a.end-a.start));ctx.font=SANS;
  const legBottom=legend.length?16+legend.length*17:12;
  if(k<=1.25&&!narrow){const cap=Math.max(2,Math.floor((H-24)/15)),sides={r:[],l:[]};
@@ -1184,11 +1188,25 @@ function drawMvdCursor(cv){const c=curCtx(cv),st=cv._cur,m=curMv();if(!st||!st.o
 
 let cvMap,cvAln,cvDot,cvProf;
 function drawAll(){if(S.tab==='map'&&cvMap)cvMap._fit&&drawMap(cvMap);if(S.tab==='aln'&&cvAln)drawAln(cvAln);if(S.tab==='cmp'){cvDot&&drawDot(cvDot);cvProf&&drawProf(cvProf);}if(S.tab==='mauve'){cvMv&&cvMv._fit&&drawMauve(cvMv);cvMvd&&cvMvd._fit&&drawMauveDet(cvMvd);}refreshCursors();}
-function switchTab(t){S.tab=t;TABS.forEach(([k])=>{$('#v-'+k).classList.toggle('on',k===t);const b=$('#tab-'+k);b.setAttribute('aria-selected',k===t);});
+function switchTab(t){if(t!==S.tab&&$('#colpop'))toggleColPop(false);S.tab=t;TABS.forEach(([k])=>{$('#v-'+k).classList.toggle('on',k===t);const b=$('#tab-'+k);b.setAttribute('aria-selected',k===t);});
  if(t==='ann')renderAnn();if(t==='mauve')renderMauve();if(t==='var')renderVar();if(t==='cmp')renderCmp();if(t==='asm')renderAsm();if(t==='qc')renderQC();if(t==='notes')renderNotes();if(t==='map')renderMapBar();if(t==='aln')renderAlnBar();
  requestAnimationFrame(()=>{[cvMap,cvAln,cvDot,cvProf,cvMv,cvMvd].forEach(c=>c&&c._fit&&c._fit());drawAll();});$('#side').classList.remove('open');}
 function syncSeg(){$('#m-lin').setAttribute('aria-pressed',S.mapMode==='linear');$('#m-cir').setAttribute('aria-pressed',S.mapMode==='circular');}
-function renderMapBar(){const bar=$('#m-chips');bar.innerHTML='';const smp=S.samples.filter(s=>s.refIdx===S.active);
+function colorPick(get,defHex,set,title){const wrap=el('span',{class:'cpick',style:'display:inline-flex;align-items:center;gap:2px;margin:0 6px 0 -2px'});
+ const inp=el('input',{type:'color',value:toHex(get()||defHex),title,'aria-label':title,style:'width:26px;height:24px;padding:0;border:1px solid var(--line);border-radius:5px;background:none;cursor:pointer'});
+ inp.oninput=()=>{set(inp.value);drawAll();renderColBtn();};inp.onchange=()=>renderColPop();wrap.append(inp);
+ if(get())wrap.append(el('button',{class:'btn',style:'padding:0 6px;height:24px;line-height:1',title:'Back to the default colour','aria-label':'Reset colour',onclick:()=>{set(null);renderColPop();renderColBtn();drawAll();}},'↺'));return wrap;}
+const COLS=()=>{const rf=curRef();if(!rf)return[];PAL.ink||loadPal();const out=[{group:'Reference',label:rf.name,get:()=>rf.color,def:toHex(PAL.ink),set:v=>{rf.color=v;},hint:'backbone line'}];
+ S.samples.filter(x=>x.refIdx===S.active).forEach(x=>out.push({group:'Samples',label:x.name,get:()=>x.color,def:toHex(PAL.accent),set:v=>{x.color=v;},hint:'coverage'}));
+ cmpCandidates().forEach(c=>out.push({group:'Comparison sequences',label:c.label,get:()=>c.ent.color,def:'#2B64A5',set:v=>{c.ent.color=v;},hint:'ring'}));return out;};
+function renderColBtn(){const b=$('#m-col');if(!b)return;b.innerHTML='';b.append('Colours');const l=COLS();l.slice(0,5).forEach(x=>b.append(el('i',{style:`display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:5px;vertical-align:-1px;background:${x.get()||x.def};border:1px solid var(--line)`})));}
+function renderColPop(){const pop=$('#colpop');if(!pop)return;pop.innerHTML='';const l=COLS();
+ if(!l.length){pop.append(el('div',{class:'muted',style:'padding:6px'},'Load a reference to set colours.'));return;}
+ let last='';pop.append(el('div',{class:'muted',style:'font-size:12.5px;padding:0 4px 6px'},'Colours apply to the maps and to PNG and SVG exports.'));
+ for(const x of l){if(x.group!==last){last=x.group;pop.append(el('div',{style:'font-weight:600;font-size:12.5px;margin:8px 4px 2px'},x.group));}
+  pop.append(el('div',{style:'display:flex;align-items:center;gap:8px;padding:2px 4px'},colorPick(x.get,x.def,x.set,'Colour of '+x.label+' ('+x.hint+')'),el('span',{style:'flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap',title:x.label},x.label),el('span',{class:'muted',style:'font-size:12px'},x.hint)));}}
+function toggleColPop(force){const pop=$('#colpop'),b=$('#m-col');const open=force!=null?force:pop.style.display==='none';if(open){renderColPop();const r=b.getBoundingClientRect();pop.style.display='block';pop.style.left=Math.max(8,Math.min(innerWidth-pop.offsetWidth-8,r.left))+'px';pop.style.top=(r.bottom+6)+'px';}else pop.style.display='none';b.setAttribute('aria-expanded',String(open));}
+function renderMapBar(){renderColBtn();if($('#colpop')&&$('#colpop').style.display!=='none')renderColPop();const bar=$('#m-chips');bar.innerHTML='';const smp=S.samples.filter(s=>s.refIdx===S.active);PAL.ink||loadPal();
  if(smp.length){bar.append(el('span',{class:'muted'},'Show coverage and variants for'));smp.forEach(s=>{const c=el('button',{class:'chip','aria-pressed':String(!!s.show),onclick:()=>{s.show=!s.show;renderMapBar();drawAll();}},el('i'),s.name);bar.append(c);});}
  const cands=cmpCandidates();if(cands.length){bar.append(el('span',{class:'muted',style:'margin-left:10px'},'Concentric comparison rings (circular view)'));cands.slice(0,14).forEach(c=>{bar.append(el('button',{class:'chip','aria-pressed':String(S.cmpShow.has(c.id)),onclick:()=>{S.cmpShow.has(c.id)?S.cmpShow.delete(c.id):S.cmpShow.add(c.id);if(S.cmpShow.has(c.id)){S.mapMode='circular';syncSeg();}renderMapBar();drawAll();}},el('i'),c.label));});}
  bar.style.display=bar.children.length?'flex':'none';}
@@ -1216,6 +1234,7 @@ function init(){loadPal();
  const mz=f=>{if(S.mapMode==='circular')circZoomAt(1/f,cvMap._w/2,cvMap._h/2,cvMap._w,cvMap._h);else zoomBy(f);drawAll();};
  $('#m-zi').onclick=()=>mz(0.5);$('#m-zo').onclick=()=>mz(2);$('#m-fit').onclick=()=>{resetView();drawAll();};
  ['m','a','mv'].forEach(p=>{$('#'+p+'-png').onclick=()=>exportImage('png');$('#'+p+'-svg').onclick=()=>exportImage('svg');});
+ $('#m-col').onclick=e=>{e.stopPropagation();toggleColPop();};document.addEventListener('click',e=>{const pop=$('#colpop');if(pop&&pop.style.display!=='none'&&!pop.contains(e.target)&&e.target!==$('#m-col'))toggleColPop(false);});
  $('#m-amr').onchange=e=>{S.amr=e.target.checked;drawAll();};
  $('#m-bed').onclick=()=>curRef()?openExport('BED · '+curRef().name,'features.bed',bedText(curRef())):toast('No reference loaded.');$('#m-gff').onclick=()=>curRef()?openExport('GFF3 · '+curRef().name,'features.gff3',gffText(curRef())):toast('No reference loaded.');
  cvMap=makeCanvas($('#cv-map'),drawMap);attachNav(cvMap,drawAll,{circ:()=>S.mapMode==='circular',sget:()=>MAP.scroll,sset:v=>{MAP.scroll=v;},vscroll:d=>{MAP.scroll+=d;drawAll();},click:(x,y,e)=>mapHover(cvMap,e,true)});cvMap.addEventListener('pointermove',e=>{if(!e.buttons)mapHover(cvMap,e,false);});attachCursor(cvMap,drawMapCursor);
@@ -1239,7 +1258,7 @@ function init(){loadPal();
  cvDot=makeCanvas($('#cv-dot'),drawDot);cvDot.style.cursor='default';cvProf=makeCanvas($('#cv-prof'),drawProf);cvProf.style.cursor='default';
  // overlay
  $('#ov-x2').onclick=()=>$('#ov').style.display='none';$('#ov-c').onclick=copyOv;$('#ov-s').onclick=saveOv;$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')$('#ov').style.display='none';});
- document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#ov').style.display='none';});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#ov').style.display='none';toggleColPop(false);}});
  try{if(persistOn())S.notes=localStorage.getItem('genomejs.notes')||'';}catch(e){}
  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{loadPal();drawAll();switchTab(S.tab);});
  new MutationObserver(()=>{loadPal();drawAll();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
